@@ -249,7 +249,7 @@ function App() {
       (item) => item.id === choice
     )
 
-    const response = await fetch('http://127.0.0.1:5000/api/evaluate', {
+    const response = await fetch('https://cybershield-backend-7rci.onrender.com/api/evaluate', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
