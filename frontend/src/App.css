@@ -1082,3 +1082,21 @@ button {
     flex-direction: column;
   }
 }
+
+.dashboard-button {
+  margin-top: 14px;
+  padding: 13px 22px;
+  border: 1px solid #303746;
+  border-radius: 8px;
+  background: transparent;
+  color: #8f98aa;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.dashboard-button:hover {
+  color: #ffffff;
+  border-color: #555f72;
+  background: rgba(255, 255, 255, 0.04);
+}

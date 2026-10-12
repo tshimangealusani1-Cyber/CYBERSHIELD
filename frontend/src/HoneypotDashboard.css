@@ -1,0 +1,242 @@
+.honeypot-page {
+  min-height: 100vh;
+  padding: 48px;
+  background: #080a0f;
+  color: #f4f7fb;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+.honeypot-header {
+  max-width: 1200px;
+  margin: 0 auto 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 30px;
+}
+
+.dashboard-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  color: #8b93a5;
+}
+
+.honeypot-header h1 {
+  margin: 8px 0;
+  color: #f4f7fb;
+  font-size: 42px;
+  font-weight: 600;
+}
+
+.honeypot-header p {
+  color: #8f98aa;
+  font-size: 16px;
+}
+
+.honeypot-status {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  border: 1px solid #252a35;
+  border-radius: 10px;
+  background: #10131a;
+}
+
+.status-indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #34d399;
+  box-shadow: 0 0 12px #34d399;
+}
+
+.honeypot-status strong {
+  display: block;
+  font-size: 12px;
+}
+
+.honeypot-status small {
+  display: block;
+  margin-top: 4px;
+  color: #7d8799;
+}
+
+.honeypot-stats {
+  max-width: 1200px;
+  margin: 0 auto 32px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.stat-card {
+  padding: 24px;
+  border: 1px solid #252a35;
+  border-radius: 12px;
+  background: #10131a;
+}
+
+.stat-card span {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 1.3px;
+  color: #7f899b;
+}
+
+.stat-card strong {
+  display: block;
+  margin: 10px 0 5px;
+  font-size: 34px;
+}
+
+.stat-card small {
+  color: #687285;
+}
+
+.critical-stat strong {
+  color: #ff6b6b;
+}
+
+.honeypot-events {
+  max-width: 1200px;
+  margin: 0 auto;
+  border: 1px solid #252a35;
+  border-radius: 12px;
+  background: #10131a;
+  overflow: hidden;
+}
+
+.events-header {
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #252a35;
+}
+
+.events-header h2 {
+  margin: 6px 0 0;
+  color: #f4f7fb;
+}
+
+.refresh-button {
+  padding: 9px 16px;
+  border: 1px solid #303746;
+  border-radius: 7px;
+  background: #171b24;
+  color: #e8ecf3;
+  cursor: pointer;
+}
+
+.refresh-button:hover {
+  background: #202531;
+}
+
+.events-table-wrapper {
+  overflow-x: auto;
+}
+
+.events-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.events-table th {
+  padding: 15px 18px;
+  text-align: left;
+  font-size: 10px;
+  letter-spacing: 1.2px;
+  color: #697386;
+  background: #0d1016;
+}
+
+.events-table td {
+  padding: 17px 18px;
+  border-top: 1px solid #202530;
+  font-size: 13px;
+  color: #cbd1dc;
+}
+
+.events-table tr:hover td {
+  background: #141820;
+}
+
+.source-ip {
+  font-family: monospace;
+  color: #aeb7c7 !important;
+}
+
+.event-details {
+  min-width: 300px;
+  color: #8f98aa !important;
+}
+
+.severity,
+.event-status {
+  display: inline-block;
+  padding: 5px 9px;
+  border-radius: 5px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+}
+
+.severity-critical {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ff6b6b;
+}
+
+.severity-high {
+  background: rgba(249, 115, 22, 0.15);
+  color: #fb923c;
+}
+
+.severity-medium {
+  background: rgba(234, 179, 8, 0.15);
+  color: #facc15;
+}
+
+.event-status {
+  background: rgba(52, 211, 153, 0.1);
+  color: #6ee7b7;
+}
+
+.no-events,
+.honeypot-loading,
+.honeypot-error {
+  padding: 30px;
+  text-align: center;
+  color: #8f98aa;
+}
+
+.honeypot-error {
+  max-width: 1200px;
+  margin: 0 auto 25px;
+  border: 1px solid #7f1d1d;
+  border-radius: 8px;
+  background: #2a1111;
+  color: #fca5a5;
+}
+
+@media (max-width: 800px) {
+  .honeypot-page {
+    padding: 24px;
+  }
+
+  .honeypot-header {
+    flex-direction: column;
+  }
+
+  .honeypot-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 500px) {
+  .honeypot-stats {
+    grid-template-columns: 1fr;
+  }
+}
