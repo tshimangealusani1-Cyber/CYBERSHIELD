@@ -1100,3 +1100,1392 @@ button {
   border-color: #555f72;
   background: rgba(255, 255, 255, 0.04);
 }
+
+
+/* =========================================
+   BEGINNER-FRIENDLY GUI HONEYPOT MISSIONS
+========================================= */
+
+.mission-launch-button {
+  width: min(540px, 100%);
+  margin: 0 auto 16px;
+  padding: 17px 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  text-align: left;
+  border: 1px solid rgba(93, 132, 255, 0.42);
+  border-radius: 16px;
+  background: linear-gradient(120deg, rgba(64, 105, 224, 0.18), rgba(255, 255, 255, 0.035));
+  color: #f5f7ff;
+  transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+}
+
+.mission-launch-button:hover {
+  transform: translateY(-2px);
+  border-color: rgba(120, 157, 255, 0.85);
+  background: linear-gradient(120deg, rgba(64, 105, 224, 0.26), rgba(255, 255, 255, 0.05));
+}
+
+.mission-launch-icon {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: rgba(92, 132, 255, 0.18);
+  color: #9db8ff;
+  font-size: 28px;
+}
+
+.mission-launch-copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.mission-launch-copy strong,
+.mission-launch-copy small {
+  display: block;
+}
+
+.mission-launch-copy strong {
+  font-size: 15px;
+  margin-bottom: 5px;
+}
+
+.mission-launch-copy small {
+  color: #a5aec2;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.mission-launch-arrow {
+  color: #9db8ff;
+  font-size: 22px;
+}
+
+.mission-app {
+  min-height: 100vh;
+}
+
+.mission-page {
+  width: min(1060px, 92%);
+  margin: 0 auto;
+  padding: 32px 0 72px;
+}
+
+.mission-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 22px;
+  color: #8d96aa;
+  font-size: 13px;
+}
+
+.mission-breadcrumb button {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: #aabfff;
+  font: inherit;
+  cursor: pointer;
+}
+
+.mission-breadcrumb button:hover {
+  color: #ffffff;
+}
+
+.mission-hero-card {
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 24px;
+  background: linear-gradient(145deg, rgba(18, 25, 41, 0.96), rgba(9, 12, 20, 0.98));
+  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.28);
+}
+
+.mission-hero-art {
+  min-height: 220px;
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 50% 52%, rgba(67, 112, 255, 0.25), transparent 22%),
+    radial-gradient(circle at 50% 100%, rgba(41, 85, 180, 0.18), transparent 55%),
+    #0b1221;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.mission-art-orbit {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border: 1px solid rgba(117, 151, 255, 0.24);
+  border-radius: 50%;
+}
+
+.orbit-two {
+  width: 270px;
+  height: 270px;
+  border-style: dashed;
+  border-color: rgba(117, 151, 255, 0.14);
+}
+
+.mission-art-shield {
+  z-index: 2;
+  width: 86px;
+  height: 98px;
+  display: grid;
+  place-items: center;
+  clip-path: polygon(50% 0%, 91% 16%, 86% 65%, 50% 100%, 14% 65%, 9% 16%);
+  background: linear-gradient(145deg, #5f91ff, #4255bd);
+  color: #fff;
+  font-size: 39px;
+  font-weight: 800;
+  filter: drop-shadow(0 10px 28px rgba(68, 106, 255, 0.3));
+}
+
+.mission-art-node {
+  position: absolute;
+  z-index: 3;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(133, 164, 255, 0.55);
+  border-radius: 10px;
+  background: #131e35;
+  color: #79a3ff;
+  font-size: 10px;
+}
+
+.node-one { left: calc(50% - 125px); top: 55px; }
+.node-two { right: calc(50% - 130px); top: 75px; }
+.node-three { left: calc(50% + 75px); bottom: 30px; }
+
+.mission-art-line {
+  position: absolute;
+  height: 1px;
+  width: 82px;
+  background: linear-gradient(90deg, transparent, #5479e8, transparent);
+  transform-origin: left center;
+}
+
+.line-one { left: calc(50% - 95px); top: 85px; transform: rotate(20deg); }
+.line-two { left: calc(50% + 37px); top: 122px; transform: rotate(42deg); }
+
+.mission-intro-copy {
+  padding: 36px clamp(22px, 5vw, 58px) 42px;
+}
+
+.mission-eyebrow {
+  display: inline-block;
+  color: #91adff;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.3px;
+  line-height: 1.5;
+}
+
+.mission-intro-copy h1,
+.mission-investigation-header h1 {
+  max-width: 780px;
+  margin: 14px 0 14px;
+  color: #f6f8ff;
+  font-size: clamp(34px, 5vw, 52px);
+  line-height: 1.08;
+  letter-spacing: -1.8px;
+}
+
+.mission-lead,
+.mission-investigation-header > p {
+  max-width: 760px;
+  margin: 0;
+  color: #b2bbce;
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+.mission-briefing {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  margin-top: 28px;
+  padding: 22px;
+  border: 1px solid rgba(255, 187, 92, 0.2);
+  border-radius: 16px;
+  background: rgba(255, 181, 82, 0.055);
+}
+
+.mission-briefing-icon {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: rgba(255, 181, 82, 0.12);
+  color: #ffc06c;
+  font-weight: 800;
+  font-size: 21px;
+}
+
+.mission-briefing h2 {
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+
+.mission-briefing p {
+  margin: 0;
+  color: #bac2d2;
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+.mission-learning-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.mission-learning-item {
+  display: flex;
+  gap: 13px;
+  padding: 19px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.mission-learning-item > span {
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: rgba(91, 130, 255, 0.13);
+  color: #9bb6ff;
+  font-size: 20px;
+}
+
+.mission-learning-item strong {
+  display: block;
+  margin-bottom: 6px;
+  color: #f0f3fb;
+  font-size: 14px;
+}
+
+.mission-learning-item p {
+  margin: 0;
+  color: #9da7bb;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.mission-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+  margin: 27px 0;
+  padding: 20px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.mission-meta span,
+.mission-meta strong,
+.mission-meta small {
+  display: block;
+}
+
+.mission-meta strong {
+  color: #f2f5fc;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.mission-meta small {
+  color: #8f99ad;
+  font-size: 12px;
+}
+
+.mission-primary-button {
+  min-height: 50px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 14px 23px;
+  border: 0;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #5b85ff, #5969ec);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 750;
+  box-shadow: 0 12px 30px rgba(76, 112, 255, 0.2);
+  cursor: pointer;
+  transition: transform 0.2s ease, filter 0.2s ease, opacity 0.2s ease;
+}
+
+.mission-primary-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+}
+
+.mission-primary-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.mission-primary-button span {
+  font-size: 20px;
+}
+
+.mission-back-button,
+.mission-secondary-button {
+  min-height: 44px;
+  padding: 11px 15px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  background: transparent;
+  color: #b8c1d4;
+  font-size: 13px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.mission-back-button:hover,
+.mission-secondary-button:hover {
+  border-color: rgba(133, 164, 255, 0.5);
+  color: #fff;
+}
+
+.mission-intro-copy > .mission-back-button {
+  margin-left: 10px;
+}
+
+.mission-safety-note {
+  margin: 16px 5px 0;
+  color: #808ba1;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.mission-investigation-header {
+  margin: 16px 0 26px;
+}
+
+.mission-investigation-header h1 {
+  font-size: clamp(32px, 4.5vw, 46px);
+}
+
+.mission-evidence-card,
+.mission-question-card {
+  margin-bottom: 20px;
+  padding: clamp(20px, 4vw, 32px);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 20px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.018));
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.18);
+}
+
+.mission-evidence-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.mission-evidence-kicker {
+  color: #8faaff;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.3px;
+}
+
+.mission-evidence-heading h2,
+.mission-question-card h2 {
+  margin: 8px 0 10px;
+  font-size: clamp(20px, 3vw, 25px);
+  letter-spacing: -0.5px;
+}
+
+.mission-demo-badge {
+  flex-shrink: 0;
+  padding: 7px 10px;
+  border: 1px solid rgba(115, 151, 255, 0.22);
+  border-radius: 999px;
+  background: rgba(80, 116, 224, 0.1);
+  color: #a8beff;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.mission-evidence-explainer,
+.mission-question-card > p {
+  margin: 0 0 20px;
+  color: #a9b2c5;
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+.mission-log-table {
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 12px;
+  background: rgba(3, 6, 12, 0.45);
+}
+
+.mission-log-row {
+  display: grid;
+  grid-template-columns: 100px minmax(0, 1fr) 110px;
+  gap: 14px;
+  align-items: center;
+  padding: 13px 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.055);
+  color: #c4ccdb;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.mission-log-head {
+  border-top: 0;
+  background: rgba(255, 255, 255, 0.045);
+  color: #8f9ab0;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.mission-result-failed,
+.mission-result-success {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 7px;
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.mission-result-failed {
+  background: rgba(255, 112, 112, 0.1);
+  color: #ff9a9a;
+}
+
+.mission-result-success {
+  background: rgba(55, 210, 143, 0.1);
+  color: #6de4ad;
+}
+
+.mission-clue {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 18px;
+  padding: 15px;
+  border-radius: 12px;
+  background: rgba(255, 191, 94, 0.07);
+  color: #f4c981;
+}
+
+.mission-clue p {
+  margin: 0;
+  color: #c8c4b9;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.mission-clue strong {
+  color: #ffcf82;
+}
+
+.mission-question-card > .mission-eyebrow {
+  margin-bottom: 4px;
+}
+
+.mission-answer-options {
+  display: grid;
+  gap: 11px;
+  margin-top: 22px;
+}
+
+.mission-answer-option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.02);
+  color: #eef2fb;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.mission-answer-option:hover,
+.mission-answer-option.is-selected {
+  border-color: rgba(110, 148, 255, 0.75);
+  background: rgba(75, 111, 225, 0.11);
+}
+
+.mission-answer-letter {
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.07);
+  color: #a9beff;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.mission-answer-option strong,
+.mission-answer-option small {
+  display: block;
+}
+
+.mission-answer-option strong {
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.mission-answer-option small {
+  color: #9ca7bb;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.mission-submit-button {
+  width: 100%;
+  margin-top: 18px;
+}
+
+.mission-feedback {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+}
+
+.mission-feedback h3 {
+  margin: 0 0 8px;
+  font-size: 17px;
+}
+
+.mission-feedback p {
+  margin: 0;
+  color: #b5bed0;
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+.feedback-correct {
+  border-color: rgba(63, 210, 143, 0.3);
+  background: rgba(63, 210, 143, 0.06);
+}
+
+.feedback-correct h3 {
+  color: #78e6b1;
+}
+
+.feedback-retry {
+  border-color: rgba(255, 190, 95, 0.25);
+  background: rgba(255, 190, 95, 0.045);
+}
+
+.feedback-retry h3 {
+  color: #ffd08a;
+}
+
+.mission-secondary-button {
+  margin-top: 15px;
+}
+
+.mission-completion {
+  margin-top: 18px;
+  padding-top: 17px;
+  border-top: 1px solid rgba(63, 210, 143, 0.2);
+}
+
+.mission-completion > strong {
+  display: block;
+  margin-bottom: 7px;
+  color: #d6ffeb;
+}
+
+.mission-completion .mission-primary-button {
+  margin-top: 15px;
+}
+
+.mission-footer-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 650px) {
+  .mission-page {
+    width: 92%;
+    padding-top: 22px;
+  }
+
+  .mission-hero-art {
+    min-height: 175px;
+  }
+
+  .mission-intro-copy {
+    padding: 27px 20px 28px;
+  }
+
+  .mission-intro-copy h1 {
+    letter-spacing: -1px;
+  }
+
+  .mission-learning-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mission-meta {
+    gap: 18px;
+  }
+
+  .mission-intro-copy > .mission-back-button {
+    display: block;
+    margin: 10px 0 0;
+  }
+
+  .mission-log-row {
+    grid-template-columns: 70px minmax(0, 1fr) 75px;
+    gap: 8px;
+    padding: 11px 9px;
+    font-size: 10px;
+  }
+
+  .mission-log-head {
+    font-size: 9px;
+  }
+
+  .mission-evidence-heading {
+    flex-direction: column;
+  }
+
+  .mission-answer-option {
+    align-items: flex-start;
+    padding: 13px;
+  }
+}
+
+/* CYBERSHIELD Mission 01 — interactive network map */
+.mission-map-page { max-width: 1080px; }
+.mission-map-heading { margin: 8px 0 24px; }
+.mission-map-heading h1 { margin: 8px 0 10px; color: #f4f7ff; font-size: clamp(30px, 4vw, 43px); letter-spacing: -1.4px; }
+.mission-map-heading > p { max-width: 720px; margin: 0; color: #aab8cf; line-height: 1.7; }
+.mission-network-card, .mission-device-details, .mission-next-step-card { border: 1px solid rgba(141, 169, 214, .16); border-radius: 20px; background: linear-gradient(145deg, rgba(17, 29, 52, .96), rgba(9, 17, 33, .98)); box-shadow: 0 18px 45px rgba(0, 0, 0, .14); }
+.mission-network-card { overflow: hidden; }
+.mission-network-topline { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 17px 21px; border-bottom: 1px solid rgba(141, 169, 214, .12); color: #9fb0ca; font-size: 12px; }
+.mission-network-topline > div { display: flex; align-items: center; gap: 9px; color: #e3ecff; }
+.mission-live-dot { width: 8px; height: 8px; border-radius: 50%; background: #48d7a0; box-shadow: 0 0 12px rgba(72, 215, 160, .55); }
+.mission-network-canvas { position: relative; min-height: 330px; margin: 12px 18px 0; overflow: hidden; border: 1px solid rgba(91, 127, 183, .13); border-radius: 16px; background-image: radial-gradient(rgba(111, 151, 208, .15) 1px, transparent 1px); background-size: 20px 20px; }
+.mission-network-lines { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.mission-network-lines line { stroke: rgba(98, 147, 218, .65); stroke-width: 2; stroke-dasharray: 7 7; }
+.mission-network-lines circle { fill: #74aaff; stroke: rgba(116, 170, 255, .25); stroke-width: 10; }
+.mission-device { position: absolute; z-index: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; width: 170px; min-height: 100px; padding: 13px 10px; border: 1px solid rgba(112, 148, 202, .27); border-radius: 15px; color: #dbe7ff; background: rgba(13, 25, 46, .96); cursor: pointer; transition: border-color .18s ease, transform .18s ease, background .18s ease, box-shadow .18s ease; }
+.mission-device:hover { transform: translateY(-2px); border-color: rgba(120, 173, 255, .7); }
+.mission-device.device-selected { border-color: #79aaff; background: rgba(31, 58, 96, .98); box-shadow: 0 0 0 3px rgba(91, 145, 232, .13), 0 10px 28px rgba(0, 0, 0, .2); }
+.mission-device-icon { display: grid; place-items: center; width: 32px; height: 32px; margin-bottom: 2px; border-radius: 10px; color: #8db9ff; background: rgba(95, 151, 242, .13); font-size: 21px; }
+.mission-device strong { font-size: 12px; text-align: center; }
+.mission-device small { color: #93a7c6; font-size: 10px; }
+.device-laptop { left: 2%; top: 10%; }
+.device-router { left: 50%; top: 39%; transform: translate(-50%, -50%); }
+.device-router:hover { transform: translate(-50%, calc(-50% - 2px)); }
+.device-router.device-selected { transform: translate(-50%, -50%); }
+.device-server { right: 2%; top: 10%; }
+.device-honeypot { left: 50%; bottom: 5%; transform: translateX(-50%); }
+.device-honeypot:hover { transform: translate(-50%, -2px); }
+.device-honeypot.device-selected { transform: translateX(-50%); }
+.mission-device-alert { position: absolute; top: -7px; right: -7px; display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; color: #20170b; background: #ffcb72; font-size: 12px; font-weight: 800; }
+.mission-network-hint { margin: 13px 21px 18px; color: #8fa3c2; font-size: 12px; line-height: 1.6; }
+.mission-device-details { display: flex; align-items: flex-start; gap: 19px; margin-top: 18px; padding: 24px; }
+.mission-device-details-icon { display: grid; flex: 0 0 52px; place-items: center; width: 52px; height: 52px; border-radius: 15px; color: #9cc4ff; background: rgba(91, 145, 232, .15); font-size: 27px; }
+.mission-device-details-copy { min-width: 0; }
+.mission-device-details-copy h2 { margin: 5px 0 9px; color: #f0f5ff; font-size: 22px; }
+.mission-device-details-copy > p { margin: 13px 0; color: #b4c2d9; line-height: 1.75; }
+.mission-device-status { display: inline-flex; padding: 5px 9px; border-radius: 999px; font-size: 11px; font-weight: 700; }
+.status-normal { color: #8ee8c1; background: rgba(61, 194, 139, .12); }
+.status-warning { color: #ffd58d; background: rgba(244, 177, 72, .13); }
+.status-alert { color: #a9caff; background: rgba(92, 151, 244, .14); }
+.mission-device-clue { padding: 14px 16px; border-left: 3px solid #78aaff; border-radius: 0 10px 10px 0; background: rgba(85, 132, 204, .09); }
+.mission-device-clue strong { color: #dce8ff; font-size: 12px; }
+.mission-device-clue p { margin: 6px 0 0; color: #aebfda; font-size: 13px; line-height: 1.65; }
+.mission-next-step-card { display: flex; justify-content: space-between; align-items: center; gap: 25px; margin-top: 18px; padding: 24px; }
+.mission-next-step-card h2 { margin: 7px 0; color: #eef4ff; font-size: 21px; }
+.mission-next-step-card p { max-width: 610px; margin: 0; color: #aab9d0; font-size: 13px; line-height: 1.7; }
+.mission-next-step-card .mission-primary-button { flex: 0 0 auto; }
+@media (max-width: 650px) {
+  .mission-network-topline { align-items: flex-start; flex-direction: column; }
+  .mission-network-canvas { min-height: 470px; margin: 10px 10px 0; }
+  .mission-network-lines { display: none; }
+  .mission-device { width: 145px; min-height: 100px; }
+  .device-laptop { left: 3%; top: 4%; }
+  .device-server { right: 3%; top: 4%; }
+  .device-router { left: 50%; top: 50%; }
+  .device-honeypot { bottom: 3%; }
+  .mission-device-details { padding: 18px; gap: 12px; }
+  .mission-device-details-icon { flex-basis: 42px; width: 42px; height: 42px; }
+  .mission-next-step-card { align-items: stretch; flex-direction: column; padding: 20px; }
+  .mission-next-step-card .mission-primary-button { width: 100%; }
+}
+
+
+/* =========================================
+   SCAM AWARENESS CENTRE — EVERYDAY SAFETY
+========================================= */
+.scam-centre-launch {
+  width: min(540px, 100%);
+  margin: 0 auto 16px;
+  padding: 17px 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  text-align: left;
+  border: 1px solid rgba(93, 132, 255, 0.42);
+  border-radius: 16px;
+  background: linear-gradient(120deg, rgba(64, 105, 224, 0.18), rgba(255, 255, 255, 0.035));
+  color: #f5f7ff;
+  transition: border-color .2s ease, transform .2s ease, background .2s ease;
+}
+.scam-centre-launch:hover { transform: translateY(-2px); border-color: rgba(120, 157, 255, .85); }
+.scam-centre-launch-icon {
+  width: 42px; height: 42px; flex: 0 0 42px;
+  display: grid; place-items: center; border-radius: 12px;
+  background: rgba(92, 132, 255, .18); color: #9db8ff; font-size: 25px;
+}
+.scam-centre-launch-copy { flex: 1; min-width: 0; }
+.scam-centre-launch-copy strong, .scam-centre-launch-copy small { display: block; }
+.scam-centre-launch-copy strong { font-size: 15px; margin-bottom: 5px; }
+.scam-centre-launch-copy small { color: #a5aec2; font-size: 12px; line-height: 1.5; }
+.scam-centre-launch-arrow { color: #9db8ff; font-size: 22px; }
+.scam-centre-content { width: min(1120px, 92%); margin: 0 auto; padding: 32px 0 75px; }
+.scam-centre-breadcrumb { display: flex; align-items: center; gap: 10px; color: #8d96aa; font-size: 13px; margin-bottom: 28px; }
+.scam-centre-breadcrumb button { border: 0; padding: 0; background: transparent; color: #aabfff; }
+.scam-centre-header { max-width: 780px; margin: 0 auto 36px; text-align: center; }
+.scam-centre-header h1 { margin: 20px 0 14px; font-size: clamp(38px, 5vw, 58px); letter-spacing: -2.5px; line-height: 1.06; }
+.scam-centre-header p { color: #9299aa; font-size: 16px; line-height: 1.75; margin: 0; }
+.scam-category-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-bottom: 24px; }
+.scam-category-card { min-height: 140px; padding: 20px; display: flex; flex-direction: column; align-items: flex-start; gap: 9px; border: 1px solid rgba(255,255,255,.09); border-radius: 16px; background: rgba(255,255,255,.025); color: #f5f7ff; text-align: left; transition: .2s ease; }
+.scam-category-card:hover, .scam-category-card.active { border-color: rgba(93,132,255,.65); background: rgba(65,105,224,.11); }
+.scam-category-icon { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 10px; background: rgba(76,127,255,.14); color: #9db8ff; font-size: 21px; }
+.scam-category-card strong { font-size: 15px; }
+.scam-category-card small { color: #8992a6; font-size: 12px; line-height: 1.5; }
+.scam-practice-card { padding: clamp(22px, 4vw, 38px); border: 1px solid rgba(255,255,255,.1); border-radius: 22px; background: linear-gradient(145deg, rgba(255,255,255,.05), rgba(255,255,255,.018)); box-shadow: 0 25px 70px rgba(0,0,0,.22); }
+.scam-practice-topline { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.scam-fiction-badge { color: #9ca8bd; font-size: 12px; border: 1px solid rgba(255,255,255,.12); border-radius: 99px; padding: 7px 10px; }
+.scam-practice-card h2 { font-size: clamp(24px, 3vw, 34px); letter-spacing: -1px; margin: 20px 0; }
+.scam-message-preview { padding: 22px; border: 1px solid rgba(255,255,255,.08); border-radius: 15px; background: rgba(3,6,12,.45); margin-bottom: 28px; }
+.scam-message-sender { display: flex; align-items: center; gap: 12px; padding-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,.08); }
+.scam-sender-icon { width: 40px; height: 40px; display: grid; place-items: center; border-radius: 50%; background: rgba(76,127,255,.15); color: #9db8ff; font-size: 20px; }
+.scam-message-sender strong, .scam-message-sender small { display: block; }
+.scam-message-sender strong { font-size: 14px; overflow-wrap: anywhere; }
+.scam-message-sender small { margin-top: 5px; color: #778197; font-size: 12px; }
+.scam-message-preview > p { margin: 18px 0 0; color: #c0c6d4; line-height: 1.8; font-size: 15px; }
+.scam-practice-card h3 { margin: 0 0 16px; font-size: 19px; }
+.scam-choice-list { display: grid; gap: 11px; }
+.scam-choice { display: flex; align-items: center; gap: 14px; width: 100%; padding: 16px; border: 1px solid rgba(255,255,255,.1); border-radius: 13px; background: rgba(255,255,255,.025); color: #edf1fb; text-align: left; transition: .2s ease; }
+.scam-choice:hover, .scam-choice.selected { border-color: #5688ff; background: rgba(63,111,239,.1); }
+.scam-choice-letter { flex: 0 0 34px; width: 34px; height: 34px; display: grid; place-items: center; border-radius: 9px; background: rgba(255,255,255,.06); color: #9db8ff; font-size: 13px; font-weight: 800; }
+.scam-choice strong, .scam-choice small { display: block; }
+.scam-choice strong { font-size: 14px; margin-bottom: 5px; }
+.scam-choice small { color: #8992a6; font-size: 12px; line-height: 1.5; }
+.scam-feedback { margin-top: 22px; padding: 22px; border: 1px solid rgba(255,255,255,.12); border-radius: 14px; background: rgba(255,255,255,.035); }
+.scam-feedback.correct { border-color: rgba(49,213,138,.35); background: rgba(49,213,138,.055); }
+.scam-feedback > strong { font-size: 16px; }
+.scam-feedback p { color: #b3bbcb; font-size: 14px; line-height: 1.75; }
+.scam-safety-rules { margin-top: 28px; padding: 28px; border: 1px solid rgba(255,255,255,.08); border-radius: 18px; background: rgba(255,255,255,.02); }
+.scam-safety-rules h2 { margin: 0 0 20px; font-size: 21px; }
+.scam-safety-rule-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 20px; }
+.scam-safety-rule-grid > div { display: grid; gap: 8px; align-content: start; }
+.scam-safety-rule-grid span { color: #83a5ff; font-size: 12px; font-weight: 800; letter-spacing: 1px; }
+.scam-safety-rule-grid strong { font-size: 15px; }
+.scam-safety-rule-grid p { margin: 0; color: #9299aa; font-size: 13px; line-height: 1.7; }
+.scam-centre-footer-actions { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 25px; }
+.scam-centre-disclaimer { color: #6f788b; font-size: 12px; line-height: 1.7; text-align: center; margin: 25px auto 0; max-width: 760px; }
+@media (max-width: 760px) {
+  .scam-category-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .scam-safety-rule-grid { grid-template-columns: 1fr; }
+  .scam-centre-header h1 { letter-spacing: -1.5px; }
+}
+@media (max-width: 480px) {
+  .scam-category-grid { grid-template-columns: 1fr; }
+  .scam-category-card { min-height: 112px; }
+  .scam-practice-card { padding: 18px; }
+  .scam-message-preview { padding: 16px; }
+  .scam-centre-launch { padding: 14px; gap: 10px; }
+  .scam-centre-launch-copy strong { font-size: 13px; }
+  .scam-centre-launch-copy small { font-size: 11px; }
+}
+
+
+/* =========================================
+   REALISTIC EVERYDAY SCAM PRACTICE MOCKUPS
+========================================= */
+.scam-realistic-preview { overflow: hidden; margin: 0 0 28px; border: 1px solid rgba(255,255,255,.11); border-radius: 17px; background: #0a0e17; }
+.scam-preview-toolbar { min-height: 48px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 16px; border-bottom: 1px solid rgba(255,255,255,.08); background: rgba(255,255,255,.035); color: #9da7bb; font-size: 12px; }
+.scam-window-dots { display: flex; gap: 5px; }
+.scam-window-dots i { width: 7px; height: 7px; display: block; border-radius: 50%; background: #69748b; }
+.scam-inbox-scene { display: grid; grid-template-columns: 155px minmax(0,1fr); min-height: 260px; }
+.scam-inbox-sidebar { display: flex; flex-direction: column; gap: 18px; padding: 22px 16px; border-right: 1px solid rgba(255,255,255,.07); color: #929db2; font-size: 12px; }
+.scam-inbox-sidebar strong { color: #a9c0ff; letter-spacing: 2px; margin-bottom: 4px; }
+.scam-inbox-sidebar b { float: right; color: #b9caff; }
+.scam-inbox-message { min-width: 0; padding: 24px clamp(16px,3vw,28px); }
+.scam-inbox-subject { margin-bottom: 22px; color: #f3f5fb; font-size: 17px; font-weight: 700; }
+.scam-inbox-sender { display: flex; align-items: center; gap: 10px; }
+.scam-profile-avatar { width: 38px; height: 38px; flex: 0 0 38px; display: grid; place-items: center; border-radius: 50%; background: linear-gradient(135deg,#6078bd,#384d85); color: white; font-weight: 800; }
+.scam-inbox-sender strong, .scam-inbox-sender small { display: block; overflow-wrap: anywhere; }
+.scam-inbox-sender strong { color: #e8ecf6; font-size: 13px; }
+.scam-inbox-sender small { margin-top: 4px; color: #8792a8; font-size: 11px; }
+.scam-inbox-sender > span { margin-left: auto; align-self: flex-start; color: #737e94; font-size: 11px; }
+.scam-inbox-message > p { margin: 22px 0; color: #bac3d4; font-size: 14px; line-height: 1.8; }
+.scam-suspicious-link { display: inline-flex; flex-wrap: wrap; gap: 10px; align-items: center; padding: 10px 12px; border: 1px dashed rgba(255,180,92,.4); border-radius: 9px; color: #a9c0ff; font-size: 12px; overflow-wrap: anywhere; }
+.scam-suspicious-link span { color: #ffbf76; font-size: 10px; text-transform: uppercase; letter-spacing: .5px; }
+.scam-inspect-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 17px; border-top: 1px solid rgba(255,255,255,.07); background: rgba(255,255,255,.02); color: #8995ab; font-size: 12px; }
+.scam-inspect-row button { border: 1px solid rgba(117,151,255,.35); border-radius: 8px; padding: 8px 11px; background: rgba(76,127,255,.1); color: #b4c8ff; font-size: 12px; white-space: nowrap; }
+.scam-clue-panel { padding: 17px 22px 18px; border-top: 1px solid rgba(117,151,255,.2); background: rgba(76,127,255,.06); color: #dce4f7; font-size: 13px; line-height: 1.7; }
+.scam-clue-panel ul { margin: 10px 0 0; padding-left: 20px; color: #aab5c9; }
+.scam-clue-panel li + li { margin-top: 5px; }
+.scam-demo-note { margin: 0; padding: 0 17px 15px; color: #68748a; font-size: 11px; line-height: 1.6; }
+.scam-phone-scene { min-height: 280px; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 28px 22px; }
+.scam-phone-avatar { width: 66px; height: 66px; display: grid; place-items: center; border-radius: 50%; background: rgba(76,127,255,.15); color: #a9c0ff; font-size: 28px; }
+.scam-call-status { margin-top: 14px; color: #ffbd75; font-size: 11px; }
+.scam-phone-scene h3 { margin: 12px 0 8px; font-size: 20px; }
+.scam-phone-scene p { max-width: 580px; margin: 0; color: #aab4c7; font-size: 13px; line-height: 1.7; }
+.scam-call-buttons { display: flex; gap: 18px; margin-top: 22px; }
+.scam-call-buttons span { padding: 10px 20px; border-radius: 999px; background: rgba(255,255,255,.07); color: #c4ccdc; font-size: 12px; }
+.scam-call-buttons span:first-child { background: rgba(255,95,95,.13); color: #ffaaaa; }
+.scam-social-scene { padding: 24px; }
+.scam-social-profile { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.scam-social-profile > div:nth-child(2) { flex: 1; min-width: 150px; }
+.scam-social-profile strong, .scam-social-profile small { display: block; }
+.scam-social-profile strong { font-size: 14px; }
+.scam-social-profile strong span { color: #9db8ff; }
+.scam-social-profile small { margin-top: 4px; color: #8792a8; font-size: 11px; }
+.scam-follow-label { border: 1px solid rgba(255,255,255,.15); border-radius: 8px; padding: 7px 10px; color: #9ca8bd; font-size: 11px; }
+.scam-social-stats { display: flex; gap: 25px; margin: 19px 0; color: #8590a6; font-size: 11px; }
+.scam-social-stats strong { color: #e6ebf6; }
+.scam-social-message { padding: 17px; border: 1px solid rgba(255,255,255,.08); border-radius: 12px; background: rgba(255,255,255,.025); }
+.scam-social-message > small { color: #8792a8; font-size: 10px; letter-spacing: .7px; }
+.scam-social-message p { color: #c4ccdc; font-size: 13px; line-height: 1.7; }
+.scam-social-warning { display: inline-block; padding: 7px 9px; border-radius: 7px; background: rgba(255,180,92,.09); color: #ffc27d; font-size: 11px; }
+.scam-shop-scene { display: grid; grid-template-columns: minmax(150px,.8fr) minmax(0,1.2fr); gap: 22px; padding: 24px; }
+.scam-shop-product { min-height: 205px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 15px; border: 1px solid rgba(255,255,255,.08); border-radius: 13px; background: radial-gradient(circle,rgba(92,119,184,.18),rgba(255,255,255,.02)); }
+.scam-shop-product > span { font-size: 64px; }
+.scam-shop-product small { color: #707c92; font-size: 10px; text-align: center; }
+.scam-shop-details { align-self: center; }
+.scam-shop-tag { color: #ffbf76; font-size: 10px; font-weight: 800; letter-spacing: 1px; }
+.scam-shop-details h3 { margin: 9px 0; font-size: 20px; }
+.scam-shop-price { color: #9db8ff; font-size: 25px; font-weight: 800; }
+.scam-shop-price del { margin-left: 7px; color: #727e94; font-size: 13px; font-weight: 400; }
+.scam-shop-details p { color: #aab4c7; font-size: 12px; line-height: 1.65; }
+.scam-shop-facts { display: grid; gap: 7px; color: #ffbf76; font-size: 11px; }
+.scam-recovery-scene { display: flex; align-items: flex-start; gap: 18px; padding: 28px; }
+.scam-recovery-icon { flex: 0 0 48px; width: 48px; height: 48px; display: grid; place-items: center; border-radius: 13px; background: rgba(255,180,92,.12); color: #ffc27d; font-size: 25px; font-weight: 800; }
+.scam-recovery-scene strong { font-size: 16px; }
+.scam-recovery-scene p, .scam-recovery-scene li { color: #aab4c7; font-size: 13px; line-height: 1.7; }
+.scam-recovery-scene ul { padding-left: 18px; }
+@media (max-width: 600px) { .scam-inbox-scene { grid-template-columns: 1fr; } .scam-inbox-sidebar { flex-direction: row; flex-wrap: wrap; gap: 12px; padding: 12px; border-right: 0; border-bottom: 1px solid rgba(255,255,255,.07); } .scam-inbox-sidebar strong { margin-right: 6px; } .scam-inbox-sidebar span { font-size: 11px; } .scam-shop-scene { grid-template-columns: 1fr; padding: 16px; } .scam-shop-product { min-height: 130px; } .scam-shop-product > span { font-size: 48px; } .scam-inspect-row { align-items: flex-start; flex-direction: column; } .scam-social-scene { padding: 16px; } .scam-recovery-scene { padding: 20px; } }
+
+/* =========================================
+   SCAM AWARENESS PROGRESS AND SCORE
+========================================= */
+.scam-progress-card { margin: 0 0 26px; padding: 20px 22px; border: 1px solid rgba(255,255,255,.09); border-radius: 16px; background: rgba(255,255,255,.025); }
+.scam-progress-labels, .scam-progress-bottom { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.scam-progress-labels strong { color: #eef2fb; font-size: 14px; }
+.scam-progress-labels span, .scam-progress-bottom > span { color: #8d98ad; font-size: 12px; }
+.scam-progress-track { height: 8px; margin: 13px 0 11px; overflow: hidden; border-radius: 999px; background: rgba(255,255,255,.08); }
+.scam-progress-track > span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg,#4c7fff,#6d91ff); transition: width .25s ease; }
+.scam-progress-bottom button, .scam-view-results-button { border: 1px solid rgba(117,151,255,.4); border-radius: 9px; padding: 9px 12px; background: rgba(76,127,255,.12); color: #c0d0ff; font-size: 12px; font-weight: 700; }
+.scam-progress-bottom button:disabled { opacity: .4; cursor: not-allowed; }
+.scam-category-result { display: inline-flex; align-self: flex-start; margin-top: 10px; padding: 5px 8px; border-radius: 999px; font-size: 10px; font-weight: 700; }
+.scam-category-result.passed { background: rgba(49,213,138,.1); color: #65e3aa; }
+.scam-category-result.review { background: rgba(255,180,92,.1); color: #ffc27d; }
+.scam-view-results-button { display: block; margin-top: 14px; }
+.scam-results-content { max-width: 900px; }
+.scam-score-hero { display: flex; align-items: center; gap: 28px; margin: 28px 0; padding: 28px; border: 1px solid rgba(117,151,255,.22); border-radius: 20px; background: radial-gradient(circle at 0 0,rgba(76,127,255,.13),transparent 60%),rgba(255,255,255,.025); }
+.scam-score-ring { flex: 0 0 132px; width: 132px; height: 132px; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 7px solid #4c7fff; border-radius: 50%; background: rgba(76,127,255,.08); box-shadow: 0 0 35px rgba(76,127,255,.13); }
+.scam-score-ring strong { color: #f5f7ff; font-size: 36px; letter-spacing: -1px; }
+.scam-score-ring span { color: #9ba7be; font-size: 12px; }
+.scam-score-copy h2 { margin: 0 0 10px; font-size: 23px; }
+.scam-score-copy p { margin: 0; color: #a0abc0; font-size: 14px; line-height: 1.7; }
+.scam-results-list { margin-top: 28px; }
+.scam-results-list > h2 { margin-bottom: 14px; font-size: 21px; }
+.scam-result-row { display: grid; grid-template-columns: 105px minmax(0,1fr) auto; align-items: center; gap: 16px; padding: 17px 0; border-bottom: 1px solid rgba(255,255,255,.08); }
+.scam-result-status { padding: 7px 9px; border-radius: 999px; text-align: center; font-size: 10px; font-weight: 800; white-space: nowrap; }
+.scam-result-status.passed { background: rgba(49,213,138,.1); color: #65e3aa; }
+.scam-result-status.needs-review { background: rgba(255,180,92,.1); color: #ffc27d; }
+.scam-result-status.pending { background: rgba(255,255,255,.06); color: #9ba5b8; }
+.scam-result-row strong { color: #edf1fb; font-size: 14px; }
+.scam-result-row p { margin: 5px 0 0; color: #8f9bb1; font-size: 12px; line-height: 1.6; }
+.scam-result-row button { border: 1px solid rgba(255,255,255,.13); border-radius: 8px; padding: 8px 11px; background: rgba(255,255,255,.04); color: #cbd5e8; font-size: 11px; }
+.scam-results-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 28px; }
+@media (max-width: 650px) { .scam-progress-labels, .scam-progress-bottom { align-items: flex-start; flex-direction: column; } .scam-score-hero { align-items: center; flex-direction: column; text-align: center; } .scam-result-row { grid-template-columns: 1fr auto; gap: 10px; } .scam-result-status { justify-self: start; grid-column: 1 / -1; } .scam-results-actions { align-items: stretch; flex-direction: column; } }
+
+/* Anonymous SQLite progress status */
+.scam-save-status { margin: 12px 0 0; color: #9ba8bf; font-size: 12px; line-height: 1.6; }
+.scam-save-status.saved { color: #65e3aa; }
+.scam-save-status.saving, .scam-save-status.loading { color: #a9c0ff; }
+.scam-save-status.error, .scam-save-error { color: #ffbf76; }
+.scam-save-error { margin: 6px 0 0; font-size: 12px; line-height: 1.6; }
+
+
+/* HOME PAGE: consistent dark-theme actions and spacing */
+.hero .mission-launch-button,
+.hero .scam-centre-launch {
+  display: flex;
+  width: min(540px, 100%);
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+}
+
+.hero .mission-launch-button { margin-bottom: 14px; }
+.hero .scam-centre-launch { margin-bottom: 14px; }
+
+.hero .home-assessment-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: min(540px, 100%);
+  min-height: 58px;
+  margin: 0 auto;
+  padding: 16px 20px;
+  border: 1px solid rgba(105, 145, 255, 0.48);
+  border-radius: 14px;
+  background: linear-gradient(120deg, rgba(65, 105, 225, 0.24), rgba(255, 255, 255, 0.045));
+  color: #e9efff;
+  box-shadow: 0 12px 32px rgba(24, 54, 130, 0.12);
+  cursor: pointer;
+  text-align: left;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.hero .home-assessment-button:hover {
+  transform: translateY(-2px);
+  border-color: rgba(135, 166, 255, 0.85);
+  background: linear-gradient(120deg, rgba(65, 105, 225, 0.34), rgba(255, 255, 255, 0.065));
+  box-shadow: 0 16px 36px rgba(24, 54, 130, 0.2);
+}
+
+@media (max-width: 650px) {
+  .hero { padding-top: 64px; }
+  .hero .mission-launch-button,
+  .hero .scam-centre-launch,
+  .hero .home-assessment-button { width: 100%; }
+}
+
+
+/* =========================
+   SAFE PHISHING SIMULATION
+========================= */
+.phishing-sim-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+.phishing-sim-primary,
+.phishing-sim-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 11px 16px;
+  border-radius: 11px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  transition: transform .2s ease, border-color .2s ease, background .2s ease, box-shadow .2s ease;
+}
+.phishing-sim-primary {
+  border: 1px solid rgba(88, 135, 255, .6);
+  background: linear-gradient(135deg, #245bd8, #477cff);
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(52, 106, 255, .18);
+}
+.phishing-sim-secondary {
+  border: 1px solid rgba(120, 151, 220, .28);
+  background: rgba(70, 96, 150, .12);
+  color: #dce7ff;
+}
+.phishing-sim-primary:hover:not(:disabled),
+.phishing-sim-secondary:hover:not(:disabled) { transform: translateY(-2px); }
+.phishing-sim-primary:disabled,
+.phishing-sim-secondary:disabled { opacity: .6; cursor: wait; }
+.phishing-sim-status {
+  flex-basis: 100%;
+  margin: 3px 0 0;
+  color: #9fc0ff;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.phishing-mock-browser,
+.phishing-sim-feedback {
+  margin-top: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(88, 135, 255, .28);
+  border-radius: 17px;
+  background: linear-gradient(145deg, rgba(12, 24, 45, .96), rgba(7, 12, 23, .98));
+  box-shadow: 0 22px 60px rgba(0, 0, 0, .24);
+  animation: phishingPanelIn .28s ease both;
+}
+.phishing-mock-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 15px;
+  border-bottom: 1px solid rgba(255,255,255,.07);
+  color: #9caecb;
+  font-size: 11px;
+}
+.phishing-mock-dots { display: flex; gap: 5px; }
+.phishing-mock-dots i { width: 8px; height: 8px; display: block; border-radius: 50%; background: #ff6875; }
+.phishing-mock-dots i:nth-child(2) { background: #ffc45b; }
+.phishing-mock-dots i:nth-child(3) { background: #45d99a; }
+.phishing-mock-toolbar > span:nth-child(2) { flex: 1; }
+.phishing-mock-lock { color: #8cb0ff; }
+.phishing-mock-warning {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 14px 18px;
+  border-bottom: 1px solid rgba(255, 94, 117, .18);
+  background: rgba(255, 74, 101, .08);
+}
+.phishing-mock-warning strong { color: #ff8795; font-size: 14px; }
+.phishing-mock-warning span { color: #b9c4d8; font-size: 12px; line-height: 1.5; }
+.phishing-mock-login {
+  width: min(100%, 430px);
+  margin: 22px auto;
+  padding: 24px;
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 15px;
+  background: rgba(255,255,255,.025);
+}
+.phishing-mock-brand { display: flex; align-items: center; gap: 10px; color: #f2f6ff; }
+.phishing-mock-brand span { display: grid; place-items: center; width: 35px; height: 35px; border-radius: 10px; background: linear-gradient(135deg,#357bff,#626cff); font-weight: 800; }
+.phishing-mock-login h3 { margin: 22px 0 8px; font-size: 22px; }
+.phishing-mock-login p, .phishing-mock-explanation p { color: #9baac2; font-size: 13px; line-height: 1.65; }
+.phishing-mock-fake-field { display: flex; flex-direction: column; gap: 7px; margin: 14px 0; padding: 12px; border: 1px solid rgba(255,255,255,.09); border-radius: 9px; background: rgba(0,0,0,.16); }
+.phishing-mock-fake-field span { color: #91a0ba; font-size: 11px; }
+.phishing-mock-fake-field strong { color: #cbd6e9; font-size: 13px; font-weight: 500; }
+.phishing-mock-login .phishing-sim-primary,
+.phishing-mock-login .phishing-sim-secondary { width: 100%; margin-top: 8px; }
+.phishing-mock-explanation { margin: 0 18px 20px; padding: 15px 18px; border: 1px solid rgba(90, 134, 225, .16); border-radius: 12px; background: rgba(69, 109, 191, .06); }
+.phishing-mock-explanation strong, .phishing-sim-feedback > strong { color: #dce7ff; }
+.phishing-mock-explanation ul { margin-bottom: 0; padding-left: 20px; color: #9eacc3; font-size: 13px; line-height: 1.8; }
+.phishing-sim-feedback { padding: 20px; }
+.phishing-sim-feedback p { color: #aebbd0; font-size: 14px; line-height: 1.7; }
+@keyframes phishingPanelIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) {
+  .phishing-mock-browser, .phishing-sim-feedback { animation: none; }
+  .phishing-sim-primary, .phishing-sim-secondary { transition: none; }
+}
+@media (max-width: 600px) {
+  .phishing-sim-actions { flex-direction: column; }
+  .phishing-sim-primary, .phishing-sim-secondary { width: 100%; }
+  .phishing-mock-login { width: calc(100% - 24px); padding: 18px; }
+  .phishing-mock-toolbar { flex-wrap: wrap; }
+}
+
+/* =========================
+   IMMERSIVE DEVICE SIMULATION
+========================= */
+.device-simulation-shell {
+  width: min(100%, 920px);
+  margin: 24px auto 30px;
+  overflow: hidden;
+  border: 1px solid rgba(105, 145, 255, .24);
+  border-radius: 20px;
+  background: #081321;
+  color: #eaf1ff;
+  box-shadow: 0 28px 85px rgba(0, 0, 0, .38), 0 0 55px rgba(56, 103, 235, .08);
+  animation: deviceEnter .45s ease both;
+}
+@keyframes deviceEnter { from { opacity: 0; transform: translateY(12px) scale(.99); } to { opacity: 1; transform: translateY(0) scale(1); } }
+.device-topbar, .device-statusbar, .device-browser-toolbar, .device-app-heading,
+.device-message-row, .device-email-sender, .device-social-profile, .device-seller-card,
+.device-qr-card, .device-action-bar, .device-bottom-nav {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.device-topbar { min-height: 48px; padding: 0 16px; background: #0c1b2d; border-bottom: 1px solid rgba(255,255,255,.07); color: #92a8cc; font-size: 11px; letter-spacing: 1.1px; }
+.device-window-controls { display: flex; gap: 5px; }
+.device-window-controls i { width: 8px; height: 8px; border-radius: 50%; background: #ff6474; }
+.device-window-controls i:nth-child(2) { background: #ffc45b; }
+.device-window-controls i:nth-child(3) { background: #38d99a; }
+.device-demo-pill { padding: 5px 8px; border: 1px solid rgba(80,133,255,.3); border-radius: 999px; color: #8cb0ff; font-size: 9px; white-space: nowrap; }
+.device-statusbar { padding: 8px 17px; font-size: 11px; color: #9cacc6; background: #07101d; }
+.device-app-tabs { display: grid; grid-template-columns: repeat(6, minmax(0,1fr)); gap: 7px; padding: 12px; border-bottom: 1px solid rgba(255,255,255,.07); background: #0a1728; }
+.device-app-tab { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; min-width: 0; padding: 10px 4px; border: 1px solid transparent; border-radius: 12px; background: transparent; color: #91a4c2; font-size: 11px; transition: background .18s ease, border-color .18s ease, transform .18s ease; }
+.device-app-tab span { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 9px; background: rgba(93,133,255,.12); color: #83aaff; font-size: 17px; }
+.device-app-tab:hover { transform: translateY(-2px); background: rgba(68,112,226,.1); }
+.device-app-tab.active { border-color: rgba(77,136,255,.48); background: rgba(50,102,219,.16); color: #fff; }
+.device-app-tab.active span { background: linear-gradient(135deg,#347fff,#586bff); color: #fff; }
+.device-mail-view, .device-browser-view, .device-phone-view, .device-social-view, .device-shop-view, .device-web-message-view, .device-recovery-view { min-height: 420px; padding: 20px; animation: deviceViewIn .25s ease both; }
+@keyframes deviceViewIn { from { opacity: .55; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+.device-app-heading { margin-bottom: 16px; }
+.device-app-heading small, .device-app-heading div > small { color: #7e97bd; font-size: 10px; letter-spacing: 1px; }
+.device-app-heading h3 { margin: 4px 0 0; font-size: 19px; }
+.device-app-heading h3 span { color: #79a4ff; font-size: 12px; }
+.device-app-heading button, .device-app-heading > span { padding: 8px 11px; border: 1px solid rgba(130,160,210,.18); border-radius: 9px; background: #101f34; color: #a9c2ed; font-size: 11px; }
+.device-message-list { display: grid; gap: 7px; }
+.device-message-row { width: 100%; justify-content: flex-start; padding: 12px; border: 1px solid rgba(140,166,207,.1); border-radius: 12px; background: #0d1a2b; color: #eaf1ff; text-align: left; cursor: pointer; transition: border-color .2s ease, background .2s ease; }
+.device-message-row:hover, .device-message-row.selected { border-color: rgba(71,131,255,.55); background: #10213a; }
+.device-message-row > span:nth-child(2) { flex: 1; min-width: 0; display: grid; gap: 4px; }
+.device-message-row strong { font-size: 12px; }
+.device-message-row small, .device-message-row em { overflow: hidden; color: #a4b3ca; font-size: 11px; font-style: normal; text-overflow: ellipsis; white-space: nowrap; }
+.device-message-row time { align-self: flex-start; color: #7f94b5; font-size: 10px; white-space: nowrap; }
+.device-message-avatar { display: grid; flex: 0 0 35px; place-items: center; width: 35px; height: 35px; border-radius: 11px; background: #243b5b; color: #b9d0ff; font-weight: 750; }
+.device-message-avatar.blue { background: linear-gradient(135deg,#347fff,#5269ed); color: white; }
+.device-message-avatar.amber { background: #5c4421; color: #ffd07b; }
+.device-message-avatar.purple { background: #45316c; color: #d9c5ff; }
+.device-open-email { margin-top: 12px; padding: 17px; border: 1px solid rgba(135,164,211,.14); border-radius: 13px; background: #0a1626; }
+.device-email-subject { margin-bottom: 15px; font-size: 17px; font-weight: 700; line-height: 1.35; }
+.device-email-sender { justify-content: flex-start; align-items: flex-start; margin-bottom: 16px; }
+.device-email-sender > div { flex: 1; display: grid; gap: 4px; min-width: 0; }
+.device-email-sender strong { font-size: 12px; }
+.device-email-sender small { color: #91a6c6; font-size: 10px; overflow-wrap: anywhere; }
+.device-email-sender button { border: 0; background: transparent; color: #83aaff; font-size: 11px; cursor: pointer; }
+.device-sender-details { display: grid; grid-template-columns: 90px 1fr; gap: 6px; padding: 10px; margin: 0 0 13px; border-radius: 9px; background: #101f33; color: #aebfda; font-size: 11px; overflow-wrap: anywhere; }
+.device-open-email p, .device-shop-view p, .device-phone-view p, .device-recovery-view > p { color: #c2cde0; font-size: 13px; line-height: 1.7; }
+.device-email-link { display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 10px; margin: 16px 0; padding: 13px 15px; border: 1px solid rgba(89,142,255,.6); border-radius: 10px; background: linear-gradient(110deg,#246bdf,#485cf0); color: #fff; font-weight: 700; cursor: pointer; }
+.device-email-footer { color: #8095b5; font-size: 12px; line-height: 1.8; }
+.device-action-bar { justify-content: flex-start; flex-wrap: wrap; margin-top: 12px; }
+.device-action-bar button { padding: 9px 12px; border: 1px solid rgba(140,166,207,.15); border-radius: 9px; background: #101f33; color: #a8c1ec; font-size: 11px; cursor: pointer; }
+.device-browser-toolbar { justify-content: flex-start; margin-bottom: 13px; }
+.device-browser-toolbar > button { border: 0; background: transparent; color: #b9cbe6; font-size: 20px; cursor: pointer; }
+.device-address { flex: 1; min-width: 0; overflow: hidden; padding: 10px; border: 1px solid rgba(140,166,207,.14); border-radius: 9px; background: #0b1728; color: #b5c7e4; font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
+.device-address span { color: #ff8b8b; }
+.device-browser-warning { padding: 12px; border: 1px solid rgba(255,100,119,.25); border-radius: 10px; background: rgba(164,41,58,.13); }
+.device-browser-warning strong { color: #ff999f; font-size: 12px; }
+.device-browser-warning p { margin: 5px 0 0; color: #d2aeb5; font-size: 11px; line-height: 1.5; }
+.device-fake-site { max-width: 430px; margin: 16px auto; padding: 22px; border: 1px solid rgba(126,157,210,.16); border-radius: 15px; background: linear-gradient(145deg,#112746,#0b1729); box-shadow: 0 15px 40px rgba(0,0,0,.18); }
+.device-fake-brand { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+.device-fake-brand span { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px; background: #367cff; color: white; font-weight: 800; }
+.device-fake-brand strong { font-size: 13px; }
+.device-fake-site h3 { margin: 0 0 8px; font-size: 20px; }
+.device-fake-site p { color: #a8b9d2; font-size: 12px; line-height: 1.6; }
+.device-fake-field { display: grid; gap: 6px; margin: 11px 0; padding: 12px; border: 1px solid rgba(138,166,210,.14); border-radius: 9px; background: rgba(2,9,19,.35); }
+.device-fake-field span { color: #91a7c7; font-size: 10px; }
+.device-fake-field strong { color: #d2def1; font-size: 11px; }
+.device-warning-list { display: grid; gap: 7px; padding: 14px; border-radius: 11px; background: rgba(3,10,20,.5); color: #a7bad6; font-size: 11px; }
+.device-warning-list strong { color: #dbe7ff; margin-bottom: 2px; }
+.device-live-feedback { display: grid; gap: 5px; margin: 12px 16px 16px; padding: 13px; border: 1px solid rgba(72,131,255,.25); border-radius: 11px; background: rgba(48,91,174,.12); }
+.device-live-feedback strong { color: #b7ceff; font-size: 12px; }
+.device-live-feedback p, .device-live-feedback span { margin: 0; color: #a7bad6; font-size: 11px; line-height: 1.55; }
+.device-live-feedback button { justify-self: start; margin-top: 5px; border: 0; background: transparent; color: #88adff; cursor: pointer; }
+.device-bottom-nav { justify-content: space-around; padding: 13px 8px; border-top: 1px solid rgba(255,255,255,.07); background: #07101d; color: #7f96b8; font-size: 10px; }
+.device-phone-view { display: flex; flex-direction: column; align-items: center; text-align: center; padding-top: 35px; }
+.device-call-avatar { display: grid; place-items: center; width: 76px; height: 76px; margin-bottom: 15px; border-radius: 50%; background: linear-gradient(135deg,#355ea3,#4c54a9); font-size: 30px; }
+.device-phone-view > small { color: #86a3d2; font-size: 10px; letter-spacing: 1px; }
+.device-phone-view h3 { margin: 12px 0 0; }
+.device-call-actions, .device-chat-actions, .device-shop-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 18px; }
+.device-call-actions button, .device-chat-actions button, .device-shop-actions button { padding: 11px 14px; border: 1px solid rgba(128,158,210,.2); border-radius: 10px; background: #12233b; color: #d8e5fb; font-size: 12px; cursor: pointer; }
+.device-call-actions button:last-child, .device-chat-actions button:first-child, .device-shop-actions button:first-child { background: #273f75; border-color: #456cc5; }
+.device-call-transcript { width: 100%; margin-top: 20px; padding: 15px; border-radius: 12px; background: #0b192b; text-align: left; }
+.device-call-transcript p { margin: 8px 0 14px; }
+.device-call-transcript button { width: 100%; margin: 4px 0; }
+.device-social-profile { justify-content: flex-start; padding: 13px; border-radius: 12px; background: #0b1a2c; }
+.device-social-profile > div { flex: 1; display: grid; gap: 4px; }
+.device-social-profile strong { font-size: 12px; }
+.device-social-profile small, .device-social-profile button { color: #93a9c9; font-size: 10px; }
+.device-social-profile button { padding: 7px; border: 1px solid rgba(130,160,210,.2); border-radius: 8px; background: #13243a; cursor: pointer; }
+.device-chat-bubble { max-width: 85%; margin: 18px 0 8px auto; padding: 13px; border-radius: 13px 13px 3px 13px; background: #203e70; color: #e6efff; font-size: 12px; line-height: 1.65; }
+.device-chat-bubble.received { margin: 8px auto 8px 0; border-radius: 13px 13px 13px 3px; background: #13243a; }
+.device-product-visual { display: grid; place-items: center; gap: 5px; min-height: 130px; border-radius: 13px; background: radial-gradient(circle,rgba(75,120,207,.22),rgba(12,25,43,.6)); font-size: 55px; }
+.device-product-visual small { color: #8298b9; font-size: 10px; }
+.device-shop-view h3 { margin: 15px 0 5px; }
+.device-product-price { color: #7eabff; font-size: 24px; font-weight: 800; }
+.device-product-price del { margin-left: 8px; color: #7d8ba2; font-size: 13px; font-weight: 400; }
+.device-seller-card { align-items: flex-start; flex-direction: column; gap: 6px; padding: 13px; border-radius: 10px; background: #0d1a2b; color: #a9bddb; font-size: 11px; }
+.device-seller-card strong { color: #e1eaff; }
+.device-sms-bubble { max-width: 95%; margin: 12px 0; padding: 15px; border-radius: 14px; background: #12233a; color: #c7d5eb; font-size: 13px; line-height: 1.7; }
+.device-inline-link, .device-qr-card button { display: block; margin-top: 10px; padding: 0; border: 0; background: transparent; color: #8ab0ff; text-align: left; text-decoration: underline; cursor: pointer; overflow-wrap: anywhere; }
+.device-qr-card { justify-content: flex-start; padding: 13px; border: 1px solid rgba(140,166,207,.12); border-radius: 12px; background: #0c1a2b; }
+.device-fake-qr { display: grid; place-items: center; width: 66px; height: 66px; border: 5px dotted #9db7e5; color: #b9d0ff; font-size: 25px; }
+.device-fake-qr span { font-size: 9px; }
+.device-qr-card > div:last-child { flex: 1; display: grid; gap: 4px; }
+.device-qr-card strong { font-size: 12px; }
+.device-qr-card small { color: #8fa5c6; font-size: 10px; }
+.device-muted-note { color: #8298b9; font-size: 10px; line-height: 1.5; }
+.device-recovery-task { display: flex; align-items: flex-start; gap: 10px; margin: 9px 0; padding: 12px; border: 1px solid rgba(140,166,207,.13); border-radius: 10px; background: #0c1a2b; color: #c3d2e8; font-size: 12px; line-height: 1.5; cursor: pointer; }
+.device-recovery-task input { accent-color: #4d83ff; margin-top: 2px; }
+.device-recovery-view > button { margin-top: 12px; }
+@media (max-width: 620px) {
+  .device-simulation-shell { border-radius: 14px; margin-top: 16px; }
+  .device-topbar { padding: 0 10px; font-size: 9px; }
+  .device-demo-pill { font-size: 8px; }
+  .device-app-tabs { gap: 3px; padding: 8px 5px; }
+  .device-app-tab { padding: 8px 1px; font-size: 9px; }
+  .device-app-tab span { width: 26px; height: 26px; font-size: 14px; }
+  .device-mail-view, .device-browser-view, .device-phone-view, .device-social-view, .device-shop-view, .device-web-message-view, .device-recovery-view { padding: 12px; min-height: 350px; }
+  .device-message-row { gap: 7px; padding: 9px; }
+  .device-message-avatar { flex-basis: 29px; width: 29px; height: 29px; }
+  .device-message-row time { display: none; }
+  .device-open-email { padding: 12px; }
+  .device-email-subject { font-size: 15px; }
+  .device-fake-site { padding: 15px; }
+  .device-bottom-nav { font-size: 9px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .device-simulation-shell, .device-mail-view, .device-browser-view, .device-phone-view, .device-social-view, .device-shop-view, .device-web-message-view, .device-recovery-view { animation: none !important; }
+  .device-app-tab, .device-message-row { transition: none !important; }
+}
+
+
+/* CYBERSHIELD refinement: bright simulated device, responsive layouts, motion */
+.device-simulation-shell {
+  background: #f7f9fc !important;
+  color: #182338 !important;
+  border: 1px solid #d8e0ed !important;
+  box-shadow: 0 24px 65px rgba(0, 0, 0, .25), 0 0 0 5px rgba(255,255,255,.025) !important;
+}
+.device-topbar { background: #edf2f8 !important; color: #5e6c80 !important; border-bottom: 1px solid #dbe3ee !important; }
+.device-statusbar { background: #ffffff !important; color: #5e6c80 !important; border-bottom: 1px solid #e4eaf2; }
+.device-app-tabs { background: #f0f4f9 !important; border-bottom: 1px solid #dfe6ef !important; }
+.device-app-tab { color: #59677b !important; }
+.device-app-tab:hover { background: #e5edfa !important; }
+.device-app-tab.active { color: #183e86 !important; background: #dce8ff !important; border-color: #b9cefa !important; }
+.device-app-tab.active span { color: #fff !important; }
+.device-mail-view, .device-browser-view, .device-phone-view, .device-social-view, .device-shop-view, .device-web-message-view, .device-recovery-view { color: #243247 !important; }
+.device-app-heading h3, .device-email-subject, .device-fake-site h3, .device-phone-view h3, .device-shop-view h3 { color: #182338 !important; }
+.device-app-heading small, .device-app-heading div > small { color: #65758d !important; }
+.device-message-row { background: #fff !important; color: #26344a !important; border-color: #e0e6ef !important; }
+.device-message-row:hover, .device-message-row.selected { background: #eef4ff !important; border-color: #9bb9f4 !important; }
+.device-message-row small, .device-message-row em, .device-message-row time { color: #64738a !important; }
+.device-open-email { background: #fff !important; border: 1px solid #e0e6ef !important; border-radius: 13px; }
+.device-open-email p, .device-phone-view p, .device-shop-view p, .device-web-message-view p, .device-recovery-view p { color: #4e5d73 !important; }
+.device-email-sender strong, .device-email-sender small { color: #344258 !important; }
+.device-sender-details, .device-call-transcript, .device-chat-bubble.received, .device-seller-card, .device-qr-card, .device-sms-bubble, .device-recovery-task { background: #f0f4f9 !important; color: #344258 !important; border-color: #dfe6ef !important; }
+.device-sender-details span, .device-call-transcript p, .device-chat-bubble.received, .device-seller-card span, .device-qr-card small, .device-muted-note { color: #596a81 !important; }
+.device-fake-site { background: #fff !important; border-color: #dfe6ef !important; box-shadow: 0 12px 30px rgba(25,45,78,.1) !important; }
+.device-fake-site p, .device-fake-field span { color: #596a81 !important; }
+.device-fake-field { background: #f5f7fb !important; border-color: #dfe6ef !important; }
+.device-fake-field strong { color: #344258 !important; }
+.device-warning-list { background: #fff7f0 !important; color: #714b37 !important; border: 1px solid #f4d9c7; }
+.device-warning-list strong { color: #873f29 !important; }
+.device-live-feedback { background: #eef5ff !important; border-color: #c5d9ff !important; }
+.device-live-feedback strong, .device-live-feedback p, .device-live-feedback span { color: #294a80 !important; }
+.device-bottom-nav { background: #edf2f8 !important; border-color: #dbe3ee !important; color: #5e6c80 !important; }
+.device-browser-toolbar > button, .device-address { color: #33435a !important; }
+.device-address { background: #fff !important; border-color: #d7e0ed !important; }
+.device-call-actions button, .device-chat-actions button, .device-shop-actions button, .device-app-heading button, .device-app-heading > span { background: #edf2f8 !important; color: #33435a !important; border-color: #d6e0ed !important; }
+.device-chat-bubble { background: #dce9ff !important; color: #243c64 !important; }
+.device-product-visual { background: radial-gradient(circle, #e4edff, #f4f7fc) !important; }
+.device-demo-pill { color: #345eac !important; border-color: #c4d6fa !important; background: #e8f0ff; }
+
+/* Responsive shell behaves like a small app on phones and a desktop window on wide screens */
+.device-simulation-shell { width: min(100%, 1040px); }
+.device-app-tabs { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+.device-app-tab { min-height: 72px; }
+.device-app-tab:focus-visible, .device-message-row:focus-visible, .device-simulation-shell button:focus-visible { outline: 3px solid #5d8eff; outline-offset: 2px; }
+.scam-centre-content, .assessment-page, .results-page { width: min(1100px, calc(100% - 40px)); }
+.scam-category-card, .scam-choice, .choice, .mission-launch-button, .scam-centre-launch { transition: transform .22s ease, border-color .22s ease, background-color .22s ease, box-shadow .22s ease; }
+.scam-category-card:hover, .scam-choice:hover, .choice:hover { transform: translateY(-2px); }
+.scam-practice-card, .scam-progress-card { animation: phishingPanelIn .32s ease both; }
+@media (max-width: 760px) {
+  .device-app-tabs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .device-app-tab { min-height: 62px; }
+  .device-mail-view, .device-browser-view, .device-phone-view, .device-social-view, .device-shop-view, .device-web-message-view, .device-recovery-view { min-height: 320px; padding: 14px; }
+  .scam-centre-content, .assessment-page, .results-page { width: min(100% - 24px, 680px); }
+  .device-email-sender { flex-wrap: wrap; align-items: flex-start; }
+  .device-action-bar { flex-wrap: wrap; }
+}
+@media (max-width: 420px) {
+  .device-topbar { min-height: 42px; padding: 0 9px; font-size: 8px; letter-spacing: .4px; }
+  .device-demo-pill { font-size: 7px; padding: 4px 6px; }
+  .device-statusbar { padding: 7px 10px; }
+  .device-app-tabs { gap: 5px; padding: 8px; }
+  .device-app-tab { font-size: 10px; padding: 8px 2px; }
+  .device-message-row time { display: none; }
+  .device-open-email { padding: 11px; }
+  .device-call-actions button, .device-chat-actions button, .device-shop-actions button { flex: 1 1 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
+
+
+/* Interactive simulation: replace duplicate quiz with action-based learning */
+.simulation-session-card .scam-progress-bottom {
+  flex-wrap: wrap;
+  gap: 8px 18px;
+}
+
+.simulation-learning-note {
+  margin-top: 28px;
+  padding: 22px 24px;
+  border: 1px solid rgba(76, 127, 255, 0.2);
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(76, 127, 255, 0.09), rgba(255, 255, 255, 0.018));
+  animation: simulation-note-in 420ms ease both;
+}
+
+.simulation-learning-note h3 {
+  margin: 12px 0 8px;
+  color: #f1f4fb;
+  font-size: 20px;
+}
+
+.simulation-learning-note p,
+.simulation-learning-note li {
+  color: #9ba3b7;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.simulation-learning-note ul {
+  margin: 12px 0 0;
+  padding-left: 20px;
+}
+
+@keyframes simulation-note-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .simulation-learning-note { animation: none; }
+}
+
+
+/* Assessment scenario type label */
+.assessment-type-pill {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 14px;
+  padding: 7px 12px;
+  border: 1px solid rgba(89, 132, 255, 0.28);
+  border-radius: 999px;
+  background: rgba(55, 91, 170, 0.12);
+  color: #9bb8ff;
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.2px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .assessment-type-pill { animation: assessmentPillIn 320ms ease-out both; }
+  @keyframes assessmentPillIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
