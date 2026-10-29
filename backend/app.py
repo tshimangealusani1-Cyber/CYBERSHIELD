@@ -1,11 +1,13 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+from google import genai
 import json
 import os
 import re
 import sqlite3
 import requests
 from pathlib import Path
+
 
 ENV_FILE = Path(__file__).resolve().parent.parent / ".env"
 
@@ -545,20 +547,32 @@ Return exactly this structure:
 """
 
     try:
-        response = requests.post(
-            "http://localhost:11434/api/generate",
-            json={
-                "model": OLLAMA_MODEL,
-                "prompt": prompt,
-                "stream": False,
+        api_key = os.getenv("GEMINI_API_KEY")
+
+        if not api_key:
+            return jsonify({
+                "success": False,
+                "error": "Gemini API key is not configured on the backend."
+            }), 503
+
+        client = genai.Client(api_key=api_key)
+
+        response = client.models.generate_content(
+            model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
+            contents=prompt,
+            config={
+                "response_mime_type": "application/json",
+                "temperature": 0.2,
+                "max_output_tokens": 1000,
             },
-            timeout=120,
         )
 
-        response.raise_for_status()
+        if not response.text:
+            raise ValueError("Gemini returned an empty response.")
 
-        ai_content = response.json()["response"]
-        evaluation = json.loads(ai_content)
+        evaluation = json.loads(response.text)
+
+        # Keep your existing database-saving code below this line.
 
         # Persist the evaluation. Anonymous evaluations use NULL for user_id;
         # never trust a user_id supplied by the client.
