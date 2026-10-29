@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import './HoneypotDashboard.css'
 
+const API_BASE_URL = (import.meta.env.VITE_API_URL || 'http://127.0.0.1:5000').replace(/\/$/, '')
+
 function HoneypotDashboard({ token }) {
   const [status, setStatus] = useState(null)
   const [events, setEvents] = useState([])
@@ -12,8 +14,8 @@ function HoneypotDashboard({ token }) {
       setError('')
 
       const [statusResponse, eventsResponse] = await Promise.all([
-        fetch('http://127.0.0.1:5000/api/honeypot/status', { headers: { Authorization: `Bearer ${token}` } }),
-        fetch('http://127.0.0.1:5000/api/honeypot/events', { headers: { Authorization: `Bearer ${token}` } }),
+        fetch(`${API_BASE_URL}/api/honeypot/status`, { headers: { Authorization: `Bearer ${token}` } }),
+        fetch(`${API_BASE_URL}/api/honeypot/events`, { headers: { Authorization: `Bearer ${token}` } }),
       ])
 
       if (!statusResponse.ok || !eventsResponse.ok) {
