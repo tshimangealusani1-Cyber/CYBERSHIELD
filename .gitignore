@@ -4,3 +4,8 @@ frontend/dist/
 __pycache__/
 *.pyc
 .env
+
+# CYBERSHIELD local database and security backups
+backend/cybershield.db
+backend/*.pre-security-backup
+backend/*.pre-security-backup.db

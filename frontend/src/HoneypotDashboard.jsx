@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import './HoneypotDashboard.css'
 
-function HoneypotDashboard() {
+function HoneypotDashboard({ token }) {
   const [status, setStatus] = useState(null)
   const [events, setEvents] = useState([])
   const [loading, setLoading] = useState(true)
@@ -12,8 +12,8 @@ function HoneypotDashboard() {
       setError('')
 
       const [statusResponse, eventsResponse] = await Promise.all([
-        fetch('http://127.0.0.1:5000/api/honeypot/status'),
-        fetch('http://127.0.0.1:5000/api/honeypot/events'),
+        fetch('http://127.0.0.1:5000/api/honeypot/status', { headers: { Authorization: `Bearer ${token}` } }),
+        fetch('http://127.0.0.1:5000/api/honeypot/events', { headers: { Authorization: `Bearer ${token}` } }),
       ])
 
       if (!statusResponse.ok || !eventsResponse.ok) {
@@ -36,12 +36,15 @@ function HoneypotDashboard() {
   }
 
   useEffect(() => {
+    if (!token) {
+      setLoading(false)
+      setError('Administrator sign-in is required to view honeypot telemetry.')
+      return undefined
+    }
     loadHoneypotData()
-
     const interval = setInterval(loadHoneypotData, 5000)
-
     return () => clearInterval(interval)
-  }, [])
+  }, [token])
 
   if (loading) {
     return (

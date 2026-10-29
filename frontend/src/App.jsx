@@ -162,6 +162,11 @@ function shuffleItems(items) {
 function App() {
   const [page, setPage] = useState('home')
   const [currentScenario, setCurrentScenario] = useState(0)
+  const [adminToken, setAdminToken] = useState('')
+  const [adminEmail, setAdminEmail] = useState('')
+  const [adminPassword, setAdminPassword] = useState('')
+  const [adminLoginError, setAdminLoginError] = useState('')
+  const [adminLoginLoading, setAdminLoginLoading] = useState(false)
 
   const [choice, setChoice] = useState('')
 
@@ -172,6 +177,7 @@ function App() {
 
   const [honeypotStatus, setHoneypotStatus] = useState(null)
   const [honeypotEvents, setHoneypotEvents] = useState([])
+  const [auditLogs, setAuditLogs] = useState([])
   const [honeypotLoading, setHoneypotLoading] = useState(false)
 
   const [honeypotError, setHoneypotError] = useState('')
@@ -217,26 +223,74 @@ function App() {
    * HONEYPOT DATA
    */
 
+  const handleAdminLogin = async (event) => {
+    event.preventDefault()
+    if (adminLoginLoading) return
+    setAdminLoginLoading(true)
+    setAdminLoginError('')
+    try {
+      const response = await fetch('http://127.0.0.1:5000/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: adminEmail.trim(), password: adminPassword }),
+      })
+      const data = await response.json().catch(() => ({}))
+      if (!response.ok || !data.success || !data.token) {
+        throw new Error(data.error || 'Login failed. Check your credentials.')
+      }
+      if (data.user?.role !== 'admin') {
+        throw new Error('This account does not have administrator access.')
+      }
+      setAdminToken(data.token)
+      setAdminPassword('')
+      setAdminLoginError('')
+    } catch (error) {
+      setAdminLoginError(error.message || 'Could not sign in. Check that the backend is running.')
+    } finally {
+      setAdminLoginLoading(false)
+    }
+  }
+
+  const handleAdminLogout = () => {
+    setAdminToken('')
+    setAdminEmail('')
+    setAdminPassword('')
+    setAdminLoginError('')
+    setHoneypotStatus(null)
+    setHoneypotEvents([])
+    setAuditLogs([])
+    setPage('honeypot')
+  }
+
   const loadHoneypot = async () => {
+    if (!adminToken) return
+
     setHoneypotLoading(true)
     setHoneypotError('')
 
     try {
-      const [statusResponse, eventsResponse] =
+      const [statusResponse, eventsResponse, auditResponse] =
         await Promise.all([
-          fetch('http://127.0.0.1:5000/api/honeypot/status'),
-          fetch('http://127.0.0.1:5000/api/honeypot/events'),
+          fetch('http://127.0.0.1:5000/api/honeypot/status', { headers: { Authorization: `Bearer ${adminToken}` } }),
+          fetch('http://127.0.0.1:5000/api/honeypot/events', { headers: { Authorization: `Bearer ${adminToken}` } }),
+          fetch('http://127.0.0.1:5000/api/audit/logs?limit=20', { headers: { Authorization: `Bearer ${adminToken}` } }),
         ])
 
-      if (!statusResponse.ok || !eventsResponse.ok) {
-        throw new Error('Failed to load honeypot data')
+      if ([statusResponse, eventsResponse, auditResponse].some((response) => response.status === 401 || response.status === 403)) {
+        setAdminToken('')
+        throw new Error('Your admin session expired or does not have permission. Please sign in again.')
+      }
+      if (!statusResponse.ok || !eventsResponse.ok || !auditResponse.ok) {
+        throw new Error('Failed to load honeypot or audit-log data')
       }
 
       const statusData = await statusResponse.json()
       const eventsData = await eventsResponse.json()
+      const auditData = await auditResponse.json()
 
       setHoneypotStatus(statusData)
       setHoneypotEvents(eventsData.events || [])
+      setAuditLogs(auditData.logs || [])
     } catch (error) {
       console.error('Honeypot error:', error)
 
@@ -301,6 +355,7 @@ function App() {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${adminToken}`,
           },
           body: JSON.stringify(eventData),
         },
@@ -431,10 +486,10 @@ function App() {
    */
 
   useEffect(() => {
-    if (page === 'honeypot') {
+    if (page === 'honeypot' && adminToken) {
       loadHoneypot()
     }
-  }, [page])
+  }, [page, adminToken])
 
   /*
    * CURRENT SCENARIO
@@ -1621,6 +1676,41 @@ Your decisions are evaluated against practical phishing-awareness criteria.
     )
   }
 
+  if (page === 'honeypot' && !adminToken) {
+    return (
+      <div className="phishaware">
+        <nav className="navbar">
+          <button className="logo logo-button" onClick={goHome}>
+            <div className="logo-mark">C</div>
+            CYBERSHIELD
+          </button>
+          <div className="nav-status"><span className="status-dot"></span>Admin sign-in required</div>
+        </nav>
+        <main className="results-page">
+          <section className="email-card" style={{ maxWidth: 520, margin: '48px auto' }}>
+            <div className="email-content">
+              <span className="scenario-label">RESTRICTED AREA</span>
+              <h1>Admin login</h1>
+              <p>Sign in with an administrator account to view honeypot telemetry and submit controlled simulations.</p>
+              <form onSubmit={handleAdminLogin}>
+                <label htmlFor="admin-email">Email</label>
+                <input id="admin-email" type="email" autoComplete="username" required value={adminEmail} onChange={(event) => setAdminEmail(event.target.value)} style={{ display: 'block', width: '100%', boxSizing: 'border-box', margin: '8px 0 16px', padding: 12 }} />
+                <label htmlFor="admin-password">Password</label>
+                <input id="admin-password" type="password" autoComplete="current-password" required value={adminPassword} onChange={(event) => setAdminPassword(event.target.value)} style={{ display: 'block', width: '100%', boxSizing: 'border-box', margin: '8px 0 16px', padding: 12 }} />
+                {adminLoginError && <p role="alert" style={{ color: '#c0392b' }}>{adminLoginError}</p>}
+                <button className="continue-button" type="submit" disabled={adminLoginLoading}>
+                  {adminLoginLoading ? 'Signing in...' : 'Sign in securely →'}
+                </button>
+              </form>
+              <p style={{ marginTop: 16, fontSize: 13 }}>Use your configured admin account. Do not enter these credentials on a public or shared computer.</p>
+              <button className="mission-back-button" onClick={goHome}>← Back to Home</button>
+            </div>
+          </section>
+        </main>
+      </div>
+    )
+  }
+
   if (page === 'honeypot') {
     return (
       <div className="phishaware">
@@ -1636,9 +1726,12 @@ Your decisions are evaluated against practical phishing-awareness criteria.
             CYBERSHIELD
           </button>
 
-          <div className="nav-status">
-            <span className="status-dot"></span>
-            Honeypot monitoring
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <div className="nav-status">
+              <span className="status-dot"></span>
+              Honeypot monitoring
+            </div>
+            <button className="mission-back-button" onClick={handleAdminLogout}>Log out</button>
           </div>
         </nav>
 
@@ -1939,13 +2032,35 @@ Your decisions are evaluated against practical phishing-awareness criteria.
                   </div>
                 </section>
 
+                <section className="email-card">
+                  <div className="email-content">
+                    <div className="email-subject">Security Audit Log</div>
+                    <p>Recent authentication, access-control and event-ingestion activity. This view is available to administrators only.</p>
+                    {auditLogs.length === 0 ? (
+                      <p>No audit records returned.</p>
+                    ) : (
+                      auditLogs.map((log) => (
+                        <div key={log.id} className="scenario-result">
+                          <div>
+                            <strong>{log.event_type}</strong>
+                            <span>{log.timestamp}</span>
+                          </div>
+                          <p><strong>User ID:</strong> {log.user_id ?? 'System / unauthenticated'}</p>
+                          <p><strong>IP address:</strong> {log.ip_address || 'Not recorded'}</p>
+                          <p><strong>Details:</strong> {JSON.stringify(log.details || {})}</p>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </section>
+
                 <button
                   className="continue-button"
                   onClick={
                     loadHoneypot
                   }
                 >
-                  Refresh Security Events
+                  Refresh Security Events and Audit Log
                   →
                 </button>
 
