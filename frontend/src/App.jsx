@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 
+const API_BASE_URL = (import.meta.env.VITE_API_URL || 'http://127.0.0.1:5000').replace(/\/$/, '')
+
 const scenarios = [
   {
     id: 1,
@@ -229,7 +231,7 @@ function App() {
     setAdminLoginLoading(true)
     setAdminLoginError('')
     try {
-      const response = await fetch('http://127.0.0.1:5000/api/auth/login', {
+      const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: adminEmail.trim(), password: adminPassword }),
@@ -271,9 +273,9 @@ function App() {
     try {
       const [statusResponse, eventsResponse, auditResponse] =
         await Promise.all([
-          fetch('http://127.0.0.1:5000/api/honeypot/status', { headers: { Authorization: `Bearer ${adminToken}` } }),
-          fetch('http://127.0.0.1:5000/api/honeypot/events', { headers: { Authorization: `Bearer ${adminToken}` } }),
-          fetch('http://127.0.0.1:5000/api/audit/logs?limit=20', { headers: { Authorization: `Bearer ${adminToken}` } }),
+          fetch(`${API_BASE_URL}/api/honeypot/status`, { headers: { Authorization: `Bearer ${adminToken}` } }),
+          fetch(`${API_BASE_URL}/api/honeypot/events`, { headers: { Authorization: `Bearer ${adminToken}` } }),
+          fetch(`${API_BASE_URL}/api/audit/logs?limit=20`, { headers: { Authorization: `Bearer ${adminToken}` } }),
         ])
 
       if ([statusResponse, eventsResponse, auditResponse].some((response) => response.status === 401 || response.status === 403)) {
@@ -350,7 +352,7 @@ function App() {
 
     try {
       const response = await fetch(
-        'http://127.0.0.1:5000/api/honeypot/events',
+        `${API_BASE_URL}/api/honeypot/events`,
         {
           method: 'POST',
           headers: {
@@ -381,7 +383,7 @@ function App() {
   }
 
 
-  const scamProgressUrl = `http://127.0.0.1:5000/api/scam-progress/${learnerId}`
+  const scamProgressUrl = `${API_BASE_URL}/api/scam-progress/${learnerId}`
 
   const saveScamProgress = async (progress) => {
     setScamSaveStatus('saving')
@@ -409,7 +411,7 @@ function App() {
     if (phishingSimulation.busy) return
     setPhishingSimulation((current) => ({ ...current, busy: true, message: '' }))
     try {
-      const response = await fetch('http://127.0.0.1:5000/api/phishing-simulation/events', {
+      const response = await fetch(`${API_BASE_URL}/api/phishing-simulation/events`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -545,7 +547,7 @@ function App() {
       )
 
       const response = await fetch(
-        'http://127.0.0.1:5000/api/evaluate',
+        `${API_BASE_URL}/api/evaluate`,
         {
           method: 'POST',
           headers: {
@@ -619,7 +621,7 @@ function App() {
       )
 
       alert(
-        'CYBERSHIELD could not reach the AI evaluator. Make sure the Flask backend and Ollama are running.',
+        'CYBERSHIELD could not complete the AI evaluation. Please try again. If the problem continues, check the backend deployment logs.',
       )
     } finally {
       setAiLoading(false)

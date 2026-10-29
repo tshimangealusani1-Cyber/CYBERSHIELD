@@ -5,7 +5,6 @@ import json
 import os
 import re
 import sqlite3
-import requests
 from pathlib import Path
 
 
@@ -44,8 +43,6 @@ limiter = Limiter(
     default_limits=["200 per day", "50 per hour"],
     storage_uri="memory://",
 )
-
-OLLAMA_MODEL = "qwen3:8b"
 
 
 # --------------------------------------------------
@@ -607,18 +604,18 @@ Return exactly this structure:
             "evaluation": evaluation
         })
 
-    except requests.RequestException:
-        app.logger.exception("Ollama evaluation request failed")
-        return jsonify({
-            "success": False,
-            "error": "The evaluation service is currently unavailable."
-        }), 503
     except (ValueError, KeyError, TypeError):
-        app.logger.exception("Invalid evaluation response or input")
+        app.logger.exception("Invalid Gemini evaluation response or input")
         return jsonify({
             "success": False,
             "error": "Could not process the evaluation response."
         }), 500
+    except Exception:
+        app.logger.exception("Gemini evaluation failed")
+        return jsonify({
+            "success": False,
+            "error": "The AI evaluation service is currently unavailable."
+        }), 502
 
 # =========================
 # HONEYPOT API
