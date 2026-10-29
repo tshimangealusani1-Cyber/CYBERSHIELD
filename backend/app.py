@@ -5,10 +5,43 @@ import os
 import re
 import sqlite3
 import requests
-from datetime import datetime
+from pathlib import Path
+
+ENV_FILE = Path(__file__).resolve().parent.parent / ".env"
+
+if ENV_FILE.exists():
+    for line in ENV_FILE.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if line and not line.startswith("#") and "=" in line:
+            key, value = line.split("=", 1)
+            os.environ.setdefault(key.strip(), value.strip())
+from datetime import datetime, timezone, timedelta
+import bcrypt
+import jwt
+from functools import wraps
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+import secrets
 
 app = Flask(__name__)
 CORS(app)
+
+app.config["JWT_SECRET_KEY"] = os.environ.get("CYBERSHIELD_JWT_SECRET")
+app.config["HONEYPOT_INGESTION_KEY"] = os.environ.get(
+    "CYBERSHIELD_HONEYPOT_KEY"
+)
+
+if not app.config["JWT_SECRET_KEY"]:
+    raise RuntimeError(
+        "Set the CYBERSHIELD_JWT_SECRET environment variable before starting CYBERSHIELD."
+    )
+
+limiter = Limiter(
+    get_remote_address,
+    app=app,
+    default_limits=["200 per day", "50 per hour"],
+    storage_uri="memory://",
+)
 
 OLLAMA_MODEL = "qwen3:8b"
 
@@ -28,6 +61,76 @@ def get_db_connection():
     connection.row_factory = sqlite3.Row
     return connection
 
+def write_audit_log(event_type, details=None, user_id=None):
+    connection = get_db_connection()
+    try:
+        connection.execute(
+            """
+            INSERT INTO audit_logs
+                (user_id, event_type, details, ip_address, timestamp)
+            VALUES (?, ?, ?, ?, ?)
+            """,
+            (
+                user_id,
+                event_type,
+                json.dumps(details or {}),
+                request.remote_addr,
+                datetime.utcnow().isoformat(),
+            ),
+        )
+        connection.commit()
+    finally:
+        connection.close()
+
+def token_required(required_role=None):
+    def decorator(view_function):
+        @wraps(view_function)
+        def wrapped(*args, **kwargs):
+            authorization = request.headers.get("Authorization", "")
+
+            if not authorization.startswith("Bearer "):
+                write_audit_log(
+                    "authentication_missing_token",
+                    {"path": request.path},
+                )
+                return jsonify({"error": "Authentication required"}), 401
+
+            token = authorization.split(" ", 1)[1].strip()
+
+            try:
+                payload = jwt.decode(
+                    token,
+                    app.config["JWT_SECRET_KEY"],
+                    algorithms=["HS256"],
+                )
+            except jwt.InvalidTokenError:
+                write_audit_log(
+                    "authentication_invalid_token",
+                    {"path": request.path},
+                )
+                return jsonify({"error": "Invalid or expired token"}), 401
+
+            user_id = payload.get("user_id")
+            role = payload.get("role")
+
+            if not user_id or role not in ("student", "admin"):
+                return jsonify({"error": "Invalid token claims"}), 401
+
+            if required_role and role != required_role:
+                write_audit_log(
+                    "authorization_denied",
+                    {"path": request.path, "required_role": required_role},
+                    user_id=user_id,
+                )
+                return jsonify({"error": "Forbidden"}), 403
+
+            request.current_user_id = user_id
+            request.current_user_role = role
+
+            return view_function(*args, **kwargs)
+
+        return wrapped
+    return decorator
 
 def initialize_database():
     connection = get_db_connection()
@@ -61,6 +164,42 @@ def initialize_database():
             learner_id TEXT PRIMARY KEY,
             progress_json TEXT NOT NULL DEFAULT '{}',
             updated_at TEXT NOT NULL
+        )
+    """)
+
+
+    connection.execute("""
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            email TEXT NOT NULL UNIQUE,
+            password_hash BLOB NOT NULL,
+            role TEXT NOT NULL CHECK (role IN ('student', 'admin')),
+            created_at TEXT NOT NULL
+        )
+    """)
+
+    connection.execute("""
+        CREATE TABLE IF NOT EXISTS audit_logs (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER,
+            event_type TEXT NOT NULL,
+            details TEXT NOT NULL DEFAULT '{}',
+            ip_address TEXT,
+            timestamp TEXT NOT NULL,
+            FOREIGN KEY (user_id) REFERENCES users(id)
+        )
+    """)
+
+    connection.execute("""
+        CREATE TABLE IF NOT EXISTS evaluation_records (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER,
+            scenario TEXT NOT NULL,
+            choice TEXT,
+            reasoning TEXT,
+            evaluation TEXT NOT NULL,
+            timestamp TEXT NOT NULL,
+            FOREIGN KEY (user_id) REFERENCES users(id)
         )
     """)
 
@@ -140,6 +279,79 @@ def get_honeypot_events():
 initialize_database()
 
 
+@app.post("/api/auth/login")
+@limiter.limit("5 per minute")
+def login():
+    data = request.get_json(silent=True) or {}
+
+    email = data.get("email", "")
+    password = data.get("password", "")
+
+    if not isinstance(email, str) or not isinstance(password, str):
+        return jsonify({"error": "Email and password are required"}), 400
+
+    email = email.strip().lower()
+
+    if not email or not password or len(password) > 72:
+        write_audit_log(
+            "login_failed",
+            {"reason": "invalid_input", "email": email[:254]},
+        )
+        return jsonify({"error": "Invalid email or password"}), 401
+
+    connection = get_db_connection()
+    try:
+        user = connection.execute(
+            "SELECT id, email, password_hash, role FROM users WHERE email = ?",
+            (email,),
+        ).fetchone()
+    finally:
+        connection.close()
+
+    password_matches = False
+
+    if user:
+        try:
+            password_matches = bcrypt.checkpw(
+                password.encode("utf-8"),
+                bytes(user["password_hash"]),
+            )
+        except (ValueError, TypeError):
+            password_matches = False
+
+    if not user or not password_matches:
+        write_audit_log(
+            "login_failed",
+            {"reason": "invalid_credentials", "email": email[:254]},
+        )
+        return jsonify({"error": "Invalid email or password"}), 401
+
+    token = jwt.encode(
+        {
+            "user_id": str(user["id"]),
+            "role": user["role"],
+            "exp": int((datetime.now(timezone.utc) + timedelta(hours=1)).timestamp()),
+        },
+        app.config["JWT_SECRET_KEY"],
+        algorithm="HS256",
+    )
+
+    write_audit_log(
+        "login_success",
+        {"email": user["email"], "role": user["role"]},
+        user_id=user["id"],
+    )
+
+    return jsonify({
+        "success": True,
+        "token": token,
+        "user": {
+            "id": user["id"],
+            "email": user["email"],
+            "role": user["role"],
+        },
+    }), 200
+
 
 @app.get("/api/health")
 def health():
@@ -151,6 +363,7 @@ def health():
 
 
 @app.get("/api/honeypot/events")
+@token_required("admin")
 def fetch_honeypot_events():
     return jsonify({
         "success": True,
@@ -158,9 +371,45 @@ def fetch_honeypot_events():
     })
 
 
+
 @app.post("/api/honeypot/events")
+@limiter.limit("30 per minute")
 def create_honeypot_event():
-    data = request.get_json()
+    authorization = request.headers.get("Authorization", "")
+    ingestion_key = request.headers.get("X-Honeypot-Key", "")
+    configured_key = app.config.get("HONEYPOT_INGESTION_KEY")
+
+    # Authenticate with an admin JWT or the trusted ingestion key.
+    authenticated = False
+
+    if authorization.startswith("Bearer "):
+        token = authorization.split(" ", 1)[1].strip()
+        try:
+            payload = jwt.decode(
+                token,
+                app.config["JWT_SECRET_KEY"],
+                algorithms=["HS256"],
+            )
+            authenticated = (
+                payload.get("role") == "admin"
+                and bool(payload.get("user_id"))
+            )
+        except jwt.InvalidTokenError:
+            authenticated = False
+
+    if not authenticated and configured_key and ingestion_key:
+        authenticated = secrets.compare_digest(
+            ingestion_key, configured_key
+        )
+
+    if not authenticated:
+        write_audit_log(
+            "honeypot_ingestion_denied",
+            {"path": request.path},
+        )
+        return jsonify({"error": "Authentication required"}), 401
+
+    data = request.get_json(silent=True)
 
     if not data:
         return jsonify({
@@ -168,17 +417,8 @@ def create_honeypot_event():
             "error": "No honeypot event data received"
         }), 400
 
-    required_fields = [
-        "event",
-        "source_ip",
-        "severity",
-        "details"
-    ]
-
-    missing_fields = [
-        field for field in required_fields
-        if not data.get(field)
-    ]
+    required_fields = ["event", "source_ip", "severity", "details"]
+    missing_fields = [field for field in required_fields if not data.get(field)]
 
     if missing_fields:
         return jsonify({
@@ -197,30 +437,35 @@ def create_honeypot_event():
     }
 
     connection = get_db_connection()
+    try:
+        cursor = connection.execute("""
+            INSERT INTO honeypot_events
+            (event, source_ip, timestamp, severity, details, status)
+            VALUES (?, ?, ?, ?, ?, ?)
+        """, (
+            new_event["event"],
+            new_event["source_ip"],
+            new_event["timestamp"],
+            new_event["severity"],
+            new_event["details"],
+            new_event["status"]
+        ))
+        new_event["id"] = cursor.lastrowid
+        connection.commit()
+    finally:
+        connection.close()
 
-    cursor = connection.execute("""
-        INSERT INTO honeypot_events
-        (event, source_ip, timestamp, severity, details, status)
-        VALUES (?, ?, ?, ?, ?, ?)
-    """, (
-        new_event["event"],
-        new_event["source_ip"],
-        new_event["timestamp"],
-        new_event["severity"],
-        new_event["details"],
-        new_event["status"]
-    ))
-
-    new_event["id"] = cursor.lastrowid
-
-    connection.commit()
-    connection.close()
+    write_audit_log(
+        "honeypot_event_ingested",
+        {"event_id": new_event["id"]},
+    )
 
     return jsonify({
         "success": True,
         "message": "Honeypot event recorded",
         "event": new_event
     }), 201
+
 
 
 @app.post("/api/evaluate")
@@ -315,17 +560,51 @@ Return exactly this structure:
         ai_content = response.json()["response"]
         evaluation = json.loads(ai_content)
 
+        # Persist the evaluation. Anonymous evaluations use NULL for user_id;
+        # never trust a user_id supplied by the client.
+        connection = get_db_connection()
+        try:
+            connection.execute(
+                """
+                INSERT INTO evaluation_records
+                    (user_id, scenario, choice, reasoning, evaluation, timestamp)
+                VALUES (?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    None,
+                    json.dumps(scenario),
+                    str(choice),
+                    reason,
+                    json.dumps(evaluation),
+                    datetime.now(timezone.utc).isoformat(),
+                ),
+            )
+            connection.commit()
+        finally:
+            connection.close()
+
+        write_audit_log(
+            "evaluation_saved",
+            {"choice": str(choice), "score": evaluation.get("score")},
+        )
+
         return jsonify({
             "success": True,
             "evaluation": evaluation
         })
 
-    except Exception as e:
+    except requests.RequestException:
+        app.logger.exception("Ollama evaluation request failed")
         return jsonify({
             "success": False,
-            "error": str(e)
+            "error": "The evaluation service is currently unavailable."
+        }), 503
+    except (ValueError, KeyError, TypeError):
+        app.logger.exception("Invalid evaluation response or input")
+        return jsonify({
+            "success": False,
+            "error": "Could not process the evaluation response."
         }), 500
-
 
 # =========================
 # HONEYPOT API
@@ -333,6 +612,7 @@ Return exactly this structure:
 
 
 @app.get("/api/honeypot/status")
+@token_required("admin")
 def honeypot_status():
     events = get_honeypot_events()
 
@@ -349,6 +629,45 @@ def honeypot_status():
             if event["severity"] == "Critical"
         )
     })
+
+
+@app.get("/api/audit/logs")
+@token_required("admin")
+def fetch_audit_logs():
+    """Return recent audit records to authenticated administrators only."""
+    raw_limit = request.args.get("limit", "50")
+    try:
+        limit = int(raw_limit)
+    except (TypeError, ValueError):
+        return jsonify({"success": False, "error": "limit must be an integer"}), 400
+
+    if limit < 1 or limit > 100:
+        return jsonify({"success": False, "error": "limit must be between 1 and 100"}), 400
+
+    connection = get_db_connection()
+    try:
+        rows = connection.execute(
+            """
+            SELECT id, user_id, event_type, details, ip_address, timestamp
+            FROM audit_logs
+            ORDER BY id DESC
+            LIMIT ?
+            """,
+            (limit,),
+        ).fetchall()
+    finally:
+        connection.close()
+
+    logs = []
+    for row in rows:
+        entry = dict(row)
+        try:
+            entry["details"] = json.loads(entry["details"] or "{}")
+        except (TypeError, json.JSONDecodeError):
+            entry["details"] = {}
+        logs.append(entry)
+
+    return jsonify({"success": True, "count": len(logs), "logs": logs}), 200
 
 
 
@@ -490,4 +809,4 @@ def get_phishing_simulation_events(learner_id):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)
