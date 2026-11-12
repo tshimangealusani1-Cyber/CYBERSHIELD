@@ -300,7 +300,7 @@ function App() {
       const response = await fetch(`${API_BASE_URL}${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: studentEmail.trim(), password: studentPassword, nickname: studentNickname.trim() }),
+        body: JSON.stringify({ email: studentEmail.trim(), password: studentPassword }),
       })
       const data = await response.json().catch(() => ({}))
       if (!response.ok || !data.success || !data.token) throw new Error(data.error || 'Authentication failed.')
@@ -326,6 +326,12 @@ function App() {
     try {
       const response = await fetch(`${API_BASE_URL}/api/profile/nickname`, {method:'PUT', headers:{'Content-Type':'application/json', Authorization:`Bearer ${studentSession?.token || ''}`}, body:JSON.stringify({nickname})})
       const data = await response.json().catch(()=>({}))
+      if (response.status === 401) {
+        window.localStorage.removeItem('cybershield_student_session')
+        setStudentSession(null)
+        setPage('home')
+        throw new Error('Your sign-in session expired. Please sign in again, then choose your nickname.')
+      }
       if (!response.ok || !data.success) throw new Error(data.error || 'Could not save nickname.')
       const session = {...studentSession, user:{...studentSession.user, nickname:data.nickname}}
       window.localStorage.setItem('cybershield_student_session', JSON.stringify(session)); setStudentSession(session); setStudentNickname(''); setStudentAuthError(''); setPage('home')
@@ -368,7 +374,7 @@ function App() {
   }, [page, studentSession?.token])
 
   useEffect(() => {
-    if (page !== 'results') return
+    if (!['results', 'home', 'leaderboard'].includes(page)) return
     let cancelled = false
     const loadLeaderboard = async () => {
       setLeaderboardLoading(true)
@@ -941,7 +947,6 @@ function App() {
               <h1>{authMode === 'register' ? <>Create your<br />account</> : 'Welcome back'}</h1>
               <p className="auth-copy">{authMode === 'register' ? 'Create a student account to access security awareness training, assessments and learning activities.' : 'Sign in to continue to your CyberShield learning space.'}</p>
               <form onSubmit={handleStudentAuth}>
-                {authMode === 'register' && <><label htmlFor="student-nickname">Leaderboard nickname</label><input id="student-nickname" required minLength={3} maxLength={20} pattern="[A-Za-z0-9_-]+" value={studentNickname} onChange={(event) => setStudentNickname(event.target.value)} placeholder="e.g. ZeroTrace" className="auth-input" /><small>3–20 characters. Letters, numbers, _ and - only. Must be unique.</small></>}
                 <label htmlFor="student-email">Email address</label>
                 <input id="student-email" type="email" autoComplete="email" required maxLength={254} value={studentEmail} onChange={(event) => setStudentEmail(event.target.value)} className="auth-input" />
                 <label htmlFor="student-password">Password</label>
@@ -962,7 +967,34 @@ function App() {
   }
 
   if (page === 'nickname') {
-    return <div className="phishaware"><main className="auth-shell"><section className="auth-card"><div className="logo-mark">C</div><span className="learning-kicker">LEADERBOARD PROFILE</span><h1>Choose your nickname.</h1><p className="auth-copy">This unique name identifies you on the CyberShield leaderboard.</p><form onSubmit={handleNicknameSave}><label htmlFor="first-nickname">Nickname</label><input id="first-nickname" className="auth-input" required minLength={3} maxLength={20} pattern="[A-Za-z0-9_-]+" value={studentNickname} onChange={e=>setStudentNickname(e.target.value)} placeholder="e.g. ZeroTrace"/><small>3–20 characters. Letters, numbers, _ and - only.</small>{studentAuthError && <p role="alert">{studentAuthError}</p>}<button className="continue-button" type="submit">Save nickname →</button></form></section></main></div>
+    return <div className="phishaware nickname-screen">
+      <nav className="navbar"><div className="logo"><div className="logo-mark">C</div><span>CYBERSHIELD</span></div><div className="nav-status"><span className="status-dot"></span>Secure student access</div></nav>
+      <main className="nickname-shell"><section className="nickname-card">
+        <span className="learning-kicker">LEADERBOARD PROFILE</span>
+        <h1>Choose your nickname.</h1>
+        <p className="auth-copy">This unique name identifies you on the CyberShield leaderboard.</p>
+        <form onSubmit={handleNicknameSave}>
+          <label htmlFor="first-nickname">Nickname</label>
+          <input id="first-nickname" className="auth-input nickname-input" required minLength={3} maxLength={20} pattern="[A-Za-z0-9_-]+" value={studentNickname} onChange={e=>setStudentNickname(e.target.value)} placeholder="e.g. ZeroTrace" autoComplete="off"/>
+          <small>3–20 characters · Letters, numbers, underscores and hyphens.</small>
+          {studentAuthError && <p className="nickname-error" role="alert">{studentAuthError}</p>}
+          <button className="continue-button" type="submit">Save nickname <span aria-hidden="true">→</span></button>
+        </form>
+      </section></main>
+    </div>
+  }
+
+  if (page === 'leaderboard') {
+    return <div className="phishaware">
+      <nav className="navbar"><button className="logo logo-button" onClick={goHome}><div className="logo-mark">C</div>CYBERSHIELD</button><div className="nav-status">LEARNER RANKINGS</div></nav>
+      <main className="learning-shell"><button className="learning-back" onClick={goHome}>← Dashboard</button>
+        <header className="learning-heading"><span className="learning-kicker">CYBERSHIELD COMMUNITY</span><h1>Leaderboard.</h1><p>Ranked by each learner’s highest completed assessment score.</p></header>
+        <section className="leaderboard-card">
+          <div className="leaderboard-heading"><div><h2>Top learners</h2><p>Only real learners with completed assessments appear here.</p></div><span className="leaderboard-live"><i></i> LIVE</span></div>
+          {leaderboardLoading ? <p>Loading rankings…</p> : leaderboardError ? <p>{leaderboardError}</p> : leaderboard.length ? <div className="leaderboard-list">{leaderboard.map((entry,index)=><div className={`leaderboard-row ${index===0?'leaderboard-first':''}`} key={`${entry.rank}-${entry.nickname}`}><span className="leaderboard-rank">{index===0?'♛':String(entry.rank).padStart(2,'0')}</span><strong>{entry.nickname}</strong><span className="leaderboard-score">{entry.score}<small>/100</small></span></div>)}</div> : <p>Be one of the first learners. Complete an assessment to appear here.</p>}
+        </section>
+      </main>
+    </div>
   }
 
   if (page === 'academy') {
@@ -1054,6 +1086,11 @@ function App() {
               <span className="scam-centre-launch-arrow" aria-hidden="true">→</span>
             </button>
 
+              <button className="scam-centre-launch" onClick={() => setPage('leaderboard')}>
+                <span className="scam-centre-launch-icon" aria-hidden="true">♛</span>
+                <span className="scam-centre-launch-copy"><strong>Leaderboard</strong><small>See learners ranked by their best assessment score.</small></span>
+                <span className="scam-centre-launch-arrow" aria-hidden="true">→</span>
+              </button>
               <button className="scam-centre-launch" onClick={() => setPage('academy')}>
                 <span className="scam-centre-launch-icon" aria-hidden="true">⌘</span>
                 <span className="scam-centre-launch-copy"><strong>Learning Paths</strong><small>Build practical security skills.</small></span>

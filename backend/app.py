@@ -373,8 +373,8 @@ def register():
     if len(password) > 72:
         return jsonify({"success": False, "error": "Password must be 72 characters or fewer."}), 400
 
-    nickname = nickname.strip()
-    if not re.fullmatch(r"[A-Za-z0-9_-]{3,20}", nickname):
+    nickname = nickname.strip() or None
+    if nickname and not re.fullmatch(r"[A-Za-z0-9_-]{3,20}", nickname):
         return jsonify({"success": False, "error": "Nickname must be 3–20 characters using letters, numbers, _ or - only."}), 400
 
     password_hash = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
@@ -391,7 +391,7 @@ def register():
         if getattr(error, "sqlstate", None) == "23505":
             is_duplicate = True
         if is_duplicate:
-            return jsonify({"success": False, "error": "That email or nickname is already registered. Please choose another nickname or sign in."}), 409
+            return jsonify({"success": False, "error": "That email is already registered. Please sign in instead."}), 409
         raise
     finally:
         connection.close()

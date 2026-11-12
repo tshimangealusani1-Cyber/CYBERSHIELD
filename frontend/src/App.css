@@ -2675,3 +2675,23 @@ button {
 .assessment-page,.learning-shell,.results-page { width:min(100% - 32px, 1100px); margin-inline:auto; }
 @media (min-width:1500px) { .phishaware > main { width:min(100% - 80px, 1600px); } .hero { max-width:1400px; } .home-launch-grid { gap:18px; } .scam-centre-launch { min-height:118px; padding:24px; } }
 @media (max-width:760px) { .phishaware > main { width:calc(100% - 28px); } .home-launch-grid { grid-template-columns:1fr; gap:10px; } .scam-centre-launch { min-height:86px; padding:15px; } .home-learning-strip { grid-template-columns:1fr; gap:16px; } .home-primary-actions { grid-template-columns:1fr; } .navbar { padding-inline:14px; } .nav-status { max-width:42vw; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; } }
+
+
+/* Nickname onboarding — refined, accessible profile setup */
+.nickname-screen { min-height:100vh; background:radial-gradient(ellipse at 50% 38%,#18233a 0%,#10141d 52%,#0b0e14 100%); }
+.nickname-screen .navbar { padding-inline:clamp(22px,7vw,100px); }
+.nickname-shell { width:min(100% - 40px,900px); min-height:calc(100vh - 88px); margin:0 auto; display:grid; place-items:start center; padding:clamp(70px,12vh,120px) 0 64px; }
+.nickname-card { width:100%; box-sizing:border-box; padding:clamp(30px,5vw,58px); border:1px solid rgba(255,255,255,.11); border-radius:26px; background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.025)); box-shadow:0 28px 90px rgba(0,0,0,.32),inset 0 1px rgba(255,255,255,.07); text-align:center; }
+.nickname-card .learning-kicker { display:block; margin-bottom:20px; color:#79a2ff; font-size:11px; font-weight:800; letter-spacing:2px; }
+.nickname-card h1 { margin:0 0 12px; color:#f5f7ff; font-size:clamp(34px,5.5vw,54px); line-height:1.08; letter-spacing:-2px; }
+.nickname-card .auth-copy { margin:0 auto 34px; color:#b8c5da; font-size:16px; line-height:1.6; }
+.nickname-card form { max-width:560px; margin:0 auto; text-align:left; }
+.nickname-card label { display:block; margin:0 0 9px; color:#e9eefb; font-size:14px; font-weight:650; }
+.nickname-card .nickname-input { display:block; width:100%; min-height:58px; box-sizing:border-box; padding:0 18px; border:1px solid rgba(143,171,224,.28); border-radius:14px; outline:none; color:#f7f9ff; background:rgba(7,13,25,.72); font:500 16px Inter,system-ui,sans-serif; letter-spacing:.1px; box-shadow:inset 0 1px 3px rgba(0,0,0,.28); transition:border-color .2s,box-shadow .2s,background .2s; }
+.nickname-card .nickname-input::placeholder { color:#77849b; opacity:1; }
+.nickname-card .nickname-input:hover { border-color:rgba(143,171,224,.48); }
+.nickname-card .nickname-input:focus { border-color:#6594ff; background:rgba(13,25,48,.95); box-shadow:0 0 0 4px rgba(77,127,255,.17),0 8px 28px rgba(0,0,0,.18); }
+.nickname-card small { display:block; margin-top:10px; color:#8997ad; font-size:12px; line-height:1.5; }
+.nickname-card .nickname-error { margin:14px 0 0; padding:11px 13px; border:1px solid rgba(255,105,105,.25); border-radius:10px; color:#ffaaaa; background:rgba(120,25,35,.16); font-size:13px; }
+.nickname-card .continue-button { width:100%; min-height:54px; margin-top:26px; border-radius:13px; font-size:14px; font-weight:750; }
+@media(max-width:600px) { .nickname-screen .navbar { height:72px; } .nickname-shell { min-height:calc(100vh - 72px); padding-top:54px; } .nickname-card { padding:30px 22px; border-radius:20px; } .nickname-card h1 { letter-spacing:-1.3px; } .nickname-card .auth-copy { font-size:14px; margin-bottom:26px; } }
