@@ -6,6 +6,13 @@ import json
 import os
 import re
 import sqlite3
+
+try:
+    import psycopg
+    from psycopg.rows import dict_row
+except ImportError:
+    psycopg = None
+    dict_row = None
 import time
 from pathlib import Path
 
@@ -55,12 +62,60 @@ DATABASE_PATH = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
     "cybershield.db"
 )
+DATABASE_URL = os.getenv("DATABASE_URL", "").strip()
+
+
+class DatabaseConnection:
+    """Compatibility layer: SQLite locally, PostgreSQL when DATABASE_URL is set."""
+    def __init__(self, connection, is_postgres=False):
+        self.connection = connection
+        self.is_postgres = is_postgres
+
+    def execute(self, sql, params=()):
+        if self.is_postgres:
+            sql = sql.replace("INTEGER PRIMARY KEY AUTOINCREMENT", "BIGSERIAL PRIMARY KEY")
+            sql = sql.replace("password_hash BLOB", "password_hash BYTEA")
+            sql = sql.replace("user_id INTEGER", "user_id BIGINT")
+            sql = sql.replace("?", "%s")
+        return self.connection.execute(sql, params)
+
+    def executemany(self, sql, params):
+        if self.is_postgres:
+            sql = sql.replace("?", "%s")
+            cursor = self.connection.cursor()
+            cursor.executemany(sql, params)
+            return cursor
+        return self.connection.executemany(sql, params)
+
+    def commit(self):
+        return self.connection.commit()
+
+    def close(self):
+        return self.connection.close()
 
 
 def get_db_connection():
+    if DATABASE_URL:
+        if psycopg is None:
+            raise RuntimeError(
+                "DATABASE_URL is set but psycopg is not installed. "
+                "Install psycopg[binary] from requirements.txt."
+            )
+        postgres_url = DATABASE_URL
+        if postgres_url.startswith("postgres://"):
+            postgres_url = "postgresql://" + postgres_url[len("postgres://"):]
+        connection = psycopg.connect(postgres_url, row_factory=dict_row)
+        return DatabaseConnection(connection, is_postgres=True)
+
     connection = sqlite3.connect(DATABASE_PATH)
     connection.row_factory = sqlite3.Row
-    return connection
+    return DatabaseConnection(connection, is_postgres=False)
+
+
+def get_inserted_id(connection, cursor):
+    # RETURNING works with both SQLite and PostgreSQL.
+    return cursor.fetchone()["id"]
+
 
 def write_audit_log(event_type, details=None, user_id=None):
     connection = get_db_connection()
@@ -205,8 +260,8 @@ def initialize_database():
     """)
 
     existing_events = connection.execute(
-        "SELECT COUNT(*) FROM honeypot_events"
-    ).fetchone()[0]
+        "SELECT COUNT(*) AS count FROM honeypot_events"
+    ).fetchone()["count"]
 
     if existing_events == 0:
         demo_events = [
@@ -303,13 +358,18 @@ def register():
     connection = get_db_connection()
     try:
         cursor = connection.execute(
-            "INSERT INTO users (email, password_hash, role, created_at) VALUES (?, ?, 'student', ?)",
+            "INSERT INTO users (email, password_hash, role, created_at) VALUES (?, ?, 'student', ?) RETURNING id",
             (email, password_hash, datetime.now(timezone.utc).isoformat()),
         )
+        user_id = get_inserted_id(connection, cursor)
         connection.commit()
-        user_id = cursor.lastrowid
-    except sqlite3.IntegrityError:
-        return jsonify({"success": False, "error": "An account with this email already exists. Please sign in."}), 409
+    except Exception as error:
+        is_duplicate = isinstance(error, sqlite3.IntegrityError)
+        if getattr(error, "sqlstate", None) == "23505":
+            is_duplicate = True
+        if is_duplicate:
+            return jsonify({"success": False, "error": "An account with this email already exists. Please sign in."}), 409
+        raise
     finally:
         connection.close()
 
@@ -488,7 +548,7 @@ def create_honeypot_event():
         cursor = connection.execute("""
             INSERT INTO honeypot_events
             (event, source_ip, timestamp, severity, details, status)
-            VALUES (?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?) RETURNING id
         """, (
             new_event["event"],
             new_event["source_ip"],
@@ -497,7 +557,7 @@ def create_honeypot_event():
             new_event["details"],
             new_event["status"]
         ))
-        new_event["id"] = cursor.lastrowid
+        new_event["id"] = get_inserted_id(connection, cursor)
         connection.commit()
     finally:
         connection.close()
@@ -985,10 +1045,10 @@ def record_phishing_simulation_event():
     cursor = connection.execute("""
         INSERT INTO phishing_simulation_events
         (learner_id, scenario_id, event_type, points, timestamp, details)
-        VALUES (?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?) RETURNING id
     """, (learner_id, scenario_id, event_type, points, timestamp, details))
     connection.commit()
-    event_id = cursor.lastrowid
+    event_id = get_inserted_id(connection, cursor)
     connection.close()
 
     return jsonify({
