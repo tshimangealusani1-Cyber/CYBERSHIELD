@@ -1,11 +1,21 @@
-﻿backend/.venv/
-frontend/node_modules/
-frontend/dist/
+﻿# Python
+backend/.venv/
 __pycache__/
 *.pyc
-.env
 
-# CYBERSHIELD local database and security backups
-backend/cybershield.db
-backend/*.pre-security-backup
-backend/*.pre-security-backup.db
+# Node
+frontend/node_modules/
+frontend/dist/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Database and backups
+backend/*.db
+backend/*backup*
+backend/test_api.ps1
+
+# Local files
+.DS_Store

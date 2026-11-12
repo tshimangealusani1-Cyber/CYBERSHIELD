@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import './App.css'
+import './App.motion.css'
 
 const API_BASE_URL = (import.meta.env.VITE_API_URL || 'http://127.0.0.1:5000').replace(/\/$/, '')
 
@@ -163,6 +164,14 @@ function shuffleItems(items) {
 
 function App() {
   const [page, setPage] = useState('home')
+  const [studentSession, setStudentSession] = useState(() => {
+    try { return JSON.parse(window.localStorage.getItem('cybershield_student_session') || 'null') } catch { return null }
+  })
+  const [authMode, setAuthMode] = useState('register')
+  const [studentEmail, setStudentEmail] = useState('')
+  const [studentPassword, setStudentPassword] = useState('')
+  const [studentAuthError, setStudentAuthError] = useState('')
+  const [studentAuthLoading, setStudentAuthLoading] = useState(false)
   const [currentScenario, setCurrentScenario] = useState(0)
   const [adminToken, setAdminToken] = useState('')
   const [adminEmail, setAdminEmail] = useState('')
@@ -174,8 +183,13 @@ function App() {
 
   const [responses, setResponses] = useState([])
   const [assessmentChoiceOrder, setAssessmentChoiceOrder] = useState({})
+  const [assessmentReport, setAssessmentReport] = useState(null)
 
   const [aiLoading, setAiLoading] = useState(false)
+
+  const [assessmentHistory, setAssessmentHistory] = useState([])
+  const [historyLoading, setHistoryLoading] = useState(false)
+  const [historyError, setHistoryError] = useState('')
 
   const [honeypotStatus, setHoneypotStatus] = useState(null)
   const [honeypotEvents, setHoneypotEvents] = useState([])
@@ -220,6 +234,65 @@ function App() {
       return createId()
     }
   })
+
+  const handleStudentAuth = async (event) => {
+    event.preventDefault()
+    if (studentAuthLoading) return
+    setStudentAuthLoading(true)
+    setStudentAuthError('')
+    try {
+      const endpoint = authMode === 'register' ? '/api/auth/register' : '/api/auth/login'
+      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: studentEmail.trim(), password: studentPassword }),
+      })
+      const data = await response.json().catch(() => ({}))
+      if (!response.ok || !data.success || !data.token) throw new Error(data.error || 'Authentication failed.')
+      if (data.user?.role !== 'student') throw new Error('Please use a student account to access CyberShield learning tools.')
+      const session = { token: data.token, user: data.user }
+      window.localStorage.setItem('cybershield_student_session', JSON.stringify(session))
+      setStudentSession(session)
+      setStudentPassword('')
+      setStudentAuthError('')
+      setPage('home')
+    } catch (error) {
+      setStudentAuthError(error.message || 'Could not connect to CyberShield. Please try again.')
+    } finally {
+      setStudentAuthLoading(false)
+    }
+  }
+
+  const handleStudentLogout = () => {
+    window.localStorage.removeItem('cybershield_student_session')
+    setStudentSession(null)
+    setStudentPassword('')
+    setPage('home')
+  }
+
+  const loadAssessmentHistory = async () => {
+    if (!studentSession?.token) return
+    setHistoryLoading(true)
+    setHistoryError('')
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/assessment/history`, {
+        headers: { Authorization: `Bearer ${studentSession.token}` },
+      })
+      const data = await response.json().catch(() => ({}))
+      if (!response.ok || !data.success) {
+        throw new Error(data.error || 'Could not load your assessment history.')
+      }
+      setAssessmentHistory(data.history || [])
+    } catch (error) {
+      setHistoryError(error.message || 'Could not load assessment history.')
+    } finally {
+      setHistoryLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    if (page === 'history' && studentSession?.token) loadAssessmentHistory()
+  }, [page, studentSession?.token])
 
   /*
    * HONEYPOT DATA
@@ -509,6 +582,7 @@ function App() {
     setChoice('')
     setReason('')
     setResponses([])
+    setAssessmentReport(null)
     setAiLoading(false)
   }
 
@@ -522,6 +596,7 @@ function App() {
     setChoice('')
     setReason('')
     setResponses([])
+    setAssessmentReport(null)
     setAssessmentChoiceOrder(Object.fromEntries(
       scenarios.map((item) => [item.id, shuffleItems(item.choices)])
     ))
@@ -532,96 +607,67 @@ function App() {
    */
 
   const handleContinue = async () => {
-    if (
-      !choice ||
-      aiLoading
-    ) {
+    if (!choice || aiLoading) return
+
+    const selectedChoice = scenario.choices.find(
+      (item) => item.id === choice,
+    )
+
+    const newResponse = {
+      scenario: scenario.id,
+      choice,
+      decisionCorrect: choice === scenario.correctChoice,
+    }
+
+    const updatedResponses = [...responses, newResponse]
+
+    // Move through the first four scenarios without making an AI request.
+    if (currentScenario < scenarios.length - 1) {
+      setResponses(updatedResponses)
+      setCurrentScenario(currentScenario + 1)
+      setChoice('')
       return
     }
 
+    // Submit all five answers once, after the final scenario.
     setAiLoading(true)
-
     try {
-      const selectedChoice = scenario.choices.find(
-        (item) => item.id === choice,
-      )
+      const answers = updatedResponses.map((response) => ({
+        scenarioId: response.scenario,
+        selectedChoiceId: response.choice,
+        reasoning: '',
+      }))
 
       const response = await fetch(
-        `${API_BASE_URL}/api/evaluate`,
+        `${API_BASE_URL}/api/assessment/complete`,
         {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            scenario: {
-              id: scenario.id,
-              sender: scenario.sender,
-              email: scenario.email,
-              subject: scenario.subject,
-              message: scenario.message,
-            },
-
-            choice: {
-              id: choice,
-              label: selectedChoice?.label || choice,
-              description:
-                selectedChoice?.description || '',
-            },
-
-            reasoning: 'No written explanation requested. Evaluate the selected decision against the scenario and provide concise practical feedback.',
-          }),
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${studentSession?.token || ''}` },
+          body: JSON.stringify({ answers }),
         },
       )
 
-      if (!response.ok) {
-        throw new Error(
-          `AI request failed: ${response.status}`,
-        )
+      const data = await response.json().catch(() => ({}))
+      if (!response.ok || !data.success) {
+        throw new Error(data.error || `Assessment request failed: ${response.status}`)
       }
 
-      const data = await response.json()
+      // Use the server's authoritative marking, not browser-side answer keys.
+      const markedResponses = (data.scenarioResults || []).map((result) => ({
+        scenario: result.scenarioId,
+        choice: result.selectedChoiceId,
+        decisionCorrect: result.correct,
+        correctChoice: result.correctChoiceId,
+        learningPoint: result.learningPoint,
+      }))
 
-      console.log('AI evaluation:', data)
-
-      const evaluation = data.evaluation || data
-
-      const newResponse = {
-        scenario: scenario.id,
-        choice,
-        decisionCorrect:
-          choice === scenario.correctChoice,
-
-        aiEvaluation: evaluation,
-      }
-
-      const updatedResponses = [
-        ...responses,
-        newResponse,
-      ]
-
-      setResponses(updatedResponses)
-
-      if (
-        currentScenario <
-        scenarios.length - 1
-      ) {
-        setCurrentScenario(
-          currentScenario + 1,
-        )
-
-        setChoice('')
-      } else {
-        setPage('results')
-      }
+      setResponses(markedResponses)
+      setAssessmentReport(data)
+      setPage('results')
     } catch (error) {
-      console.error(
-        'AI evaluation error:',
-        error,
-      )
-
+      console.error('Assessment completion error:', error)
       alert(
-        'CYBERSHIELD could not complete the AI evaluation. Please try again. If the problem continues, check the backend deployment logs.',
+        error.message || 'CyberShield could not submit your assessment. Please try again.',
       )
     } finally {
       setAiLoading(false)
@@ -653,6 +699,14 @@ function App() {
    */
 
   const calculateResults = () => {
+    if (assessmentReport) {
+      return {
+        score: assessmentReport.score ?? 0,
+        correct: assessmentReport.correctAnswers ?? 0,
+        reasoning: null,
+      }
+    }
+
     if (!responses.length) {
       return {
         score: 0,
@@ -682,6 +736,11 @@ function App() {
    */
 
   const getStrengths = () => {
+    const reportedStrengths = assessmentReport?.aiFeedback?.strengths?.length
+      ? assessmentReport.aiFeedback.strengths
+      : assessmentReport?.strengths
+    if (reportedStrengths?.length) return reportedStrengths
+
     const strengths = []
 
     const correctCount =
@@ -722,6 +781,11 @@ function App() {
    */
 
   const getWeaknesses = () => {
+    const reportedGaps = assessmentReport?.aiFeedback?.areas_to_improve?.length
+      ? assessmentReport.aiFeedback.areas_to_improve
+      : assessmentReport?.knowledgeGaps
+    if (reportedGaps?.length) return reportedGaps
+
     const weaknesses = []
 
     responses.forEach((response) => {
@@ -753,6 +817,54 @@ function App() {
    * HOME
    */
 
+  if (!studentSession?.token) {
+    return (
+      <div className="phishaware auth-screen">
+        <style>{`
+.auth-screen{position:relative;isolation:isolate;overflow:hidden;min-height:100vh;background:radial-gradient(ellipse at 50% 45%,#17233d 0%,#10141d 48%,#0b0e14 100%)}
+.auth-screen:before,.auth-screen:after{content:"";position:fixed;z-index:-1;width:260px;height:260px;border-radius:50%;filter:blur(70px);opacity:.48;pointer-events:none;animation:cyberFloat 12s ease-in-out infinite alternate}
+.auth-screen:before{background:#286cff;top:10%;left:8%}.auth-screen:after{background:#00c8ff;right:7%;bottom:8%;animation-delay:-5s}
+.auth-card{width:min(100%,460px);margin:24px auto;padding:clamp(24px,5vw,38px);border:1px solid rgba(255,255,255,.13);border-radius:24px;background:linear-gradient(145deg,rgba(255,255,255,.105),rgba(255,255,255,.035));box-shadow:0 24px 80px rgba(0,0,0,.38),inset 0 1px rgba(255,255,255,.1);backdrop-filter:blur(22px);animation:authRise .75s cubic-bezier(.2,.8,.2,1) both}
+.auth-card h1{margin:22px 0 14px;font-size:clamp(30px,6vw,38px);line-height:1.12;letter-spacing:-1.3px;text-align:center;overflow-wrap:normal}
+.auth-card .auth-copy{max-width:340px;margin:0 auto 18px;text-align:center;line-height:1.65;color:#b8c9e8}
+.auth-card label{display:block;margin:15px 0 7px;font-weight:600;text-align:left}
+.auth-card .auth-input{display:block;width:100%;box-sizing:border-box;min-height:48px;padding:13px 15px;border:1px solid rgba(166,194,255,.28);border-radius:12px;outline:none;color:#f5f8ff;background:rgba(9,18,35,.48);box-shadow:inset 0 1px 2px rgba(0,0,0,.16);backdrop-filter:blur(12px);transition:border-color .2s,box-shadow .2s,background .2s}
+.auth-card .auth-input:focus{border-color:#6b9cff;background:rgba(20,42,78,.62);box-shadow:0 0 0 4px rgba(74,130,255,.16),0 0 24px rgba(48,112,255,.14)}
+.auth-card .continue-button{margin-top:18px;border-radius:12px;box-shadow:0 10px 28px rgba(55,105,255,.28)}
+@keyframes cyberFloat{from{transform:translate3d(-18px,-10px,0) scale(.92)}to{transform:translate3d(34px,28px,0) scale(1.18)}}
+@keyframes authRise{from{opacity:0;transform:translateY(22px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(prefers-reduced-motion:reduce){.auth-screen:before,.auth-screen:after,.auth-card{animation:none!important}}
+        `}</style>
+        <nav className="navbar">
+          <div className="logo"><div className="logo-mark">C</div>CYBERSHIELD</div>
+          <div className="nav-status"><span className="status-dot"></span>Secure student access</div>
+        </nav>
+        <main className="results-page" style={{ minHeight: '75vh', display: 'grid', placeItems: 'center', padding: '32px 20px' }}>
+          <section className="email-card auth-card">
+            <div className="email-content">
+              <span className="scenario-label">WELCOME TO CYBERSHIELD</span>
+              <h1>{authMode === 'register' ? <>Create your<br />account</> : 'Welcome back'}</h1>
+              <p className="auth-copy">{authMode === 'register' ? 'Create a student account to access security awareness training, assessments and learning activities.' : 'Sign in to continue to your CyberShield learning space.'}</p>
+              <form onSubmit={handleStudentAuth}>
+                <label htmlFor="student-email">Email address</label>
+                <input id="student-email" type="email" autoComplete="email" required maxLength={254} value={studentEmail} onChange={(event) => setStudentEmail(event.target.value)} className="auth-input" />
+                <label htmlFor="student-password">Password</label>
+                <input id="student-password" type="password" autoComplete={authMode === 'register' ? 'new-password' : 'current-password'} required minLength={authMode === 'register' ? 10 : 1} maxLength={72} value={studentPassword} onChange={(event) => setStudentPassword(event.target.value)} className="auth-input" />
+                {authMode === 'register' && <small style={{ display: 'block', marginBottom: 14 }}>Use at least 10 characters. Your password is securely hashed.</small>}
+                {studentAuthError && <p role="alert" style={{ color: '#ff7777', margin: '12px 0' }}>{studentAuthError}</p>}
+                <button className="continue-button" type="submit" disabled={studentAuthLoading}>{studentAuthLoading ? 'Please wait...' : authMode === 'register' ? 'Create account →' : 'Sign in →'}</button>
+              </form>
+              <p style={{ marginTop: 20, textAlign: 'center' }}>
+                {authMode === 'register' ? 'Already have an account? ' : 'New to CyberShield? '}
+                <button type="button" className="mission-back-button" onClick={() => { setAuthMode(authMode === 'register' ? 'login' : 'register'); setStudentAuthError('') }}>{authMode === 'register' ? 'Sign in' : 'Create an account'}</button>
+              </p>
+            </div>
+          </section>
+        </main>
+      </div>
+    )
+  }
+
   if (page === 'home') {
     return (
       <div className="phishaware">
@@ -768,9 +880,9 @@ function App() {
             CYBERSHIELD
           </button>
 
-          <div className="nav-status">
-            <span className="status-dot"></span>
-            System online
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <div className="nav-status"><span className="status-dot"></span>{studentSession.user?.email || 'Signed in'}</div>
+            <button type="button" className="mission-back-button" onClick={handleStudentLogout}>Sign out</button>
           </div>
         </nav>
 
@@ -816,6 +928,14 @@ function App() {
               onClick={startAssessment}
             >
               Start Assessment <span aria-hidden="true">→</span>
+            </button>
+
+            <button
+              type="button"
+              className="continue-button"
+              onClick={() => setPage('history')}
+            >
+              View My Assessment History →
             </button>
 
           </section>
@@ -1670,7 +1790,6 @@ Your decisions are evaluated against practical phishing-awareness criteria.
 
           <div className="scam-centre-footer-actions">
             <button className="mission-back-button" onClick={goHome}>← Back to Home</button>
-            <button className="mission-back-button" onClick={() => setPage('honeypot')}>Open technical event monitor (prototype)</button>
           </div>
           <p className="scam-centre-disclaimer">All messages and scenarios here are fictional practice examples. CYBERSHIELD does not ask for real passwords, PINs, banking details or identity numbers.</p>
         </main>
@@ -1696,9 +1815,9 @@ Your decisions are evaluated against practical phishing-awareness criteria.
               <p>Sign in with an administrator account to view honeypot telemetry and submit controlled simulations.</p>
               <form onSubmit={handleAdminLogin}>
                 <label htmlFor="admin-email">Email</label>
-                <input id="admin-email" type="email" autoComplete="username" required value={adminEmail} onChange={(event) => setAdminEmail(event.target.value)} style={{ display: 'block', width: '100%', boxSizing: 'border-box', margin: '8px 0 16px', padding: 12 }} />
+                <input id="admin-email" type="email" autoComplete="username" required value={adminEmail} onChange={(event) => setAdminEmail(event.target.value)} className="auth-input" />
                 <label htmlFor="admin-password">Password</label>
-                <input id="admin-password" type="password" autoComplete="current-password" required value={adminPassword} onChange={(event) => setAdminPassword(event.target.value)} style={{ display: 'block', width: '100%', boxSizing: 'border-box', margin: '8px 0 16px', padding: 12 }} />
+                <input id="admin-password" type="password" autoComplete="current-password" required value={adminPassword} onChange={(event) => setAdminPassword(event.target.value)} className="auth-input" />
                 {adminLoginError && <p role="alert" style={{ color: '#c0392b' }}>{adminLoginError}</p>}
                 <button className="continue-button" type="submit" disabled={adminLoginLoading}>
                   {adminLoginLoading ? 'Signing in...' : 'Sign in securely →'}
@@ -1958,84 +2077,6 @@ Your decisions are evaluated against practical phishing-awareness criteria.
 
                 <section className="email-card">
                   <div className="email-content">
-                    <div className="email-subject">
-                      Recent Security Events
-                    </div>
-
-                    {honeypotEvents.length ===
-                    0 ? (
-                      <p>
-                        No security events
-                        recorded.
-                      </p>
-                    ) : (
-                      honeypotEvents.map(
-                        (event) => (
-                          <div
-                            key={event.id}
-                            className="scenario-result"
-                          >
-                            <div>
-                              <strong>
-                                {event.event}
-                              </strong>
-
-                              <span
-                                className={
-                                  event.severity ===
-                                  'Critical'
-                                    ? 'result-incorrect'
-                                    : event.severity ===
-                                      'High'
-                                    ? 'reason-warning'
-                                    : 'result-correct'
-                                }
-                              >
-                                {
-                                  event.severity
-                                }
-                              </span>
-                            </div>
-
-                            <p>
-                              <strong>
-                                Source:
-                              </strong>{' '}
-                              {
-                                event.source_ip
-                              }
-                            </p>
-
-                            <p>
-                              <strong>
-                                Time:
-                              </strong>{' '}
-                              {
-                                event.timestamp
-                              }
-                            </p>
-
-                            <p>
-                              {
-                                event.details
-                              }
-                            </p>
-
-                            <p>
-                              <strong>
-                                Status:
-                              </strong>{' '}
-                              {event.status}
-                            </p>
-                          </div>
-                        ),
-                      )
-                    )}
-                  </div>
-                </section>
-
-                <section className="email-card">
-                  <div className="email-content">
                     <div className="email-subject">Security Audit Log</div>
                     <p>Recent authentication, access-control and event-ingestion activity. This view is available to administrators only.</p>
                     {auditLogs.length === 0 ? (
@@ -2074,6 +2115,57 @@ Your decisions are evaluated against practical phishing-awareness criteria.
                 </button>
               </>
             )}
+        </main>
+      </div>
+    )
+  }
+
+  if (page === 'history') {
+    return (
+      <div className="phishaware">
+        <nav className="navbar">
+          <button className="logo logo-button" onClick={goHome}>
+            <div className="logo-mark">C</div>
+            CYBERSHIELD
+          </button>
+          <div className="nav-status"><span className="status-dot"></span>Assessment history</div>
+        </nav>
+        <main className="results-page">
+          <div className="assessment-header">
+            <span className="scenario-label">YOUR LEARNING RECORD</span>
+            <h1>Assessment history</h1>
+            <p>Review your previous CyberShield assessment scores and scenario results.</p>
+          </div>
+          {historyLoading ? (
+            <section className="email-card"><div className="email-content"><p>Loading your assessment history...</p></div></section>
+          ) : historyError ? (
+            <section className="email-card"><div className="email-content"><p role="alert">{historyError}</p><button className="continue-button" onClick={loadAssessmentHistory}>Try again →</button></div></section>
+          ) : assessmentHistory.length === 0 ? (
+            <section className="email-card"><div className="email-content"><h2>No completed assessments yet</h2><p>Complete your first five-scenario assessment and your score will appear here.</p><button className="continue-button" onClick={startAssessment}>Start Assessment →</button></div></section>
+          ) : (
+            <div className="history-list">
+              {assessmentHistory.map((item, index) => (
+                <section className="email-card" key={`${item.timestamp}-${index}`}>
+                  <div className="email-content">
+                    <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
+                      <h2>Assessment {assessmentHistory.length - index}</h2>
+                      <span className="risk-label">{item.riskLevel} RISK</span>
+                    </div>
+                    <p><strong>{item.score}/100</strong> · {item.correctAnswers} of {item.totalQuestions} correct</p>
+                    <p>{item.timestamp ? new Date(item.timestamp).toLocaleString() : 'Date unavailable'}</p>
+                    {item.scenarios.map((scenario, scenarioIndex) => (
+                      <div className="scenario-result" key={`${scenario.title}-${scenarioIndex}`}>
+                        <div><strong>{scenario.title}</strong><span className={scenario.correct ? 'result-correct' : 'result-incorrect'}>{scenario.correct ? 'Correct' : 'Needs improvement'}</span></div>
+                        {scenario.learningPoint && <p>{scenario.learningPoint}</p>}
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              ))}
+            </div>
+          )}
+          <button className="continue-button" onClick={loadAssessmentHistory}>Refresh history →</button>
+          <button className="mission-back-button" onClick={goHome}>← Back to Dashboard</button>
         </main>
       </div>
     )
@@ -2243,17 +2335,23 @@ Your score is based on the safety of your decisions across all five scenarios.
             </span>
 
             <h2>
-              Think beyond the message.
+              {assessmentReport?.aiFeedback?.available
+                ? 'Your personalised learning feedback'
+                : 'Think beyond the message.'}
             </h2>
 
             <p>
-              Before interacting with a
-              suspicious message, verify the
-              sender, inspect the domain, avoid
-              unexpected links or attachments,
-              and confirm requests through an
-              official communication channel.
+              {assessmentReport?.aiFeedback?.summary || assessmentReport?.summary ||
+                'Before interacting with a suspicious message, verify the sender, inspect the domain, avoid unexpected links or attachments, and confirm requests through an official communication channel.'}
             </p>
+
+            {(assessmentReport?.aiFeedback?.recommendations || []).map((item, index) => (
+              <p key={index}>• {item}</p>
+            ))}
+
+            {assessmentReport && !assessmentReport.aiAvailable && (
+              <small>AI feedback is temporarily unavailable. Your score and scenario marking were completed by CyberShield.</small>
+            )}
           </section>
 
           <button
@@ -2394,7 +2492,7 @@ Your score is based on the safety of your decisions across all five scenarios.
             onClick={handleContinue}
           >
             {aiLoading
-              ? 'AI is analysing...'
+              ? 'Submitting assessment...'
               : currentScenario ===
                   scenarios.length - 1
                 ? 'Finish Assessment →'
