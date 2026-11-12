@@ -1153,6 +1153,66 @@ _ASSESSMENT_SCENARIOS = {
 }
 
 
+@app.get("/api/leaderboard")
+def public_leaderboard():
+    """Return anonymised best completed assessment scores; never expose student emails or IDs."""
+    try:
+        limit = request.args.get("limit", default=10, type=int)
+        limit = max(1, min(limit or 10, 25))
+        connection = get_db_connection()
+        try:
+            rows = connection.execute(
+                """SELECT user_id, timestamp, evaluation
+                   FROM evaluation_records
+                   WHERE user_id IS NOT NULL
+                   ORDER BY timestamp DESC
+                   LIMIT 5000"""
+            ).fetchall()
+        finally:
+            connection.close()
+
+        attempts = {}
+        for row in rows:
+            key = (row["user_id"], row["timestamp"])
+            item = attempts.setdefault(key, {"correct": 0, "total": 0})
+            try:
+                evaluation = json.loads(row["evaluation"] or "{}")
+            except (TypeError, ValueError):
+                evaluation = {}
+            item["correct"] += int(bool(evaluation.get("correct", False)))
+            item["total"] += 1
+
+        best_by_student = {}
+        for (user_id, timestamp), attempt in attempts.items():
+            if attempt["total"] != 5:
+                continue
+            score = int(round(attempt["correct"] / 5 * 100))
+            previous = best_by_student.get(user_id)
+            if previous is None or score > previous["score"] or (
+                score == previous["score"] and timestamp > previous["completedAt"]
+            ):
+                best_by_student[user_id] = {"score": score, "completedAt": timestamp}
+
+        ranked = sorted(
+            best_by_student.values(),
+            key=lambda item: (item["score"], item["completedAt"]),
+            reverse=True,
+        )[:limit]
+        leaderboard = [
+            {
+                "rank": index + 1,
+                "label": f"CyberShield Learner {index + 1:02d}",
+                "score": item["score"],
+                "completedAt": item["completedAt"],
+            }
+            for index, item in enumerate(ranked)
+        ]
+        return jsonify({"success": True, "leaderboard": leaderboard}), 200
+    except Exception:
+        app.logger.exception("Could not build the public CyberShield leaderboard.")
+        return jsonify({"success": False, "error": "Leaderboard is temporarily unavailable."}), 500
+
+
 @app.get("/api/assessment/history")
 @token_required("student")
 def assessment_history():
