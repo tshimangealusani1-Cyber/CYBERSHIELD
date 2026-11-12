@@ -683,9 +683,9 @@ Guidelines:
             "error": "The AI evaluation service is not configured."
         }), 503
 
-    model_name = os.getenv("GEMINI_MODEL", "gemini-2.5-flash").strip()
+    model_name = os.getenv("GEMINI_MODEL", "gemini-3.8-flash").strip()
     if not model_name:
-        model_name = "gemini-2.5-flash"
+        model_name = "gemini-3.8-flash"
 
     try:
         # A bounded timeout and one attempt prevent long SDK retry cycles.
@@ -718,6 +718,7 @@ Guidelines:
 
         try:
             response = generate_evaluation(model_name)
+            app.logger.info("CYBERSHIELD individual AI evaluation generated using primary model=%s.", model_name)
         except Exception as primary_error:
             # Use the fallback only for provider/model availability or
             # rate-limit/server errors. Do not mask unrelated programming
@@ -743,6 +744,7 @@ Guidelines:
             )
             response = generate_evaluation(fallback_model)
             used_model = fallback_model
+            app.logger.info("CYBERSHIELD individual AI evaluation generated using fallback model=%s.", fallback_model)
 
         gemini_seconds = time.perf_counter() - gemini_start
 
@@ -1345,8 +1347,8 @@ Return ONLY valid JSON with exactly these fields:
 }}
 Keep each list to at most 4 concise items. Do not invent facts or contradict the server-marked results."""
 
-        model_name = os.getenv("GEMINI_MODEL", "gemini-3.5-flash-lite").strip()
-        fallback_model = os.getenv("GEMINI_FALLBACK_MODEL", "").strip()
+        model_name = os.getenv("GEMINI_MODEL", "gemini-3.8-flash").strip()
+        fallback_model = os.getenv("GEMINI_FALLBACK_MODEL", "gemini-3.5-flash-lite").strip()
 
         try:
             # Use a bounded timeout and let the SDK retry transient 503/504
@@ -1373,6 +1375,10 @@ Keep each list to at most 4 concise items. Do not invent facts or contradict the
             used_model = model_name
             try:
                 response = generate_assessment_feedback(model_name)
+                app.logger.info(
+                    "CYBERSHIELD assessment AI generated using primary model=%s.",
+                    model_name,
+                )
             except Exception as primary_error:
                 status_code = getattr(primary_error, "code", None)
                 if status_code is None:
@@ -1395,6 +1401,10 @@ Keep each list to at most 4 concise items. Do not invent facts or contradict the
                 )
                 response = generate_assessment_feedback(fallback_model)
                 used_model = fallback_model
+                app.logger.info(
+                    "CYBERSHIELD assessment AI generated using fallback model=%s.",
+                    fallback_model,
+                )
 
             feedback_text = response.text
             if not feedback_text:
@@ -1425,11 +1435,14 @@ Keep each list to at most 4 concise items. Do not invent facts or contradict the
             status_code = getattr(error, "code", None)
             if status_code is None:
                 status_code = getattr(error, "status_code", None)
-            app.logger.warning(
-                "Combined assessment AI feedback unavailable "
-                "(exception=%s, status=%s). Returning marked report.",
+            app.logger.exception(
+                "CYBERSHIELD assessment AI unavailable after primary/fallback attempts "
+                "(exception=%s, status=%s, primary_model=%s, fallback_model=%s). "
+                "Returning marked report.",
                 type(error).__name__,
                 status_code,
+                model_name,
+                fallback_model,
             )
 
     # Save all five marked results. A database issue must not erase the report
