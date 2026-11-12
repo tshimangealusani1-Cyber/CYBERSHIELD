@@ -3,6 +3,8 @@ import './App.css'
 import './App.motion.css'
 import PhoneSimulator from './components/PhoneSimulator'
 import DesktopSimulator from './components/DesktopSimulator'
+import LearningHub, { readAcademyProgress } from './LearningHub'
+import ThreatIntel from './ThreatIntel'
 
 const API_BASE_URL = (import.meta.env.VITE_API_URL || 'http://127.0.0.1:5000').replace(/\/$/, '')
 
@@ -892,6 +894,28 @@ function App() {
     )
   }
 
+  if (page === 'academy') {
+    return <div className="phishaware"><nav className="navbar"><button className="logo logo-button" onClick={goHome}><div className="logo-mark">C</div>CYBERSHIELD</button><div className="nav-status">{studentSession?.user?.email || 'Learner workspace'}</div></nav><LearningHub onBack={goHome} token={studentSession?.token} apiBaseUrl={API_BASE_URL} /></div>
+  }
+
+  if (page === 'threat-intel') {
+    return <div className="phishaware"><nav className="navbar"><button className="logo logo-button" onClick={goHome}><div className="logo-mark">C</div>CYBERSHIELD</button><div className="nav-status">SECURITY BRIEFING ROOM</div></nav><ThreatIntel onBack={goHome} /></div>
+  }
+
+  if (page === 'achievements') {
+    const progress = readAcademyProgress()
+    const completedPaths = Object.values(progress).filter(item => item?.completed).length
+    const completedLessons = Object.values(progress).reduce((sum,item) => sum + (item?.lessons?.length || 0), 0)
+    const awards = [
+      {icon:'◈',title:'First Steps',detail:'Complete your first Academy lesson',earned:completedLessons>=1},
+      {icon:'◆',title:'Knowledge Builder',detail:'Complete five Academy lessons',earned:completedLessons>=5},
+      {icon:'✦',title:'Pathfinder',detail:'Complete one full learning path',earned:completedPaths>=1},
+      {icon:'★',title:'Academy Graduate',detail:'Complete all three learning paths',earned:completedPaths>=3},
+      {icon:'⬡',title:'Assessment Ready',detail:'Complete the CyberShield assessment',earned:Boolean(assessmentReport)},
+    ]
+    return <div className="phishaware"><nav className="navbar"><button className="logo logo-button" onClick={goHome}><div className="logo-mark">C</div>CYBERSHIELD</button><div className="nav-status">ACHIEVEMENTS</div></nav><main className="learning-shell"><button className="learning-back" onClick={goHome}>← Dashboard</button><header className="learning-heading"><span className="learning-kicker">YOUR SECURITY JOURNEY</span><h1>Progress worth protecting.</h1><p>Earn recognition by building practical security habits and completing learning activities.</p></header><div className="learning-overview"><div><strong>{completedLessons}</strong><span>Lessons completed</span></div><div><strong>{completedPaths}/3</strong><span>Learning paths completed</span></div><div><strong>{awards.filter(a=>a.earned).length}/{awards.length}</strong><span>Achievements unlocked</span></div></div><div className="achievement-grid">{awards.map(a=><article className={`achievement-card ${a.earned?'earned':''}`} key={a.title}><span className="achievement-icon">{a.earned?a.icon:'🔒'}</span><div><b>{a.title}</b><p>{a.detail}</p><small>{a.earned?'UNLOCKED':'NOT YET EARNED'}</small></div></article>)}</div><button className="learning-primary" onClick={()=>setPage('academy')}>Continue learning →</button></main></div>
+  }
+
   if (page === 'home') {
     return (
       <div className="phishaware">
@@ -987,7 +1011,27 @@ function App() {
               </span>
               <span className="scam-centre-launch-arrow" aria-hidden="true">→</span>
             </button>
+              <button className="scam-centre-launch" onClick={() => setPage('academy')}>
+                <span className="scam-centre-launch-icon" aria-hidden="true">⌘</span>
+                <span className="scam-centre-launch-copy"><strong>CyberShield Academy</strong><small>Follow structured learning paths and test your knowledge with practical checks.</small></span>
+                <span className="scam-centre-launch-arrow" aria-hidden="true">→</span>
+              </button>
+              <button className="scam-centre-launch" onClick={() => setPage('threat-intel')}>
+                <span className="scam-centre-launch-icon" aria-hidden="true">⌁</span>
+                <span className="scam-centre-launch-copy"><strong>Threat Intelligence Briefing</strong><small>Explore attack patterns, warning signs and recommended defensive actions.</small></span>
+                <span className="scam-centre-launch-arrow" aria-hidden="true">→</span>
+              </button>
+              <button className="scam-centre-launch" onClick={() => setPage('achievements')}>
+                <span className="scam-centre-launch-icon" aria-hidden="true">★</span>
+                <span className="scam-centre-launch-copy"><strong>Achievements & Progress</strong><small>Track completed learning paths and unlock security milestones.</small></span>
+                <span className="scam-centre-launch-arrow" aria-hidden="true">→</span>
+              </button>
             </div>
+
+            <section className="home-learning-strip">
+              <div><span className="learning-kicker">LEARNER DEVELOPMENT</span><h2>Build your next security skill.</h2><p>Continue structured lessons, review current attack patterns and track your progress.</p></div>
+              <div className="home-learning-actions"><button onClick={() => setPage('academy')}>Open Academy <span>→</span></button><button onClick={() => setPage('threat-intel')}>Threat briefings <span>→</span></button><button onClick={() => setPage('achievements')}>View achievements <span>→</span></button></div>
+            </section>
 
             <div className="home-primary-actions">
               <button

@@ -259,6 +259,15 @@ def initialize_database():
         )
     """)
 
+    connection.execute("""
+        CREATE TABLE IF NOT EXISTS learner_learning_progress (
+            user_id INTEGER PRIMARY KEY,
+            progress_json TEXT NOT NULL DEFAULT '{}',
+            updated_at TEXT NOT NULL,
+            FOREIGN KEY (user_id) REFERENCES users(id)
+        )
+    """)
+
     existing_events = connection.execute(
         "SELECT COUNT(*) AS count FROM honeypot_events"
     ).fetchone()["count"]
@@ -1151,6 +1160,69 @@ _ASSESSMENT_SCENARIOS = {
         "learning_point": "Unknown removable media may contain malware. Do not connect it to personal or university devices; hand it to authorised staff.",
     },
 }
+
+
+@app.get("/api/learning/progress")
+@token_required("student")
+def get_learning_progress():
+    connection = get_db_connection()
+    try:
+        row = connection.execute(
+            "SELECT progress_json, updated_at FROM learner_learning_progress WHERE user_id = ?",
+            (int(request.current_user_id),),
+        ).fetchone()
+        progress = {}
+        if row:
+            try:
+                progress = json.loads(row["progress_json"] or "{}")
+            except (TypeError, ValueError):
+                progress = {}
+        return jsonify({"success": True, "progress": progress,
+                        "updatedAt": row["updated_at"] if row else None}), 200
+    finally:
+        connection.close()
+
+
+@app.put("/api/learning/progress")
+@token_required("student")
+@limiter.limit("30 per minute")
+def save_learning_progress():
+    data = request.get_json(silent=True)
+    progress = data.get("progress") if isinstance(data, dict) else None
+    if not isinstance(progress, dict):
+        return jsonify({"success": False, "error": "Progress must be a JSON object."}), 400
+    encoded = json.dumps(progress, separators=(",", ":"))
+    if len(encoded) > 50000:
+        return jsonify({"success": False, "error": "Learning progress is too large."}), 413
+    allowed_courses = {"phishing-foundations", "account-defence", "device-safety"}
+    if set(progress) - allowed_courses:
+        return jsonify({"success": False, "error": "Unknown learning path."}), 400
+    for course_id, item in progress.items():
+        if not isinstance(item, dict) or not isinstance(item.get("lessons", []), list):
+            return jsonify({"success": False, "error": "Invalid learning progress format."}), 400
+        if len(item.get("lessons", [])) > 3 or any(type(i) is not int or i not in (0, 1, 2) for i in item.get("lessons", [])):
+            return jsonify({"success": False, "error": "Invalid lesson completion data."}), 400
+    now = datetime.now(timezone.utc).isoformat()
+    connection = get_db_connection()
+    try:
+        existing = connection.execute(
+            "SELECT user_id FROM learner_learning_progress WHERE user_id = ?",
+            (int(request.current_user_id),),
+        ).fetchone()
+        if existing:
+            connection.execute(
+                "UPDATE learner_learning_progress SET progress_json = ?, updated_at = ? WHERE user_id = ?",
+                (encoded, now, int(request.current_user_id)),
+            )
+        else:
+            connection.execute(
+                "INSERT INTO learner_learning_progress (user_id, progress_json, updated_at) VALUES (?, ?, ?)",
+                (int(request.current_user_id), encoded, now),
+            )
+        connection.commit()
+    finally:
+        connection.close()
+    return jsonify({"success": True, "progress": progress, "updatedAt": now}), 200
 
 
 @app.get("/api/leaderboard")
