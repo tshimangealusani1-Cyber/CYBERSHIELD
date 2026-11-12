@@ -89,6 +89,52 @@ const scenarios = [
       { id: 'hand_to_it', label: 'Do not plug it in; hand it to campus IT or security', description: 'Let authorised staff handle an unknown removable device safely.' },
     ],
   },
+
+  {
+    id: 6, type: 'Cloud identity · OAuth consent', sender: 'Cloud collaboration platform', email: 'Channel: third-party app permission request', subject: 'Grant access to your university files',
+    message: 'A document-sharing app asks for permission to read every file in your cloud drive and maintain access even when you are offline. The request came from a link in an unexpected shared document. The app name resembles a familiar service but its publisher is unfamiliar.',
+    question: 'Which action best limits the identity and data risk?', correctChoice: 'verify_publisher', choices: [
+      {id:'grant_all',label:'Accept all permissions because the app uses the university logo',description:'A familiar logo is not proof that the publisher is trusted.'},
+      {id:'verify_publisher',label:'Cancel, verify the publisher and request through the official software catalogue',description:'Check the app identity, requested scopes and approval process independently.'},
+      {id:'grant_read',label:'Grant access now and revoke it if anything looks wrong',description:'Broad access may expose data before you notice misuse.'}
+    ]
+  },
+  {
+    id: 7, type: 'Email security · Business email compromise', sender: 'Finance director display name', email: 'Channel: supplier bank-detail change request', subject: 'Urgent: update payment details before close of business',
+    message: 'A supplier sends an invoice from a lookalike domain and asks finance to replace its bank account. The message says the usual contact is unavailable and discourages calling because the change is confidential. The invoice amount matches an expected payment.',
+    question: 'What is the strongest verification procedure?', correctChoice: 'known_contact', choices: [
+      {id:'reply_email',label:'Reply to the message and ask the sender to confirm',description:'A compromised mailbox or lookalike sender can answer.'},
+      {id:'pay_small',label:'Send a small test payment to see whether it arrives',description:'A test transfer still sends funds to unverified details.'},
+      {id:'known_contact',label:'Pause payment and verify the change using a previously known phone number',description:'Use an independent trusted channel and follow dual-approval controls.'}
+    ]
+  },
+  {
+    id: 8, type: 'Endpoint security · Malware response', sender: 'Endpoint detection alert', email: 'Channel: managed workstation security notification', subject: 'Suspicious process spawned by an office document',
+    message: 'An endpoint alert reports that a spreadsheet launched a script interpreter which attempted outbound connections. The user says the file came from a known supplier. The device is still connected to the corporate network and the alert severity is high.',
+    question: 'What should you do first as the analyst?', correctChoice: 'isolate_preserve', choices: [
+      {id:'delete_file',label:'Delete the spreadsheet and close the alert',description:'This may destroy evidence and leave active processes running.'},
+      {id:'isolate_preserve',label:'Follow the incident playbook: isolate the host, preserve evidence and escalate',description:'Contain potential spread while maintaining evidence for investigation.'},
+      {id:'reboot',label:'Reboot immediately and ask the user to continue working',description:'A reboot can alter volatile evidence and may not contain the threat.'}
+    ]
+  },
+  {
+    id: 9, type: 'Network security · Segmentation and lateral movement', sender: 'Security operations console', email: 'Channel: correlated authentication and network telemetry', subject: 'Service account authenticates across unrelated servers',
+    message: 'A service account normally used by one application server authenticates to several workstation subnets within minutes. The source host also makes unusual SMB connections. There is no approved maintenance window, but the account is used by a critical service.',
+    question: 'Which response balances containment and service continuity?', correctChoice: 'validate_contain', choices: [
+      {id:'disable_all',label:'Disable every service account in the environment immediately',description:'This is broad and may cause avoidable outages.'},
+      {id:'ignore_service',label:'Ignore the activity because service accounts often authenticate widely',description:'The observed pattern differs from the stated baseline.'},
+      {id:'validate_contain',label:'Validate the owner and baseline, then coordinate scoped containment and credential rotation',description:'Confirm scope quickly, preserve evidence and contain the suspected identity safely.'}
+    ]
+  },
+  {
+    id: 10, type: 'Incident response · Data exposure', sender: 'Data loss prevention alert', email: 'Channel: outbound cloud upload detection', subject: 'Large archive uploaded to an unfamiliar file-sharing tenant',
+    message: 'A user account uploads a compressed archive containing project documents to a newly observed external tenant. The user claims it was required for a partner review, but the partner is not listed in the approved sharing register. The upload is complete and the account remains active.',
+    question: 'What is the most defensible next action?', correctChoice: 'contain_scope', choices: [
+      {id:'delete_local',label:'Delete the local archive and assume the exposure is resolved',description:'The external copy may still be accessible.'},
+      {id:'contain_scope',label:'Restrict the sharing link or session, preserve logs and initiate the data-incident process',description:'Limit further access, establish what was exposed and notify the response owner.'},
+      {id:'public_notice',label:'Immediately publish a public warning before confirming the scope',description:'External notification should follow the organisation’s incident and legal process.'}
+    ]
+  }
 ]
 
 function evaluateReason(reason) {
@@ -173,6 +219,7 @@ function App() {
   })
   const [authMode, setAuthMode] = useState('register')
   const [studentEmail, setStudentEmail] = useState('')
+  const [studentNickname, setStudentNickname] = useState('')
   const [studentPassword, setStudentPassword] = useState('')
   const [studentAuthError, setStudentAuthError] = useState('')
   const [studentAuthLoading, setStudentAuthLoading] = useState(false)
@@ -253,7 +300,7 @@ function App() {
       const response = await fetch(`${API_BASE_URL}${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: studentEmail.trim(), password: studentPassword }),
+        body: JSON.stringify({ email: studentEmail.trim(), password: studentPassword, nickname: studentNickname.trim() }),
       })
       const data = await response.json().catch(() => ({}))
       if (!response.ok || !data.success || !data.token) throw new Error(data.error || 'Authentication failed.')
@@ -262,13 +309,27 @@ function App() {
       window.localStorage.setItem('cybershield_student_session', JSON.stringify(session))
       setStudentSession(session)
       setStudentPassword('')
+      setStudentNickname('')
       setStudentAuthError('')
-      setPage('home')
+      setPage(data.user?.nickname ? 'home' : 'nickname')
     } catch (error) {
       setStudentAuthError(error.message || 'Could not connect to CyberShield. Please try again.')
     } finally {
       setStudentAuthLoading(false)
     }
+  }
+
+  const handleNicknameSave = async (event) => {
+    event.preventDefault()
+    const nickname = studentNickname.trim()
+    if (!/^[A-Za-z0-9_-]{3,20}$/.test(nickname)) { setStudentAuthError('Use 3–20 letters, numbers, underscores or hyphens.'); return }
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/profile/nickname`, {method:'PUT', headers:{'Content-Type':'application/json', Authorization:`Bearer ${studentSession?.token || ''}`}, body:JSON.stringify({nickname})})
+      const data = await response.json().catch(()=>({}))
+      if (!response.ok || !data.success) throw new Error(data.error || 'Could not save nickname.')
+      const session = {...studentSession, user:{...studentSession.user, nickname:data.nickname}}
+      window.localStorage.setItem('cybershield_student_session', JSON.stringify(session)); setStudentSession(session); setStudentNickname(''); setStudentAuthError(''); setPage('home')
+    } catch (error) { setStudentAuthError(error.message || 'Could not save nickname.') }
   }
 
   const handleStudentLogout = () => {
@@ -299,7 +360,11 @@ function App() {
   }
 
   useEffect(() => {
-    if (page === 'history' && studentSession?.token) loadAssessmentHistory()
+    if (studentSession?.token && studentSession.user?.role === 'student' && !studentSession.user?.nickname && page !== 'nickname') setPage('nickname')
+  }, [studentSession?.token, studentSession?.user?.nickname])
+
+  useEffect(() => {
+    if ((page === 'history' || page === 'achievements') && studentSession?.token) loadAssessmentHistory()
   }, [page, studentSession?.token])
 
   useEffect(() => {
@@ -658,7 +723,7 @@ function App() {
       return
     }
 
-    // Submit all five answers once, after the final scenario.
+    // Submit all ten answers once, after the final scenario.
     setAiLoading(true)
     try {
       const answers = updatedResponses.map((response) => ({
@@ -693,6 +758,7 @@ function App() {
       setResponses(markedResponses)
       setAssessmentReport(data)
       setPage('results')
+      loadAssessmentHistory()
     } catch (error) {
       console.error('Assessment completion error:', error)
       alert(
@@ -875,6 +941,7 @@ function App() {
               <h1>{authMode === 'register' ? <>Create your<br />account</> : 'Welcome back'}</h1>
               <p className="auth-copy">{authMode === 'register' ? 'Create a student account to access security awareness training, assessments and learning activities.' : 'Sign in to continue to your CyberShield learning space.'}</p>
               <form onSubmit={handleStudentAuth}>
+                {authMode === 'register' && <><label htmlFor="student-nickname">Leaderboard nickname</label><input id="student-nickname" required minLength={3} maxLength={20} pattern="[A-Za-z0-9_-]+" value={studentNickname} onChange={(event) => setStudentNickname(event.target.value)} placeholder="e.g. ZeroTrace" className="auth-input" /><small>3–20 characters. Letters, numbers, _ and - only. Must be unique.</small></>}
                 <label htmlFor="student-email">Email address</label>
                 <input id="student-email" type="email" autoComplete="email" required maxLength={254} value={studentEmail} onChange={(event) => setStudentEmail(event.target.value)} className="auth-input" />
                 <label htmlFor="student-password">Password</label>
@@ -894,6 +961,10 @@ function App() {
     )
   }
 
+  if (page === 'nickname') {
+    return <div className="phishaware"><main className="auth-shell"><section className="auth-card"><div className="logo-mark">C</div><span className="learning-kicker">LEADERBOARD PROFILE</span><h1>Choose your nickname.</h1><p className="auth-copy">This unique name identifies you on the CyberShield leaderboard.</p><form onSubmit={handleNicknameSave}><label htmlFor="first-nickname">Nickname</label><input id="first-nickname" className="auth-input" required minLength={3} maxLength={20} pattern="[A-Za-z0-9_-]+" value={studentNickname} onChange={e=>setStudentNickname(e.target.value)} placeholder="e.g. ZeroTrace"/><small>3–20 characters. Letters, numbers, _ and - only.</small>{studentAuthError && <p role="alert">{studentAuthError}</p>}<button className="continue-button" type="submit">Save nickname →</button></form></section></main></div>
+  }
+
   if (page === 'academy') {
     return <div className="phishaware"><nav className="navbar"><button className="logo logo-button" onClick={goHome}><div className="logo-mark">C</div>CYBERSHIELD</button><div className="nav-status">{studentSession?.user?.email || 'Learner workspace'}</div></nav><LearningHub onBack={goHome} token={studentSession?.token} apiBaseUrl={API_BASE_URL} /></div>
   }
@@ -911,7 +982,7 @@ function App() {
       {icon:'◆',title:'Knowledge Builder',detail:'Complete five Academy lessons',earned:completedLessons>=5},
       {icon:'✦',title:'Pathfinder',detail:'Complete one full learning path',earned:completedPaths>=1},
       {icon:'★',title:'Academy Graduate',detail:'Complete all three learning paths',earned:completedPaths>=3},
-      {icon:'⬡',title:'Assessment Ready',detail:'Complete the CyberShield assessment',earned:Boolean(assessmentReport)},
+      {icon:'⬡',title:'Assessment Ready',detail:'Complete the CyberShield assessment',earned:assessmentHistory.length > 0},
     ]
     return <div className="phishaware"><nav className="navbar"><button className="logo logo-button" onClick={goHome}><div className="logo-mark">C</div>CYBERSHIELD</button><div className="nav-status">ACHIEVEMENTS</div></nav><main className="learning-shell"><button className="learning-back" onClick={goHome}>← Dashboard</button><header className="learning-heading"><span className="learning-kicker">YOUR SECURITY JOURNEY</span><h1>Progress worth protecting.</h1><p>Earn recognition by building practical security habits and completing learning activities.</p></header><div className="learning-overview"><div><strong>{completedLessons}</strong><span>Lessons completed</span></div><div><strong>{completedPaths}/3</strong><span>Learning paths completed</span></div><div><strong>{awards.filter(a=>a.earned).length}/{awards.length}</strong><span>Achievements unlocked</span></div></div><div className="achievement-grid">{awards.map(a=><article className={`achievement-card ${a.earned?'earned':''}`} key={a.title}><span className="achievement-icon">{a.earned?a.icon:'🔒'}</span><div><b>{a.title}</b><p>{a.detail}</p><small>{a.earned?'UNLOCKED':'NOT YET EARNED'}</small></div></article>)}</div><button className="learning-primary" onClick={()=>setPage('academy')}>Continue learning →</button></main></div>
   }
@@ -958,22 +1029,6 @@ function App() {
 
 
             <div className="home-launch-grid">
-            <button
-              className="scam-centre-launch"
-              onClick={() => {
-                setSelectedScamScenario('email')
-                setScamChoice('')
-                setScamChecked(false)
-                setPage('scam-centre')
-              }}
-            >
-              <span className="scam-centre-launch-icon" aria-hidden="true">◉</span>
-              <span className="scam-centre-launch-copy">
-                <strong>Explore the Scam Awareness Centre</strong>
-                <small>Practise spotting email, phone, social media, website and payment scams.</small>
-              </span>
-              <span className="scam-centre-launch-arrow" aria-hidden="true">→</span>
-            </button>
 
             <button
               className="scam-centre-launch"
@@ -981,7 +1036,7 @@ function App() {
             >
               <span className="scam-centre-launch-icon" aria-hidden="true">▣</span>
               <span className="scam-centre-launch-copy">
-                <strong>Enter the Smartphone Honeypot Lab</strong>
+                <strong>Smartphone Lab</strong>
                 <small>Explore a simulated phone, inspect suspicious messages and practise safe decisions.</small>
               </span>
               <span className="scam-centre-launch-arrow" aria-hidden="true">→</span>
@@ -993,44 +1048,32 @@ function App() {
             >
               <span className="scam-centre-launch-icon" aria-hidden="true">▣</span>
               <span className="scam-centre-launch-copy">
-                <strong>Enter the Windows Desktop Lab</strong>
+                <strong>Windows Lab</strong>
                 <small>Investigate suspicious email, websites, downloads and endpoint alerts in a simulated workstation.</small>
               </span>
               <span className="scam-centre-launch-arrow" aria-hidden="true">→</span>
             </button>
 
-            <button
-              type="button"
-              className="scam-centre-launch challenge-briefing-launch"
-              onClick={() => setPage('challenge-intro')}
-            >
-              <span className="scam-centre-launch-icon" aria-hidden="true">▶</span>
-              <span className="scam-centre-launch-copy">
-                <strong>Enter the 60-second CyberShield Challenge</strong>
-                <small>Watch your mission briefing, then test your security instincts.</small>
-              </span>
-              <span className="scam-centre-launch-arrow" aria-hidden="true">→</span>
-            </button>
               <button className="scam-centre-launch" onClick={() => setPage('academy')}>
                 <span className="scam-centre-launch-icon" aria-hidden="true">⌘</span>
-                <span className="scam-centre-launch-copy"><strong>CyberShield Academy</strong><small>Follow structured learning paths and test your knowledge with practical checks.</small></span>
+                <span className="scam-centre-launch-copy"><strong>Learning Paths</strong><small>Build practical security skills.</small></span>
                 <span className="scam-centre-launch-arrow" aria-hidden="true">→</span>
               </button>
               <button className="scam-centre-launch" onClick={() => setPage('threat-intel')}>
                 <span className="scam-centre-launch-icon" aria-hidden="true">⌁</span>
-                <span className="scam-centre-launch-copy"><strong>Threat Intelligence Briefing</strong><small>Explore attack patterns, warning signs and recommended defensive actions.</small></span>
+                <span className="scam-centre-launch-copy"><strong>Threat Intelligence</strong><small>Explore threats and defensive actions.</small></span>
                 <span className="scam-centre-launch-arrow" aria-hidden="true">→</span>
               </button>
               <button className="scam-centre-launch" onClick={() => setPage('achievements')}>
                 <span className="scam-centre-launch-icon" aria-hidden="true">★</span>
-                <span className="scam-centre-launch-copy"><strong>Achievements & Progress</strong><small>Track completed learning paths and unlock security milestones.</small></span>
+                <span className="scam-centre-launch-copy"><strong>Achievements</strong><small>Track your learning milestones.</small></span>
                 <span className="scam-centre-launch-arrow" aria-hidden="true">→</span>
               </button>
             </div>
 
             <section className="home-learning-strip">
               <div><span className="learning-kicker">LEARNER DEVELOPMENT</span><h2>Build your next security skill.</h2><p>Continue structured lessons, review current attack patterns and track your progress.</p></div>
-              <div className="home-learning-actions"><button onClick={() => setPage('academy')}>Open Academy <span>→</span></button><button onClick={() => setPage('threat-intel')}>Threat briefings <span>→</span></button><button onClick={() => setPage('achievements')}>View achievements <span>→</span></button></div>
+              <div className="home-learning-actions"><button onClick={() => setPage('academy')}>Learning Paths <span>→</span></button><button onClick={() => setPage('threat-intel')}>Threat Intelligence <span>→</span></button><button onClick={() => setPage('achievements')}>Achievements <span>→</span></button></div>
             </section>
 
             <div className="home-primary-actions">
@@ -2282,7 +2325,7 @@ Your decisions are evaluated against practical phishing-awareness criteria.
           ) : historyError ? (
             <section className="email-card"><div className="email-content"><p role="alert">{historyError}</p><button className="continue-button" onClick={loadAssessmentHistory}>Try again →</button></div></section>
           ) : assessmentHistory.length === 0 ? (
-            <section className="email-card"><div className="email-content"><h2>No completed assessments yet</h2><p>Complete your first five-scenario assessment and your score will appear here.</p><button className="continue-button" onClick={startAssessment}>Start Assessment →</button></div></section>
+            <section className="email-card"><div className="email-content"><h2>No completed assessments yet</h2><p>Complete your first 10-question assessment and your score will appear here.</p><button className="continue-button" onClick={startAssessment}>Start Assessment →</button></div></section>
           ) : (
             <div className="history-list">
               {assessmentHistory.map((item, index) => (
@@ -2382,7 +2425,7 @@ Your decisions are evaluated against practical phishing-awareness criteria.
             </h1>
 
             <p>
-Your score is based on the safety of your decisions across all five scenarios.
+Your score reflects your decisions across all ten scenarios.
             </p>
           </div>
 
@@ -2500,14 +2543,14 @@ Your score is based on the safety of your decisions across all five scenarios.
 
           <section className="leaderboard-card">
             <div className="leaderboard-heading">
-              <div><span className="scenario-label">CYBERSHIELD COMMUNITY</span><h2>Live leaderboard</h2><p>Top assessment scores from completed student attempts. Names are anonymised.</p></div>
+              <div><span className="scenario-label">CYBERSHIELD COMMUNITY</span><h2>Live leaderboard</h2><p>Learners ranked by their highest completed assessment score.</p></div>
               <span className="leaderboard-live"><i></i> LIVE</span>
             </div>
             {leaderboardLoading ? <p>Loading rankings…</p> : leaderboardError ? <p>{leaderboardError}</p> : leaderboard.length ? (
               <div className="leaderboard-list">
-                {leaderboard.map((entry, index) => <div className={`leaderboard-row ${index === 0 ? 'leaderboard-first' : ''}`} key={`${entry.rank}-${entry.label}`}>
+                {leaderboard.map((entry, index) => <div className={`leaderboard-row ${index === 0 ? 'leaderboard-first' : ''}`} key={`${entry.rank}-${entry.nickname}`}>
                   <span className="leaderboard-rank">{index === 0 ? '♛' : String(entry.rank).padStart(2, '0')}</span>
-                  <strong>{entry.label}</strong><span className="leaderboard-score">{entry.score}<small>/100</small></span>
+                  <strong>{entry.nickname}</strong><span className="leaderboard-score">{entry.score}<small>/100</small></span>
                 </div>)}
               </div>
             ) : <p>Be one of the first learners on the leaderboard. Complete an assessment to appear here.</p>}
@@ -2585,13 +2628,11 @@ Your score is based on the safety of your decisions across all five scenarios.
           <div className="assessment-type-pill">{scenario.type}</div>
 
           <h1>
-            Can you spot the phishing
-            attempt?
+            Make the safest security decision.
           </h1>
 
           <p>
-            Examine the message carefully
-            before making your decision.
+            Review the evidence and choose the strongest response.
           </p>
         </div>
 
