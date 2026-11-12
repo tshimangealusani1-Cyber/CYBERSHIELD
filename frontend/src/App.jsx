@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import './App.motion.css'
+import PhoneSimulator from './components/PhoneSimulator'
+import DesktopSimulator from './components/DesktopSimulator'
 
 const API_BASE_URL = (import.meta.env.VITE_API_URL || 'http://127.0.0.1:5000').replace(/\/$/, '')
 
@@ -180,6 +182,7 @@ function App() {
   const [adminLoginLoading, setAdminLoginLoading] = useState(false)
 
   const [choice, setChoice] = useState('')
+  const [reason, setReason] = useState('')
 
   const [responses, setResponses] = useState([])
   const [assessmentChoiceOrder, setAssessmentChoiceOrder] = useState({})
@@ -190,6 +193,9 @@ function App() {
   const [assessmentHistory, setAssessmentHistory] = useState([])
   const [historyLoading, setHistoryLoading] = useState(false)
   const [historyError, setHistoryError] = useState('')
+  const [leaderboard, setLeaderboard] = useState([])
+  const [leaderboardLoading, setLeaderboardLoading] = useState(false)
+  const [leaderboardError, setLeaderboardError] = useState('')
 
   const [honeypotStatus, setHoneypotStatus] = useState(null)
   const [honeypotEvents, setHoneypotEvents] = useState([])
@@ -293,6 +299,27 @@ function App() {
   useEffect(() => {
     if (page === 'history' && studentSession?.token) loadAssessmentHistory()
   }, [page, studentSession?.token])
+
+  useEffect(() => {
+    if (page !== 'results') return
+    let cancelled = false
+    const loadLeaderboard = async () => {
+      setLeaderboardLoading(true)
+      setLeaderboardError('')
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/leaderboard?limit=10`)
+        const data = await response.json().catch(() => ({}))
+        if (!response.ok || !data.success) throw new Error(data.error || 'Leaderboard is temporarily unavailable.')
+        if (!cancelled) setLeaderboard(data.leaderboard || [])
+      } catch (error) {
+        if (!cancelled) setLeaderboardError(error.message || 'Could not load leaderboard.')
+      } finally {
+        if (!cancelled) setLeaderboardLoading(false)
+      }
+    }
+    loadLeaderboard()
+    return () => { cancelled = true }
+  }, [page])
 
   /*
    * HONEYPOT DATA
@@ -906,6 +933,7 @@ function App() {
 
 
 
+            <div className="home-launch-grid">
             <button
               className="scam-centre-launch"
               onClick={() => {
@@ -924,19 +952,58 @@ function App() {
             </button>
 
             <button
-              className="start-button home-assessment-button"
-              onClick={startAssessment}
+              className="scam-centre-launch"
+              onClick={() => setPage('phone-lab')}
             >
-              Start Assessment <span aria-hidden="true">→</span>
+              <span className="scam-centre-launch-icon" aria-hidden="true">▣</span>
+              <span className="scam-centre-launch-copy">
+                <strong>Enter the Smartphone Honeypot Lab</strong>
+                <small>Explore a simulated phone, inspect suspicious messages and practise safe decisions.</small>
+              </span>
+              <span className="scam-centre-launch-arrow" aria-hidden="true">→</span>
+            </button>
+
+            <button
+              className="scam-centre-launch"
+              onClick={() => setPage('desktop-lab')}
+            >
+              <span className="scam-centre-launch-icon" aria-hidden="true">▣</span>
+              <span className="scam-centre-launch-copy">
+                <strong>Enter the Windows Desktop Lab</strong>
+                <small>Investigate suspicious email, websites, downloads and endpoint alerts in a simulated workstation.</small>
+              </span>
+              <span className="scam-centre-launch-arrow" aria-hidden="true">→</span>
             </button>
 
             <button
               type="button"
-              className="continue-button"
-              onClick={() => setPage('history')}
+              className="scam-centre-launch challenge-briefing-launch"
+              onClick={() => setPage('challenge-intro')}
             >
-              View My Assessment History →
+              <span className="scam-centre-launch-icon" aria-hidden="true">▶</span>
+              <span className="scam-centre-launch-copy">
+                <strong>Enter the 60-second CyberShield Challenge</strong>
+                <small>Watch your mission briefing, then test your security instincts.</small>
+              </span>
+              <span className="scam-centre-launch-arrow" aria-hidden="true">→</span>
             </button>
+            </div>
+
+            <div className="home-primary-actions">
+              <button
+                className="start-button home-assessment-button"
+                onClick={startAssessment}
+              >
+                <span>Start Assessment</span><span aria-hidden="true">→</span>
+              </button>
+              <button
+                type="button"
+                className="home-history-button"
+                onClick={() => setPage('history')}
+              >
+                View assessment history <span aria-hidden="true">↗</span>
+              </button>
+            </div>
 
           </section>
 
@@ -1000,6 +1067,36 @@ Your decisions are evaluated against practical phishing-awareness criteria.
    * block below this.
    */
   
+
+  if (page === 'phone-lab') {
+    return (
+      <div className="phishaware">
+        <nav className="navbar">
+          <button className="logo logo-button" onClick={goHome}>
+            <div className="logo-mark">C</div>
+            CYBERSHIELD
+          </button>
+          <div className="nav-status"><span className="status-dot"></span> Isolated training environment</div>
+        </nav>
+        <PhoneSimulator onBack={goHome} />
+      </div>
+    )
+  }
+
+  if (page === 'desktop-lab') {
+    return (
+      <div className="phishaware">
+        <nav className="navbar">
+          <button className="logo logo-button" onClick={goHome}>
+            <div className="logo-mark">C</div>
+            CYBERSHIELD
+          </button>
+          <div className="nav-status"><span className="status-dot"></span> Isolated training environment</div>
+        </nav>
+        <DesktopSimulator onBack={goHome} />
+      </div>
+    )
+  }
 
   /*
    * BEGINNER MISSION 01 — INTRODUCTION
@@ -1383,7 +1480,7 @@ Your decisions are evaluated against practical phishing-awareness criteria.
 
   if (page === 'simulation') {
   return (
-    <main className="results-page">
+    <main className="results-page results-reveal">
       <div className="results-container">
         <header className="results-header">
           <h1>Honeypot Simulation</h1>
@@ -1807,7 +1904,7 @@ Your decisions are evaluated against practical phishing-awareness criteria.
           </button>
           <div className="nav-status"><span className="status-dot"></span>Admin sign-in required</div>
         </nav>
-        <main className="results-page">
+        <main className="results-page results-reveal">
           <section className="email-card" style={{ maxWidth: 520, margin: '48px auto' }}>
             <div className="email-content">
               <span className="scenario-label">RESTRICTED AREA</span>
@@ -1856,7 +1953,7 @@ Your decisions are evaluated against practical phishing-awareness criteria.
           </div>
         </nav>
 
-        <main className="results-page">
+        <main className="results-page results-reveal">
           <div className="assessment-header">
             <span className="scenario-label">
               HONEYPOT MONITOR
@@ -1981,8 +2078,8 @@ Your decisions are evaluated against practical phishing-awareness criteria.
             !honeypotError &&
             honeypotStatus && (
               <>
-                <section className="score-card">
-                  <div className="score-circle">
+                <section className="score-card score-card-reveal">
+                  <div className="score-circle score-circle-animated" aria-label={`Score ${results.score} out of 100`}>
                     <span>●</span>
                     <small>
                       ACTIVE
@@ -2130,7 +2227,7 @@ Your decisions are evaluated against practical phishing-awareness criteria.
           </button>
           <div className="nav-status"><span className="status-dot"></span>Assessment history</div>
         </nav>
-        <main className="results-page">
+        <main className="results-page results-reveal">
           <div className="assessment-header">
             <span className="scenario-label">YOUR LEARNING RECORD</span>
             <h1>Assessment history</h1>
@@ -2175,6 +2272,34 @@ Your decisions are evaluated against practical phishing-awareness criteria.
    * RESULTS
    */
 
+  if (page === 'challenge-intro') {
+    return (
+      <div className="phishaware challenge-intro-page">
+        <nav className="navbar">
+          <button className="logo logo-button" onClick={goHome}><div className="logo-mark">C</div> CYBERSHIELD</button>
+          <div className="nav-status"><span className="status-dot"></span> Challenge briefing</div>
+        </nav>
+        <main className="challenge-briefing">
+          <span className="scenario-label">60-SECOND SECURITY CHALLENGE</span>
+          <div className="briefing-orbit" aria-hidden="true"><span>CS</span><i></i><b></b></div>
+          <p className="briefing-overline">THE THREAT IS REAL. THE ENVIRONMENT IS SAFE.</p>
+          <h1>One decision can change everything.</h1>
+          <p className="briefing-copy">Five situations. Five decisions. Suspicious messages, account pressure, QR codes, job offers and unexpected support calls. Your task is to pause, investigate and choose the safest response.</p>
+          <div className="briefing-stages">
+            <div><strong>01</strong><b>Investigate</b><span>Look beyond the sender and the story.</span></div>
+            <div><strong>02</strong><b>Decide</b><span>Choose how you would respond.</span></div>
+            <div><strong>03</strong><b>Improve</b><span>Get your score and learning feedback.</span></div>
+          </div>
+          <div className="briefing-actions">
+            <button className="start-button" onClick={startAssessment}>Start the challenge <span aria-hidden="true">→</span></button>
+            <button className="mission-back-button" onClick={goHome}>Not now</button>
+          </div>
+          <small className="briefing-safety">Training simulation only · Never use real credentials or payment details.</small>
+        </main>
+      </div>
+    )
+  }
+
   if (page === 'results') {
     const results = calculateResults()
     const risk = getRiskLevel(
@@ -2201,7 +2326,7 @@ Your decisions are evaluated against practical phishing-awareness criteria.
           </div>
         </nav>
 
-        <main className="results-page">
+        <main className="results-page results-reveal">
           <div className="assessment-header">
             <span className="scenario-label">
               ASSESSMENT COMPLETE
@@ -2217,8 +2342,8 @@ Your score is based on the safety of your decisions across all five scenarios.
             </p>
           </div>
 
-          <section className="score-card">
-            <div className="score-circle">
+          <section className="score-card score-card-reveal">
+            <div className="score-circle score-circle-animated" aria-label={`Score ${results.score} out of 100`}>
               <span>
                 {results.score}
               </span>
@@ -2329,6 +2454,21 @@ Your score is based on the safety of your decisions across all five scenarios.
             </div>
           </section>
 
+          <section className="leaderboard-card">
+            <div className="leaderboard-heading">
+              <div><span className="scenario-label">CYBERSHIELD COMMUNITY</span><h2>Live leaderboard</h2><p>Top assessment scores from completed student attempts. Names are anonymised.</p></div>
+              <span className="leaderboard-live"><i></i> LIVE</span>
+            </div>
+            {leaderboardLoading ? <p>Loading rankings…</p> : leaderboardError ? <p>{leaderboardError}</p> : leaderboard.length ? (
+              <div className="leaderboard-list">
+                {leaderboard.map((entry, index) => <div className={`leaderboard-row ${index === 0 ? 'leaderboard-first' : ''}`} key={`${entry.rank}-${entry.label}`}>
+                  <span className="leaderboard-rank">{index === 0 ? '♛' : String(entry.rank).padStart(2, '0')}</span>
+                  <strong>{entry.label}</strong><span className="leaderboard-score">{entry.score}<small>/100</small></span>
+                </div>)}
+              </div>
+            ) : <p>Be one of the first learners on the leaderboard. Complete an assessment to appear here.</p>}
+          </section>
+
           <section className="recommendation-card">
             <span className="scenario-label">
               CYBERSHIELD RECOMMENDATION
@@ -2350,7 +2490,7 @@ Your score is based on the safety of your decisions across all five scenarios.
             ))}
 
             {assessmentReport && !assessmentReport.aiAvailable && (
-              <small>AI feedback is temporarily unavailable. Your score and scenario marking were completed by CyberShield.</small>
+              <small>AI feedback could not be generated for this attempt. Your score, scenario marking and saved assessment are still available.</small>
             )}
           </section>
 
@@ -2437,13 +2577,6 @@ Your score is based on the safety of your decisions across all five scenarios.
               {scenario.message}
             </p>
 
-            <button
-              className="fake-link"
-              type="button"
-              onClick={() => {}}
-            >
-              Continue
-            </button>
           </div>
         </section>
 

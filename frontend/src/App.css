@@ -2489,3 +2489,156 @@ button {
     to { opacity: 1; transform: translateY(0); }
   }
 }
+
+
+/* CyberShield showcase upgrade: challenge briefing, score reveal and leaderboard */
+.challenge-briefing{width:min(980px,90%);margin:0 auto;padding:78px 0 90px;text-align:center}
+.challenge-briefing h1{font-size:clamp(42px,6vw,72px);line-height:1.02;letter-spacing:-2.8px;max-width:850px;margin:18px auto}
+.briefing-overline{font-size:11px;font-weight:800;letter-spacing:2px;color:#82a8ff}
+.briefing-copy{max-width:720px;margin:0 auto;color:#aab5c8;font-size:16px;line-height:1.8}
+.briefing-orbit{width:116px;height:116px;margin:0 auto 30px;border-radius:50%;display:grid;place-items:center;position:relative;background:radial-gradient(circle,#203b72,#0c1425 68%);border:1px solid #456cc4;box-shadow:0 0 65px #376cf455,inset 0 0 30px #4e80ff33}
+.briefing-orbit span{font-size:30px;font-weight:900;letter-spacing:-2px;color:#dce8ff}
+.briefing-orbit i,.briefing-orbit b{position:absolute;width:9px;height:9px;border-radius:50%;background:#69a0ff;box-shadow:0 0 18px #69a0ff}
+.briefing-orbit i{top:10px;left:25px}.briefing-orbit b{right:7px;bottom:30px;background:#42d9a0;box-shadow:0 0 18px #42d9a0}
+.briefing-stages{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:42px 0}
+.briefing-stages>div{display:flex;flex-direction:column;gap:8px;text-align:left;padding:22px;border:1px solid #263752;border-radius:15px;background:linear-gradient(145deg,#141f32,#0c121e)}
+.briefing-stages strong{font-size:11px;color:#75a0ff;letter-spacing:1.5px}
+.briefing-stages b{font-size:17px}.briefing-stages span{font-size:12px;line-height:1.5;color:#9ba9bf}
+.briefing-actions{display:flex;justify-content:center;align-items:center;gap:14px;flex-wrap:wrap}
+.briefing-safety{display:block;margin-top:24px;color:#72819a;font-size:11px}
+.results-reveal{animation:csResultsEnter .65s cubic-bezier(.2,.8,.2,1) both}
+.score-card-reveal{position:relative;overflow:hidden}
+.score-card-reveal:before{content:"";position:absolute;inset:-80%;background:conic-gradient(from 0deg,transparent 0 72%,#5387ff20 80%,transparent 88%);animation:csScoreSweep 5s linear infinite;pointer-events:none}
+.score-circle-animated{position:relative;animation:csScorePop .8s cubic-bezier(.16,1,.3,1) both;box-shadow:0 0 0 8px #4c7dff13,0 0 50px #477aff25}
+.leaderboard-card{margin:28px 0;padding:26px;border:1px solid #293750;border-radius:18px;background:linear-gradient(145deg,#121d30,#0b111c);text-align:left}
+.leaderboard-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:18px}
+.leaderboard-heading h2{margin:7px 0;font-size:24px}.leaderboard-heading p{color:#91a0b7;font-size:12px;line-height:1.5}
+.leaderboard-live{display:inline-flex;align-items:center;gap:7px;padding:6px 9px;border:1px solid #245d49;border-radius:20px;color:#69dfaa;font-size:9px;font-weight:900;letter-spacing:1px}
+.leaderboard-live i{width:6px;height:6px;border-radius:50%;background:#46d99b;box-shadow:0 0 10px #46d99b}
+.leaderboard-list{display:grid;gap:7px}
+.leaderboard-row{display:grid;grid-template-columns:42px 1fr auto;align-items:center;gap:12px;padding:13px 14px;border:1px solid #202d42;border-radius:10px;background:#111a29}
+.leaderboard-first{border-color:#8d7339;background:linear-gradient(90deg,#392f1c66,#111a29)}
+.leaderboard-rank{color:#91a9d1;font-size:13px;font-weight:900}.leaderboard-first .leaderboard-rank{color:#f4cf70;font-size:19px}
+.leaderboard-row strong{font-size:12px;color:#e3ebf8}.leaderboard-score{font-size:17px;font-weight:900;color:#9dbaff;font-variant-numeric:tabular-nums}
+.leaderboard-score small{font-size:9px;color:#7789a5;margin-left:2px}
+.challenge-briefing-launch{margin-top:12px}
+@keyframes csResultsEnter{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes csScorePop{0%{opacity:0;transform:scale(.72) rotate(-8deg)}70%{transform:scale(1.06)}100%{opacity:1;transform:scale(1) rotate(0)}}
+@keyframes csScoreSweep{to{transform:rotate(360deg)}}
+@media(max-width:650px){.challenge-briefing{padding:48px 0}.challenge-briefing h1{letter-spacing:-1.5px}.briefing-stages{grid-template-columns:1fr}.leaderboard-card{padding:18px}.leaderboard-heading{flex-direction:column}.briefing-copy{font-size:14px}}
+@media(prefers-reduced-motion:reduce){.results-reveal,.score-circle-animated,.score-card-reveal:before{animation:none!important}}
+
+
+/* =========================
+   CYBERSHIELD HOME HUB REDESIGN
+   ========================= */
+.hero {
+  width: min(1120px, 92%);
+  padding: 78px 0 58px;
+}
+.hero h1 {
+  margin: 24px 0 18px;
+  font-size: clamp(52px, 6.4vw, 78px);
+  letter-spacing: -4px;
+}
+.hero-description {
+  margin-bottom: 34px;
+  max-width: 700px;
+}
+.home-launch-grid {
+  width: min(920px, 100%);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  text-align: left;
+}
+.home-launch-grid .scam-centre-launch {
+  width: 100%;
+  min-height: 112px;
+  margin: 0;
+  padding: 20px;
+  border-radius: 18px;
+  background:
+    linear-gradient(135deg, rgba(53, 91, 175, .22), rgba(255,255,255,.035));
+  border-color: rgba(111, 146, 239, .28);
+  box-shadow: 0 14px 36px rgba(0,0,0,.12), inset 0 1px rgba(255,255,255,.035);
+}
+.home-launch-grid .scam-centre-launch:hover {
+  transform: translateY(-3px);
+  border-color: rgba(124, 160, 255, .72);
+  background: linear-gradient(135deg, rgba(53, 91, 175, .32), rgba(255,255,255,.055));
+  box-shadow: 0 18px 40px rgba(0,0,0,.2);
+}
+.home-launch-grid .scam-centre-launch-copy strong {
+  font-size: 15px;
+  line-height: 1.35;
+}
+.home-launch-grid .scam-centre-launch-copy small {
+  font-size: 12px;
+  line-height: 1.55;
+}
+.home-launch-grid .challenge-briefing-launch {
+  border-color: rgba(104, 142, 255, .55);
+  background: linear-gradient(135deg, rgba(63, 105, 220, .34), rgba(95, 82, 200, .12));
+}
+.home-primary-actions {
+  width: min(920px, 100%);
+  margin: 20px auto 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(220px, .8fr);
+  gap: 14px;
+  align-items: stretch;
+}
+.hero .home-assessment-button {
+  width: 100%;
+  min-height: 58px;
+  margin: 0;
+  padding: 17px 22px;
+  border: 1px solid rgba(119, 153, 255, .55);
+  border-radius: 15px;
+  background: linear-gradient(110deg, #477cff, #626eff);
+  color: #fff;
+  box-shadow: 0 12px 30px rgba(65, 105, 225, .23);
+}
+.home-history-button {
+  min-height: 58px;
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 15px;
+  background: rgba(255,255,255,.035);
+  color: #cbd6ed;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: .2s ease;
+}
+.home-history-button:hover {
+  border-color: rgba(120, 155, 255, .55);
+  background: rgba(75, 112, 210, .12);
+  transform: translateY(-2px);
+}
+.features {
+  width: min(1040px, 92%);
+  padding-bottom: 82px;
+}
+.feature-card {
+  min-height: 205px;
+}
+@media (max-width: 760px) {
+  .hero { padding: 62px 0 48px; }
+  .hero h1 { font-size: clamp(46px, 10vw, 64px); letter-spacing: -2.8px; }
+  .home-launch-grid { grid-template-columns: 1fr; gap: 12px; }
+  .home-launch-grid .scam-centre-launch { min-height: 92px; }
+  .home-primary-actions { grid-template-columns: 1fr; }
+}
+@media (max-width: 420px) {
+  .hero { width: 92%; }
+  .home-launch-grid .scam-centre-launch { padding: 15px; gap: 11px; }
+  .home-launch-grid .scam-centre-launch-icon { width: 38px; height: 38px; flex-basis: 38px; }
+}
