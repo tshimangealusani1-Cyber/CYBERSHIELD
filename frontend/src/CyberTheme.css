@@ -1,0 +1,193 @@
+/* Final visual system: original Inter typography, blue-only interface theme. */
+:root {
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  --cs-bg: #080b13;
+  --cs-surface: #111827;
+  --cs-surface-2: #172033;
+  --cs-line: rgba(116, 149, 229, .23);
+  --cs-blue: #86a5ff;
+  --cs-blue-strong: #4c7ff0;
+  --cs-blue-panel: #14213c;
+  --cs-blue-line: #547bd2;
+  --cs-blue-deep: #0c1427;
+  --cs-green: #77d6a4; /* reserved for approved status text only */
+  --cs-amber: #f0c66d;
+  --cs-red: #ed7777;
+  --cs-text: #edf2ff;
+  --cs-muted: #9aa8c1;
+  color-scheme: dark;
+}
+
+html, body, #root { background: var(--cs-bg); }
+body, button, input, textarea, select, #root .phishaware,
+#root .phishaware :is(h1,h2,h3,h4,h5,h6,p,span,small,b,strong,label,button,input,textarea,select,a,li,summary,div,section,article) {
+  font-family: var(--font-sans) !important;
+}
+#root .phishaware code, #root .phishaware pre, #root .phishaware kbd,
+#root .phishaware samp, #root .phishaware .ds-terminal, #root .phishaware .ps-terminal,
+#root .phishaware .terminal {
+  font-family: var(--font-mono) !important;
+}
+#root .phishaware {
+  color: var(--cs-text);
+  background:
+    radial-gradient(ellipse at 16% 0%, rgba(74, 117, 221, .13), transparent 42%),
+    radial-gradient(ellipse at 84% 28%, rgba(54, 88, 160, .07), transparent 35%),
+    var(--cs-bg);
+}
+#root .phishaware h1, #root .phishaware h2, #root .phishaware h3,
+#root .phishaware h4 { color: var(--cs-text); }
+#root .phishaware .gradient-text, #root .phishaware .accent-blue,
+#root .phishaware .learning-kicker, #root .phishaware .eyebrow,
+#root .phishaware .section-label, #root .phishaware .badge { color: var(--cs-blue) !important; }
+#root .phishaware .navbar {
+  background: rgba(8, 11, 19, .94) !important;
+  border-color: var(--cs-line) !important;
+}
+#root .phishaware .nav-status { color: #aab5ca !important; }
+#root .phishaware .nav-status--positive { color: var(--cs-green) !important; }
+#root .phishaware .status-dot, #root .phishaware .nav-status .status-dot {
+  background: var(--cs-blue) !important;
+  box-shadow: 0 0 10px rgba(111, 151, 255, .65) !important;
+}
+#root .phishaware .nav-status--positive .status-dot {
+  background: var(--cs-green) !important;
+  box-shadow: 0 0 10px rgba(119, 214, 164, .62) !important;
+}
+#root .phishaware .logo-mark {
+  background: linear-gradient(145deg, #7198f4, #3e6fda) !important;
+  box-shadow: 0 0 22px rgba(88, 132, 236, .24) !important;
+}
+
+/* One coherent blue environment across all dashboard modules. */
+#root .phishaware .scam-centre-launch,
+#root .phishaware .feature-card,
+#root .phishaware .achievement-card,
+#root .phishaware .home-learning-strip,
+#root .phishaware .nickname-card {
+  background: linear-gradient(145deg, rgba(21, 32, 55, .96), rgba(12, 18, 31, .97)) !important;
+  border-color: var(--cs-line) !important;
+}
+#root .phishaware .home-launch-grid .scam-centre-launch:nth-child(odd),
+#root .phishaware .home-launch-grid .scam-centre-launch:nth-child(even),
+#root .phishaware .feature-card:nth-child(odd),
+#root .phishaware .feature-card:nth-child(even) {
+  background: linear-gradient(145deg, rgba(22, 35, 62, .96), rgba(12, 19, 33, .97)) !important;
+  border: 1px solid rgba(109, 143, 218, .29) !important;
+}
+#root .phishaware .scam-centre-launch:hover,
+#root .phishaware .feature-card:hover,
+#root .phishaware .home-learning-actions button:hover {
+  border-color: rgba(126, 161, 255, .72) !important;
+  box-shadow: 0 12px 34px rgba(38, 79, 164, .18);
+}
+#root .phishaware .scam-centre-launch-icon,
+#root .phishaware .feature-icon,
+#root .phishaware .home-learning-actions span,
+#root .phishaware .scam-centre-launch-arrow {
+  color: var(--cs-blue) !important;
+  background: rgba(59, 91, 164, .22) !important;
+  border-color: rgba(126, 161, 255, .25) !important;
+}
+#root .phishaware .home-learning-strip {
+  background: linear-gradient(110deg, #142544, #101b31) !important;
+  border: 1px solid rgba(109, 143, 218, .34) !important;
+  border-left: 2px solid var(--cs-blue-line) !important;
+}
+#root .phishaware .home-learning-actions button {
+  background: #101a2d !important;
+  border-color: rgba(109, 143, 218, .28) !important;
+  color: #e7edfb !important;
+}
+#root .phishaware .home-primary-actions .start-button,
+#root .phishaware .start-button,
+#root .phishaware .home-assessment-button,
+#root .phishaware .learning-primary,
+#root .phishaware .ps-continue,
+#root .phishaware .ds-next {
+  background: linear-gradient(110deg, #477ff0, #315fc9) !important;
+  border: 1px solid rgba(130, 163, 255, .48) !important;
+  color: #fff !important;
+  box-shadow: 0 10px 26px rgba(42, 92, 191, .18) !important;
+}
+#root .phishaware .home-primary-actions .continue-button,
+#root .phishaware .home-history-button {
+  background: #151c2b !important;
+  border-color: var(--cs-line) !important;
+  color: #e4eafa !important;
+}
+#root .phishaware .achievement-card.earned {
+  background: linear-gradient(130deg, #15284a, #101a2c) !important;
+  border-color: rgba(125, 160, 255, .48) !important;
+}
+#root .phishaware .achievement-icon { color: var(--cs-blue) !important; }
+#root .phishaware .achievement-card small { color: var(--cs-green) !important; }
+#root .phishaware .learning-overview > div,
+#root .phishaware .course-card,
+#root .phishaware .lesson-card,
+#root .phishaware .leaderboard-card,
+#root .phishaware .threat-card {
+  background: linear-gradient(150deg, #142039, #0e1728) !important;
+  border-color: rgba(112, 145, 218, .25) !important;
+}
+#root .phishaware .learning-progress span,
+#root .phishaware .ps-progress-track span,
+#root .phishaware .ds-progress i {
+  background: linear-gradient(90deg, #4c7ff0, #83a8ff) !important;
+}
+#root .phishaware .learning-sync-status { color: #8998b2 !important; }
+#root .phishaware .learning-sync-status.is-saved { color: var(--cs-green) !important; }
+#root .phishaware .leaderboard-live {
+  color: var(--cs-green) !important;
+  background: rgba(16, 36, 32, .28) !important;
+  border-color: rgba(119, 214, 164, .28) !important;
+}
+#root .phishaware .leaderboard-live i { background: var(--cs-green) !important; box-shadow: 0 0 9px var(--cs-green) !important; }
+#root .phishaware .ps-mission-state.complete,
+#root .phishaware .ds-state-pill.complete {
+  color: var(--cs-green) !important;
+  border-color: rgba(119, 214, 164, .35) !important;
+  background: rgba(119, 214, 164, .07) !important;
+}
+#root .phishaware .ps-live-dot { background: var(--cs-green) !important; box-shadow: 0 0 9px var(--cs-green) !important; }
+#root .phishaware .ps-progress-track,
+#root .phishaware .ds-progress { background: rgba(94, 117, 165, .24) !important; }
+#root .phishaware .ds-start-footer button { color: var(--cs-blue) !important; }
+#root .phishaware :focus-visible { outline: 2px solid var(--cs-blue) !important; outline-offset: 3px; }
+#root .phishaware ::selection { background: rgba(111, 151, 255, .28); color: #fff; }
+
+/* Restore neutral UI text and the original Inter font; keep code blocks system-monospace. */
+#root .phishaware .nav-status:not(.nav-status--positive),
+#root .phishaware .learning-heading p,
+#root .phishaware .course-card p { color: #9eacc4; }
+#root .phishaware .ps-lab-header h1,
+#root .phishaware .ds-header h1 { letter-spacing: -.045em; }
+
+@media (prefers-reduced-motion: reduce) {
+  #root .phishaware *, #root .phishaware *::before, #root .phishaware *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+/* Keep the accent system blue-only. Green is intentionally limited to semantic status copy. */
+#root .phishaware .ds-terminal-window,
+#root .phishaware .ds-terminal-feed { color: #9bb9f5 !important; }
+#root .phishaware .ds-terminal-feed p:nth-child(3n) { color: #f0c66d !important; }
+#root .phishaware .ds-terminal-controls .ds-submit-incident { background: #214a93 !important; border-color: #547bd2 !important; }
+#root .phishaware .ds-protection-banner,
+#root .phishaware .ds-settings-heading { background: #142746 !important; border-color: rgba(116,149,229,.35) !important; }
+#root .phishaware .ds-protection-banner small,
+#root .phishaware .ds-settings-heading small { color: #9eacc4 !important; }
+#root .phishaware .lesson-feedback { color: #9bb9f5 !important; }
+#root .phishaware .mission-live-dot { background: var(--cs-green) !important; box-shadow: 0 0 9px var(--cs-green) !important; }
+
+/* Keep Shieldy clear of the persistent bottom module dock on touch screens. */
+body:has(.cyber-tab-dock) .shieldy-launch { bottom: 98px !important; }
+body:has(.cyber-tab-dock) .shieldy-panel { bottom: 158px !important; }
+@media (max-width: 560px) {
+  body:has(.cyber-tab-dock) .shieldy-launch { bottom: 82px !important; }
+  body:has(.cyber-tab-dock) .shieldy-panel { bottom: 140px !important; }
+}

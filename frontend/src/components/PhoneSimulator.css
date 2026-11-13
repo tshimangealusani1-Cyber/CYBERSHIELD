@@ -17,3 +17,312 @@
 .ps-mission-tip{background:linear-gradient(135deg,#1b2d49,#17243a);border-color:#35527d}
 .ps-continue:not(:disabled){box-shadow:0 8px 22px #386ff044}
 .ps-app-view button:focus-visible,.ps-home-screen button:focus-visible,.ps-mission-panel button:focus-visible{outline:2px solid #76a4ff;outline-offset:3px}
+
+/* Interactive browser and Wi-Fi settings panels for the isolated phone simulation */
+.ps-lab-intro{padding:12px 16px 5px;color:#68778b;font-size:11px;line-height:1.5}
+.ps-wifi-card{margin:8px 12px;padding:11px 10px;background:#fff;border:1px solid #e3e8ef;border-radius:11px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}.ps-wifi-info{display:grid;gap:4px;flex:1;min-width:130px}.ps-wifi-info b{font-size:11px}.ps-wifi-info small{font-size:9px;color:#7d8999}.ps-wifi-card button,.ps-safari-toolbar button,.ps-safari-actions button{border:1px solid #d7e0ed;border-radius:8px;padding:7px 9px;background:#edf3fc;color:#28598e;font-size:9px;font-weight:800;cursor:pointer}.ps-wifi-card button:disabled,.ps-safari-actions button:disabled{opacity:.4;cursor:not-allowed}.ps-wifi-card .ps-wifi-avoid,.ps-safari-actions .ps-wifi-avoid{background:#fff0e9;color:#a34f34;border-color:#efc7b8}
+.ps-safari-toolbar{margin:12px;padding:9px 10px;background:#edf1f6;border-radius:13px;display:flex;align-items:center;gap:7px;color:#42536b;font-size:10px}.ps-safari-toolbar span:nth-child(2){flex:1;overflow-wrap:anywhere}.ps-safari-page{margin:12px;padding:16px 14px;background:#fff;border:1px solid #e5e9ef;border-radius:13px;box-shadow:0 4px 15px #22344b0a}.ps-safari-page>small{font-size:8px;letter-spacing:1px;color:#8592a5;font-weight:800}.ps-safari-page h3{font-size:17px;margin:12px 0 6px}.ps-safari-page>p{font-size:11px;line-height:1.5;color:#68778b}.ps-safari-actions{display:grid;gap:8px;margin-top:12px}.ps-safety-note{font-size:9px!important;color:#8993a2!important;margin-top:12px}
+
+/* iOS-inspired simulated Control Centre */
+.ps-status{z-index:7;align-items:flex-start}.ps-status button{border:0;background:transparent;color:#fff;font-size:10px;font-weight:800;cursor:pointer;padding:0}.ps-control-centre{position:absolute;z-index:9;top:48px;left:10px;right:10px;padding:15px;border:1px solid #ffffff75;border-radius:22px;background:#e8eef6eF;backdrop-filter:blur(28px);box-shadow:0 16px 45px #06132680;color:#263a55}.ps-control-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.ps-control-head b{font-size:13px}.ps-control-head button{border:0;background:#fff;border-radius:99px;padding:6px 11px;color:#286bd0;font-size:10px;font-weight:800}.ps-control-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.ps-control-grid button{display:flex;align-items:center;gap:9px;padding:11px;background:#fff;border:1px solid #dce4ee;border-radius:12px;color:#52657e;text-align:left}.ps-control-grid button span{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:#e9eff7;font-size:15px}.ps-control-grid button small{font-size:10px;font-weight:800}.ps-control-grid button.active{background:#286fd4;color:#fff;border-color:#286fd4}.ps-control-grid button.active span{background:#ffffff2b;color:#fff}.ps-control-slider{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:14px;font-size:10px;font-weight:700}.ps-control-slider input{grid-column:1/-1;width:100%;accent-color:#3479e8}.ps-control-foot{border-top:1px solid #cbd7e5;margin-top:11px;padding-top:9px;color:#8291a4;font-size:8px;text-align:center}
+.ps-message-actions button:disabled{opacity:.42;cursor:not-allowed}
+
+/* ------------------------------------------------------------
+   CyberShield iPhone-class device shell — visual redesign
+   Independent training simulation; not Apple's operating system.
+------------------------------------------------------------- */
+.ps-lab-page{background:radial-gradient(ellipse at 50% 5%,#172a4d 0%,#080d18 48%,#060910 100%);}
+.ps-lab-header{max-width:1360px;margin-bottom:34px;}
+.ps-lab-header h1{font-size:clamp(30px,4.2vw,46px);letter-spacing:-1.8px;font-weight:720;}
+.ps-lab-layout{max-width:1360px;grid-template-columns:minmax(400px,1fr) minmax(300px,390px);gap:clamp(28px,5vw,76px);align-items:center;}
+.ps-device-stage{padding:10px 0 18px;}
+.ps-device{width:min(100%,390px);height: min(844px, calc(100vh - 160px));min-height:680px;max-height:844px;border:8px solid #17191e;border-radius:58px;background:#090b10;box-shadow:0 0 0 1px #ffffff24,0 0 0 3px #030407,0 36px 100px #000c,inset 0 0 0 1px #ffffff25;}
+.ps-device:before{content:"";position:absolute;z-index:12;inset:0;border-radius:49px;pointer-events:none;box-shadow:inset 0 0 0 1px #ffffff18,inset 0 0 22px #0003;}
+.ps-dynamic-island{top:13px;width:112px;height:31px;background:#020304;border:1px solid #22252a;box-shadow:0 1px 3px #0008;}
+.ps-status{height:49px;padding:14px 27px 0;font-size:12px;letter-spacing:.1px;color:#fff;text-shadow:0 1px 4px #0008;}
+.ps-lock-screen{position:relative;isolation:isolate;padding:105px 22px 26px;overflow:hidden;background:radial-gradient(ellipse at 50% 30%,#f6d6b6 0%,#d98b9b 20%,transparent 48%),radial-gradient(ellipse at 12% 72%,#5a80bd 0%,transparent 46%),radial-gradient(ellipse at 90% 78%,#a66da4 0%,transparent 42%),linear-gradient(160deg,#152d54 0%,#243e70 35%,#8c6b9d 68%,#edb7a4 100%);}
+.ps-lock-screen:before,.ps-home-screen:before{content:"";position:absolute;z-index:-1;inset:-15%;background:radial-gradient(ellipse at 50% 50%,#ffffff36 0 7%,transparent 35%),conic-gradient(from 210deg at 50% 50%,transparent 0deg,#ffffff20 65deg,transparent 125deg,#0a1e4a44 210deg,transparent 290deg);filter:blur(24px);transform:scale(1.2);}
+.ps-lock-screen>span:first-child{font-size:15px;font-weight:600;letter-spacing:.2px;text-shadow:0 2px 12px #1118;}
+.ps-lock-screen strong{font-size:clamp(82px,11vw,104px);font-weight:250;letter-spacing:-7px;line-height:1.02;text-shadow:0 4px 28px #14213d55;}
+.ps-lock-screen>small{margin-top:12px;font-size:12px;color:#fff;text-shadow:0 1px 7px #1118;}
+.ps-lock-notice{margin-top:48px;padding:15px 16px;border:1px solid #ffffff3b;border-radius:22px;background:#ffffff2c;backdrop-filter:blur(34px) saturate(1.5);box-shadow:0 10px 35px #17213b24;color:#fff;}
+.ps-lock-notice small{color:#f4f4fa;font-size:11px;}
+.ps-lock-bottom{font-size:23px;text-shadow:0 2px 10px #0008;}
+.ps-home-screen{position:relative;isolation:isolate;overflow:hidden;padding:78px 22px 30px;background:radial-gradient(ellipse at 48% 25%,#e8b7c5 0%,transparent 37%),radial-gradient(ellipse at 10% 75%,#4d74ad 0%,transparent 45%),radial-gradient(ellipse at 90% 80%,#a56ca2 0%,transparent 42%),linear-gradient(150deg,#152b50,#355b8b 48%,#b77f9b 100%);}
+.ps-home-date{margin:8px 2px 26px;font-size:12px;font-weight:600;text-shadow:0 2px 9px #0007;}
+.ps-home-date b{font-size:12px;font-weight:700;}
+.ps-app-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:23px 10px;}
+.ps-app-tile{gap:6px;min-width:0;}
+.ps-app-tile>span{width:58px;height:58px;border-radius:15px;font-size:27px;box-shadow:0 7px 16px #0004,inset 0 1px 1px #ffffff66;}
+.ps-app-tile small{font-size:10px;font-weight:550;text-shadow:0 2px 5px #000a;}
+.ps-dock{margin: auto -7px 0;padding:13px 10px;border:1px solid #ffffff42;border-radius:27px;background:#ffffff30;backdrop-filter:blur(34px) saturate(1.45);box-shadow:0 12px 32px #08132930;}
+.ps-dock button{width:53px;height:53px;border-radius:15px;box-shadow:0 5px 12px #0003,inset 0 1px 1px #ffffff6b;}
+.ps-app-view{padding-top:57px;background:#f5f5f7;color:#17181c;}
+.ps-app-top{height:58px;background:#f9f9fbeF;backdrop-filter:blur(25px);border-bottom:1px solid #dfe1e7;}
+.ps-app-top strong{font-size:15px;font-weight:700;letter-spacing:-.2px;}
+.ps-setting-row{padding:17px 18px;font-size:13px;background:#fff;}
+.ps-setting-row span{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;background:#e8edf4;}
+.ps-home-indicator{width:118px;height:5px;bottom:9px;background:#101114;}
+.ps-control-centre{top:53px;left:12px;right:12px;border-radius:30px;padding:18px;background:#e8edf2e8;backdrop-filter:blur(38px) saturate(1.4);box-shadow:0 20px 55px #0006;}
+.ps-control-grid{gap:10px;}
+.ps-control-grid button{min-height:61px;border-radius:17px;padding:10px 12px;}
+.ps-mission-panel{padding:26px;border-radius:22px;background:linear-gradient(155deg,#121d30ed,#0b111deb);border:1px solid #ffffff16;box-shadow:0 24px 70px #0005;}
+.ps-mission-panel h2{font-size:23px;letter-spacing:-.6px;}
+.ps-device-caption{font-size:9px;letter-spacing:1.6px;}
+@media(max-width:850px){.ps-lab-layout{grid-template-columns:1fr;}.ps-device{width:min(390px,94vw);height:844px;max-height:none;}.ps-mission-panel{max-width:540px;}}
+@media(max-width:480px){.ps-device{height: min(820px, calc(100svh - 145px));min-height:650px;border-radius:48px;}.ps-lock-screen{padding-top:100px;}.ps-app-grid{gap:20px 7px;}.ps-app-tile>span{width:54px;height:54px;}.ps-dock button{width:47px;height:47px;}}
+
+/* ==========================================================
+   iPhone-class device presentation — wallpaper, iconography,
+   compact mission companion and immersive device mode.
+========================================================== */
+.ps-lab-page{min-height:calc(100svh - 64px);padding:27px clamp(16px,3vw,48px) 46px;background:radial-gradient(ellipse at 48% -8%,#182d50 0%,#080e19 54%,#050910 100%);color:#f0f5ff}
+.ps-lab-header{max-width:1560px;margin:0 auto 18px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.ps-lab-header h1{font-size:clamp(28px,3vw,42px);letter-spacing:-1.6px;margin:6px 0 3px;font-weight:720}
+.ps-lab-header p{margin:0;color:#a7b7cc;font-size:13px}
+.ps-header-actions{display:flex;align-items:center;gap:9px;flex-shrink:0}
+.ps-header-actions button{border:1px solid #536c90;border-radius:9px;padding:11px 14px;background:#1a2b46;color:#ecf4ff;font-size:12px;font-weight:700;cursor:pointer}
+.ps-header-actions .ps-fullscreen-button{background:#1e63bd;border-color:#4288e5}
+.ps-header-actions button:hover{filter:brightness(1.15)}
+.ps-lab-layout{max-width:1560px;margin:auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(285px,330px);gap:clamp(20px,3vw,42px);align-items:center}
+.ps-device-stage{min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px 0 8px}
+.ps-device{position:relative;isolation:isolate;width:auto;height:min(820px,calc(100svh - 205px));min-height:630px;max-height:900px;aspect-ratio:.475;border:7px solid #171a20;border-radius:55px;background:#07090e;box-shadow:0 0 0 1px #ffffff3a,0 0 0 3px #06080d,0 32px 95px #000d,inset 0 0 0 1px #ffffff20;overflow:hidden}
+.ps-device:before{content:"";position:absolute;z-index:13;inset:0;border-radius:48px;pointer-events:none;box-shadow:inset 0 0 0 1px #ffffff1c,inset 0 0 17px #0004}
+.ps-ios-wallpaper{position:absolute;z-index:0;inset:0;width:100%;height:100%;display:block}
+.ps-dynamic-island{z-index:11;top:12px;width:112px;height:30px;border:1px solid #1b1d22;background:#020306;box-shadow:0 2px 6px #000a,0 0 0 1px #ffffff0b}
+.ps-status{z-index:10;height:47px;padding:13px 25px 0;color:#fff;font-size:12px;font-weight:700;text-shadow:0 1px 5px #06152d}
+.ps-lock-screen,.ps-home-screen{position:relative;z-index:1;background:transparent!important;isolation:isolate}
+.ps-lock-screen:before,.ps-home-screen:before{display:none}
+.ps-lock-screen{padding:99px 22px 27px;justify-content:flex-start;gap:0;color:#fff}
+.ps-lock-screen>span:first-child{font-size:14px;font-weight:650;letter-spacing:.1px}
+.ps-lock-screen strong{font-size:clamp(83px,9vh,112px);line-height:.98;letter-spacing:-6px;font-weight:250}
+.ps-lock-screen>small{margin-top:8px;font-size:11px;font-weight:600}
+.ps-lock-notice{margin-top:50px;background:rgba(244,247,255,.23);border:1px solid rgba(255,255,255,.33);border-radius:19px;padding:14px 16px;backdrop-filter:blur(34px) saturate(1.5);box-shadow:0 12px 40px #06132d35}
+.ps-lock-notice small{color:#eff3ff;font-size:10px}
+.ps-lock-bottom{position:absolute;left:50%;bottom:30px;transform:translateX(-50%);font-size:22px}
+.ps-home-screen{padding:74px 21px 29px;color:#fff}
+.ps-home-date{display:flex;justify-content:space-between;align-items:center;margin:5px 2px 26px;color:#fff;font-size:11px;font-weight:650;text-shadow:0 1px 8px #07152b99}
+.ps-home-date b{font-size:11px}
+.ps-app-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:25px 10px}
+.ps-app-tile{gap:6px;color:#fff}
+.ps-app-tile>span{width:57px;height:57px;border-radius:15px;display:grid;place-items:center;box-shadow:0 7px 17px #07132b55,inset 0 1px 0 #ffffff66;overflow:visible}
+.ps-app-tile>span .ps-app-glyph{width:31px;height:31px;filter:drop-shadow(0 1px 1px #0001)}
+.ps-app-tile small{font-size:10px;font-weight:600;color:#fff;text-shadow:0 1px 4px #04132b}
+.ps-app-tile i{right:-3px;top:-3px}
+.ps-dock{margin:auto -7px 0;padding:12px 10px;border:1px solid #ffffff48;border-radius:24px;background:rgba(246,248,255,.28);backdrop-filter:blur(34px) saturate(1.45);box-shadow:0 13px 34px #0813293b}
+.ps-dock button{width:50px;height:50px;border:0;border-radius:14px;display:grid;place-items:center;box-shadow:0 5px 13px #06142d44,inset 0 1px 0 #ffffff50}
+.ps-dock button .ps-app-glyph{width:28px;height:28px}
+.ps-app-view{position:relative;z-index:2;padding-top:55px;background:#f5f5f8;color:#191a1e}
+.ps-app-top{height:56px;background:rgba(250,250,252,.96);backdrop-filter:blur(22px);color:#15171a}
+.ps-app-top strong{font-size:15px;letter-spacing:-.2px}
+.ps-mission-panel{width:100%;max-height:calc(100svh - 165px);overflow:auto;padding:18px;border:1px solid #ffffff1a;border-radius:16px;background:linear-gradient(155deg,#14223a,#0b1423);box-shadow:0 18px 55px #0005}
+.ps-panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.ps-panel-head>div{display:grid;gap:5px}
+.ps-panel-kicker{font-size:9px;letter-spacing:1.6px;color:#8bb4ff;font-weight:850}
+.ps-panel-head small{font-size:9px;color:#8197b5;letter-spacing:.5px}
+.ps-mission-state{padding:5px 8px}
+.ps-mission-panel h2{font-size:19px;line-height:1.22;letter-spacing:-.45px;margin:15px 0 8px;color:#eef4ff}
+.ps-mission-objective{font-size:11px;line-height:1.5;color:#a9b8cc;margin:0}
+.ps-mission-progress{margin-top:15px}
+.ps-mission-progress .ps-progress-label{margin:0 0 7px;font-size:9px;color:#abbad0}
+.ps-progress-track{height:6px;background:#263750;border-radius:10px;overflow:hidden}
+.ps-progress-track span{height:100%;background:linear-gradient(90deg,#408ef5,#53d6ad);border-radius:10px}
+.ps-objective-card{margin-top:14px;padding:12px 13px;border:1px solid #304b70;border-radius:10px;background:#122440}
+.ps-objective-card>span{font-size:9px;color:#8fb8ff;font-weight:850;letter-spacing:1px}
+.ps-objective-card p{margin:6px 0 0;font-size:11px;line-height:1.45;color:#d5e1f2}
+.ps-panel-details{margin-top:10px;border:1px solid #2c405d;border-radius:9px;background:#101e33;overflow:hidden}
+.ps-panel-details summary{padding:10px 12px;color:#a9c8f7;font-size:10px;font-weight:750;cursor:pointer;list-style:none}
+.ps-panel-details summary::-webkit-details-marker{display:none}
+.ps-panel-details summary:after{content:'＋';float:right;color:#8ea6c8}
+.ps-panel-details[open] summary:after{content:'−'}
+.ps-panel-details>p{margin:0;padding:0 12px 12px;color:#acbbd0;font-size:10px;line-height:1.5}
+.ps-continue{margin-top:13px;padding:12px 14px;background:linear-gradient(110deg,#2778e8,#345fda);border-radius:9px;font-size:12px}
+.ps-continue:disabled{background:#25354c;color:#7889a3}
+.ps-continue-hint{display:block;margin-top:7px;font-size:9px;line-height:1.35;color:#8092ac;text-align:center}
+.ps-activity-details .ps-feed-item{display:grid;gap:3px;padding:8px 12px;border-top:1px solid #263a54}
+.ps-activity-details .ps-feed-item b{font-size:10px;color:#d9e5f5}
+.ps-activity-details .ps-feed-item small{font-size:9px;color:#91a2ba;line-height:1.4}
+.ps-activity-details .ps-feed-item time{font-size:8px;color:#71839f}
+.ps-reset{margin-top:10px;padding:7px 10px;border:1px solid #2c405c;border-radius:8px;background:transparent;color:#8ea3c0;font-size:10px}
+.ps-reset:hover{background:#172943;color:#eaf3ff}
+.ps-device-caption{margin-top:13px;font-size:9px;letter-spacing:1.4px;color:#8195b2}
+.ps-fullscreen-button{white-space:nowrap}
+.ps-device-focus{position:fixed;z-index:10000;inset:0;width:100vw;height:100svh;overflow:auto;padding:52px 16px 14px;background:radial-gradient(ellipse at 50% 0%,#193c72,#050912 68%)}
+.ps-device-focus .ps-lab-header{display:none}
+.ps-device-focus .ps-lab-layout{height:calc(100svh - 67px);max-width:none;display:flex;align-items:center;justify-content:center;margin:0}
+.ps-device-focus .ps-device-stage{height:100%;padding:0}
+.ps-device-focus .ps-device{height:min(91svh,1040px);min-height:0;max-height:none;aspect-ratio:.475;width:auto}
+.ps-device-focus .ps-device-caption{margin-top:7px}
+.ps-device-focus .ps-mission-panel{display:none}
+.ps-device-focus.ps-show-mission .ps-mission-panel{display:block;position:fixed;z-index:10025;top:64px;right:18px;bottom:18px;width:min(350px,calc(100vw - 36px));max-height:none}
+@media(max-width:1000px){.ps-lab-layout{grid-template-columns:minmax(0,1fr) 300px;gap:20px}.ps-device{height:min(800px,calc(100svh - 230px))}.ps-mission-panel{padding:15px}}
+@media(max-width:850px){.ps-lab-layout{grid-template-columns:1fr;gap:18px}.ps-device{height:min(830px,calc(100svh - 205px));min-height:620px}.ps-mission-panel{max-width:540px;width:100%;margin:0 auto;max-height:none}.ps-lab-header{align-items:flex-start}.ps-device-stage{padding-bottom:0}}
+@media(max-width:560px){.ps-lab-page{padding:20px 10px 32px}.ps-lab-header{flex-direction:column;align-items:flex-start;gap:12px}.ps-header-actions{width:100%}.ps-header-actions button{flex:1;padding:10px 8px;font-size:11px}.ps-device{height:min(780px,calc(100svh - 220px));min-height:590px;aspect-ratio:.465;border-width:6px;border-radius:45px}.ps-home-screen{padding:69px 16px 24px}.ps-app-grid{gap:20px 5px}.ps-app-tile>span{width:51px;height:51px;border-radius:14px}.ps-app-tile>span .ps-app-glyph{width:27px;height:27px}.ps-dock{padding:10px 7px}.ps-dock button{width:44px;height:44px}.ps-device-focus{padding:51px 4px 8px}.ps-device-focus .ps-device{height:calc(100svh - 72px);max-height:none;min-height:0;width:auto;aspect-ratio:.465}.ps-focus-toolbar{left:7px;right:7px}.ps-focus-toolbar>span{font-size:0;padding:8px}.ps-focus-toolbar button{padding:8px;font-size:10px}}
+.ps-mission-panel{max-height:calc(100svh - 165px);overflow:auto;scrollbar-width:thin;scrollbar-color:#415878 transparent}
+.ps-mission-panel::-webkit-scrollbar{width:5px}
+.ps-mission-panel::-webkit-scrollbar-thumb{background:#415878;border-radius:8px}
+@media(max-width:850px){.ps-mission-panel{max-height:none}}
+
+/* =========================================================
+   iPhone Pro Max device refinement · Blue/Green system
+========================================================= */
+.ps-lab-page {
+  --ps-blue: #8fa9f5;
+  --ps-blue-strong: #6f8fe6;
+  --ps-blue-surface: rgba(16, 27, 52, .96);
+  --ps-green: #77d3a3;
+  --ps-green-strong: #4ebd83;
+  --ps-green-surface: rgba(9, 39, 29, .94);
+  --ps-ink: #080b13;
+  background: #05070c;
+  color: #edf2fb;
+  font-family: 'Inter', 'Segoe UI', monospace;
+}
+.ps-lab-header { max-width: 1480px; }
+.ps-eyebrow, .ps-panel-kicker, .ps-objective-card > span,
+.ps-progress-label b, .ps-control-foot, .ps-device-caption {
+  font-family: 'Inter', monospace !important;
+  color: var(--ps-blue) !important;
+  letter-spacing: .12em;
+}
+.ps-lab-header h1 { font-family: 'Inter', monospace; font-weight: 800; letter-spacing: -.065em; }
+.ps-lab-header p { font-family: 'Inter', monospace; color: #a8b2c8; }
+.ps-lab-layout {
+  max-width: 1480px;
+  grid-template-columns: minmax(400px, 1fr) minmax(310px, 370px);
+  gap: clamp(22px, 3vw, 48px);
+  align-items: center;
+}
+.ps-device-stage { width: 100%; }
+.ps-device {
+  width: min(100%, 402px);
+  height: min(82svh, 874px);
+  min-height: 720px;
+  max-height: 874px;
+  aspect-ratio: 402 / 874;
+  border: 9px solid #343a43;
+  border-radius: 59px;
+  background: #05070b;
+  box-shadow: 0 34px 105px rgba(0,0,0,.68), 0 0 0 2px #111820, inset 0 0 0 2px #05070a;
+  isolation: isolate;
+}
+.ps-device::before, .ps-device::after {
+  content: '';
+  position: absolute;
+  z-index: 20;
+  width: 4px;
+  border-radius: 5px;
+  background: linear-gradient(90deg,#111820,#8a919a,#202832);
+  box-shadow: 0 0 0 1px #030609;
+}
+.ps-device::before { left: -12px; top: 145px; height: 48px; box-shadow: 0 0 0 1px #030609, 0 66px 0 -1px #444d59, 0 66px 0 0 #080c12, 0 112px 0 -1px #444d59, 0 112px 0 0 #080c12; }
+.ps-device::after { right: -12px; top: 185px; height: 82px; }
+.ps-ios-wallpaper { position: absolute; z-index: 0; inset: 0; width: 100%; height: 100%; display: block; }
+.ps-dynamic-island { z-index: 9; top: 13px; width: 112px; height: 31px; background: #020305; box-shadow: 0 0 0 1px #ffffff09; }
+.ps-status { z-index: 10; height: 46px; padding: 14px 24px 0; font-family: 'Inter', monospace; font-size: 11px; }
+.ps-lock-screen {
+  position: absolute; z-index: 2; inset: 0; height: 100%;
+  padding: 122px 20px 34px; background: transparent;
+  backdrop-filter: none;
+}
+.ps-lock-screen>span:first-child { font-family: 'Inter', monospace; font-size: 13px; font-weight: 600; }
+.ps-lock-screen strong { font-family: 'Inter', monospace; font-size: clamp(76px, 9vw, 92px); font-weight: 300; letter-spacing: -.09em; }
+.ps-lock-screen>small { margin-top: 12px; font-size: 11px; }
+.ps-lock-notice {
+  margin-top: 76px; min-height: 82px; border: 1px solid rgba(255,255,255,.23);
+  background: rgba(238,247,255,.17); box-shadow: 0 14px 38px rgba(3,18,34,.2);
+  backdrop-filter: blur(28px) saturate(1.4); border-radius: 23px;
+}
+.ps-home-screen {
+  position: absolute; z-index: 2; inset: 0; height: 100%;
+  padding: 78px 18px 34px;
+  background: transparent;
+}
+.ps-home-date { margin: 10px 4px 30px; font-family: 'Inter', monospace; font-size: 10px; text-shadow: 0 1px 6px #00132a; }
+.ps-app-grid { grid-template-columns: repeat(4, minmax(0,1fr)); gap: 22px 8px; }
+.ps-app-tile { gap: 6px; padding: 0; }
+.ps-app-tile>span {
+  width: 58px; height: 58px; border-radius: 19px;
+  box-shadow: 0 8px 20px rgba(0,0,0,.28), inset 0 1px rgba(255,255,255,.28);
+  overflow: visible;
+}
+.ps-app-tile small { font-family: 'Inter', monospace; font-size: 9px; font-weight: 500; color: #f8fbff; text-shadow: 0 1px 5px #001126; }
+.ps-app-tile:nth-child(4)>span { background: linear-gradient(135deg,#7c4be9,#dc4b85,#ffb05d) !important; }
+.ps-app-tile:nth-child(5)>span,.ps-app-tile:nth-child(6)>span { background: #101218 !important; }
+.ps-dock {
+  margin: auto -4px 3px; padding: 12px 9px; border: 1px solid rgba(255,255,255,.21);
+  border-radius: 27px; background: rgba(245,249,255,.2);
+  backdrop-filter: blur(32px) saturate(1.6); box-shadow: 0 12px 34px rgba(0,0,0,.16);
+}
+.ps-dock button { width: 53px; height: 53px; border-radius: 17px; box-shadow: inset 0 1px rgba(255,255,255,.22), 0 7px 18px #0003; }
+.ps-app-view {
+  position: absolute; z-index: 3; inset: 0; height: 100%;
+  padding: 56px 0 34px; border-radius: 49px; background: #f5f6fa;
+  font-family: 'Inter', monospace;
+}
+.ps-app-top { background: rgba(255,255,255,.94); backdrop-filter: blur(22px); }
+.ps-app-top strong, .ps-app-top b { font-family: 'Inter', monospace; }
+.ps-home-indicator { z-index: 22; bottom: 10px; width: 108px; height: 5px; background: #08090c; }
+.ps-control-centre {
+  z-index: 15; position: absolute; inset: 8px; padding: 64px 18px 30px;
+  border: 1px solid rgba(255,255,255,.32); border-radius: 48px;
+  background: rgba(16,29,49,.79); backdrop-filter: blur(38px) saturate(1.5);
+  color: #f4f8ff; box-shadow: 0 16px 45px #0006;
+}
+.ps-control-head { font-family: 'Inter', monospace; }
+.ps-control-grid button { border: 1px solid rgba(255,255,255,.16); background: rgba(255,255,255,.11); color: #eef5ff; border-radius: 18px; }
+.ps-control-grid button.active { background: #6e88d9; border-color: #b9c8ff; }
+.ps-control-slider { background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.16); }
+.ps-control-slider input { accent-color: var(--ps-green); }
+.ps-mission-panel {
+  border: 1px solid rgba(132,151,221,.38);
+  background: linear-gradient(155deg, rgba(17,27,48,.98), rgba(10,16,28,.98));
+  box-shadow: 0 24px 72px rgba(0,0,0,.42);
+  font-family: 'Inter', monospace;
+}
+.ps-mission-panel h2 { font-family: 'Inter', monospace; color: #f1f4fb; font-size: 17px; letter-spacing: -.04em; }
+.ps-objective-card { background: rgba(25,40,70,.72); border: 1px solid rgba(137,157,228,.35); }
+.ps-objective-card > span { color: #9aaaf2 !important; }
+.ps-objective-card p { font-size: 11px; line-height: 1.6; }
+.ps-progress-track { background: #182137; }
+.ps-progress-track span { background: linear-gradient(90deg,#8fa9f5,#77d3a3) !important; }
+.ps-panel-details { background: rgba(18,28,47,.82); border-color: rgba(125,146,202,.28); }
+.ps-panel-details summary { color: #9dadf0; font-family: 'Inter', monospace; }
+.ps-panel-details p { font-family: 'Inter', monospace; }
+.ps-continue { background: #6f8fe6 !important; border: 1px solid #829be5 !important; color: #05070c !important; box-shadow: none !important; font-family: 'Inter', monospace; }
+.ps-continue:disabled { background: #202b42 !important; border-color: #34425f !important; color: #7b89a8 !important; }
+.ps-reset { background: transparent; border-color: rgba(141,160,228,.35); font-family: 'Inter', monospace; }
+.ps-mission-state.complete { color: #8bd8b6 !important; border-color: #477b63 !important; background: rgba(18,66,46,.35) !important; }
+.ps-fullscreen-button { border: 1px solid #8497de; background: #142343; color: #dfe8ff; border-radius: 9px; padding: 12px 15px; font: 600 11px 'Inter', monospace; cursor: pointer; }
+.ps-header-actions { display: flex; align-items: center; gap: 9px; }
+.ps-focus-toolbar { font-family: 'Inter', monospace; }
+.ps-device-focus { background: #05070c; }
+.ps-device-focus .ps-lab-layout { display: flex; width: 100%; height: calc(100svh - 76px); justify-content: center; align-items: center; }
+.ps-device-focus .ps-device { width: min(42vw, calc((100svh - 100px) * .46)); height: min(91svh, calc(100vw * 2.17)); min-height: 0; max-height: 91svh; }
+.ps-device-focus .ps-device-stage { width: auto; }
+.ps-device-focus .ps-mission-panel { display: none; }
+.ps-device-focus.ps-show-mission .ps-mission-panel { display: block; position: fixed; z-index: 10025; top: 66px; right: 18px; bottom: 18px; width: min(370px, calc(100vw - 36px)); overflow: auto; }
+@media (max-width: 1000px) {
+  .ps-lab-layout { grid-template-columns: minmax(0,1fr) 315px; gap: 20px; }
+  .ps-device { width: min(100%, 380px); }
+}
+@media (max-width: 850px) {
+  .ps-lab-layout { grid-template-columns: 1fr; }
+  .ps-device { width: min(100%, 390px); height: min(82svh, 850px); }
+  .ps-device-focus .ps-device { width: min(52vw, calc((100svh - 90px) * .46)); }
+}
+@media (max-width: 560px) {
+  .ps-lab-page { padding: 18px 10px 32px; }
+  .ps-lab-header { gap: 12px; }
+  .ps-lab-header h1 { font-size: 24px; }
+  .ps-header-actions { width: 100%; flex-wrap: wrap; }
+  .ps-header-actions button { flex: 1; }
+  .ps-device { width: min(92vw, 390px); height: min(82svh, 830px); min-height: 610px; border-width: 7px; border-radius: 48px; }
+  .ps-app-grid { gap: 20px 4px; }
+  .ps-app-tile>span { width: 54px; height: 54px; }
+  .ps-dock button { width: 47px; height: 47px; }
+  .ps-device-focus { padding: 50px 5px 10px; }
+  .ps-device-focus .ps-device { width: min(74vw, calc((100svh - 70px) * .46)); height: min(88svh, calc(100vw * 1.92)); min-height: 0; }
+  .ps-focus-toolbar { left: 8px; right: 8px; }
+  .ps-focus-toolbar>span { display: none; }
+}

@@ -1664,5 +1664,76 @@ Keep each list to at most 4 concise items. Do not invent facts or contradict the
     }), 200
 
 
+# --------------------------------------------------
+# SHIELDY — CYBERSHIELD LEARNING ASSISTANT
+# --------------------------------------------------
+
+@app.route("/api/assistant/chat", methods=["POST"])
+@limiter.limit("20 per minute")
+def shieldy_chat():
+    payload = request.get_json(silent=True) or {}
+    message = payload.get("message", "")
+    if not isinstance(message, str) or not message.strip() or len(message) > 1200:
+        return jsonify({"success": False, "error": "Enter a question under 1,200 characters."}), 400
+
+    # Keep the conversation short and treat client history as untrusted input.
+    history = payload.get("history", [])
+    safe_history = []
+    if isinstance(history, list):
+        for item in history[-8:]:
+            if isinstance(item, dict) and item.get("role") in {"user", "assistant"} and isinstance(item.get("content"), str):
+                safe_history.append({"role": item["role"], "content": item["content"][:1200]})
+
+    question = message.strip().lower()
+    if any(term in question for term in ("otp", "one-time", "verification code", "passcode", "6-digit", "six digit")):
+        fallback = (
+            "Never share a one-time code with someone who contacts you, even if they claim to be university IT or support. "
+            "End the conversation, contact the organisation using a known official channel, and review recent sign-ins. "
+            "If you already shared the code, change the affected password from the official site, revoke unknown sessions, and report the incident."
+        )
+    elif any(term in question for term in ("link", "url", "website", "domain", "browser")):
+        fallback = (
+            "Check the complete domain, spelling, and how you reached the page. A padlock or HTTPS does not prove that a site is genuine. "
+            "Do not enter credentials from an unexpected message; navigate to the official site using a saved bookmark or address you already trust."
+        )
+    elif any(term in question for term in ("email", "sms", "message", "phishing", "sender")):
+        fallback = (
+            "Look for mismatched sender addresses, unexpected attachments, urgent threats, unusual payment requests, and links that do not match the organisation. "
+            "Do not reply or open unexpected files. Verify the request independently and report the message through the organisation's official process."
+        )
+    elif any(term in question for term in ("hint", "mission", "lab", "simulation", "phone", "desktop")):
+        fallback = (
+            "For this CyberShield lab, slow down and inspect the evidence before acting. Check the sender or domain, identify what the message is asking you to do, and look for a safer way to verify the request. "
+            "Use the mission checklist and activity log; all device, file, browser, and network actions are fictional simulations."
+        )
+    elif any(term in question for term in ("password", "account", "hacked", "compromised", "sign in", "login")):
+        fallback = (
+            "Use a unique password and multi-factor authentication, and never approve a sign-in you did not initiate. "
+            "For a suspected compromise, use the official service to reset the password, revoke unknown sessions, review recovery details, and contact the provider through a trusted channel."
+        )
+    else:
+        fallback = (
+            "A safe cybersecurity habit is to pause, inspect the sender and destination, and verify unusual requests through a contact method you already trust. "
+            "Never disclose passwords, one-time passcodes, recovery codes, or approve sign-in prompts you did not initiate. "
+            "For CyberShield labs, inspect the evidence first, make a deliberate decision, and use the activity feed to review what happened."
+        )
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        return jsonify({"success": True, "reply": fallback, "source": "fallback"}), 200
+
+    try:
+        model_name = os.getenv("GEMINI_ASSISTANT_MODEL", "gemini-3.5-flash-lite").strip() or "gemini-3.5-flash-lite"
+        client = genai.Client(api_key=api_key, http_options=types.HttpOptions(timeout=18000, retry_options=types.HttpRetryOptions(attempts=1)))
+        transcript = "\n".join(f"{m['role']}: {m['content']}" for m in safe_history)
+        prompt = f"""You are Shieldy, the friendly, professional cybersecurity learning assistant inside CyberShield, a simulated cybersecurity-awareness platform. Help learners understand phishing, social engineering, account security, safe incident response, and how to use the phone/desktop training simulations. Be concise, clear, supportive, and practical. Give hints rather than simply revealing a mission answer when the user asks for a hint. Do not claim access to the user's device, accounts, website state, or private data. Never request passwords, OTPs, recovery codes, API keys, or other secrets. Do not provide instructions for real-world malware, credential theft, exploitation, or harmful intrusion. Explain that labs are fictional and isolated. If asked about live incidents, recommend official support and trusted channels.\n\nRecent conversation:\n{transcript}\n\nLearner question: {message.strip()}\n\nAnswer in plain text, ideally 2-5 short sentences."""
+        result = client.models.generate_content(model=model_name, contents=prompt, config={"temperature": 0.35, "max_output_tokens": 450})
+        answer = (result.text or "").strip()
+        if answer:
+            return jsonify({"success": True, "reply": answer[:5000], "source": "gemini"}), 200
+    except Exception:
+        app.logger.exception("Shieldy Gemini request failed; using safe fallback.")
+    return jsonify({"success": True, "reply": fallback, "source": "fallback"}), 200
+
+
 if __name__ == "__main__":
     app.run(debug=False)

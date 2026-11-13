@@ -5,6 +5,9 @@ import PhoneSimulator from './components/PhoneSimulator'
 import DesktopSimulator from './components/DesktopSimulator'
 import LearningHub, { readAcademyProgress } from './LearningHub'
 import ThreatIntel from './ThreatIntel'
+import ShieldGlobe from './components/ShieldGlobe'
+import CyberTabDock from './components/CyberTabDock'
+import './CyberTheme.css'
 
 const API_BASE_URL = (import.meta.env.VITE_API_URL || 'http://127.0.0.1:5000').replace(/\/$/, '')
 
@@ -686,6 +689,11 @@ function App() {
     setAiLoading(false)
   }
 
+  const navigateCoreTab = (targetPage) => {
+    setPage(targetPage)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   /*
    * START ASSESSMENT
    */
@@ -994,15 +1002,16 @@ function App() {
           {leaderboardLoading ? <p>Loading rankings…</p> : leaderboardError ? <p>{leaderboardError}</p> : leaderboard.length ? <div className="leaderboard-list">{leaderboard.map((entry,index)=><div className={`leaderboard-row ${index===0?'leaderboard-first':''}`} key={`${entry.rank}-${entry.nickname}`}><span className="leaderboard-rank">{index===0?'♛':String(entry.rank).padStart(2,'0')}</span><strong>{entry.nickname}</strong><span className="leaderboard-score">{entry.score}<small>/100</small></span></div>)}</div> : <p>Be one of the first learners. Complete an assessment to appear here.</p>}
         </section>
       </main>
+      <CyberTabDock activePage="leaderboard" onSelect={navigateCoreTab} />
     </div>
   }
 
   if (page === 'academy') {
-    return <div className="phishaware"><nav className="navbar"><button className="logo logo-button" onClick={goHome}><div className="logo-mark">C</div>CYBERSHIELD</button><div className="nav-status">{studentSession?.user?.email || 'Learner workspace'}</div></nav><LearningHub onBack={goHome} token={studentSession?.token} apiBaseUrl={API_BASE_URL} /></div>
+    return <div className="phishaware"><nav className="navbar"><button className="logo logo-button" onClick={goHome}><div className="logo-mark">C</div>CYBERSHIELD</button><div className="nav-status nav-status--positive">{studentSession?.user?.email || 'Learner workspace'}</div></nav><LearningHub onBack={goHome} token={studentSession?.token} apiBaseUrl={API_BASE_URL} /><CyberTabDock activePage="academy" onSelect={navigateCoreTab} /></div>
   }
 
   if (page === 'threat-intel') {
-    return <div className="phishaware"><nav className="navbar"><button className="logo logo-button" onClick={goHome}><div className="logo-mark">C</div>CYBERSHIELD</button><div className="nav-status">SECURITY BRIEFING ROOM</div></nav><ThreatIntel onBack={goHome} /></div>
+    return <div className="phishaware"><nav className="navbar"><button className="logo logo-button" onClick={goHome}><div className="logo-mark">C</div>CYBERSHIELD</button><div className="nav-status">SECURITY BRIEFING ROOM</div></nav><ThreatIntel onBack={goHome} /><CyberTabDock activePage="threat-intel" onSelect={navigateCoreTab} /></div>
   }
 
   if (page === 'achievements') {
@@ -1016,7 +1025,7 @@ function App() {
       {icon:'★',title:'Academy Graduate',detail:'Complete all three learning paths',earned:completedPaths>=3},
       {icon:'⬡',title:'Assessment Ready',detail:'Complete the CyberShield assessment',earned:assessmentHistory.length > 0},
     ]
-    return <div className="phishaware"><nav className="navbar"><button className="logo logo-button" onClick={goHome}><div className="logo-mark">C</div>CYBERSHIELD</button><div className="nav-status">ACHIEVEMENTS</div></nav><main className="learning-shell"><button className="learning-back" onClick={goHome}>← Dashboard</button><header className="learning-heading"><span className="learning-kicker">YOUR SECURITY JOURNEY</span><h1>Progress worth protecting.</h1><p>Earn recognition by building practical security habits and completing learning activities.</p></header><div className="learning-overview"><div><strong>{completedLessons}</strong><span>Lessons completed</span></div><div><strong>{completedPaths}/3</strong><span>Learning paths completed</span></div><div><strong>{awards.filter(a=>a.earned).length}/{awards.length}</strong><span>Achievements unlocked</span></div></div><div className="achievement-grid">{awards.map(a=><article className={`achievement-card ${a.earned?'earned':''}`} key={a.title}><span className="achievement-icon">{a.earned?a.icon:'🔒'}</span><div><b>{a.title}</b><p>{a.detail}</p><small>{a.earned?'UNLOCKED':'NOT YET EARNED'}</small></div></article>)}</div><button className="learning-primary" onClick={()=>setPage('academy')}>Continue learning →</button></main></div>
+    return <div className="phishaware"><nav className="navbar"><button className="logo logo-button" onClick={goHome}><div className="logo-mark">C</div>CYBERSHIELD</button><div className="nav-status">ACHIEVEMENTS</div></nav><main className="learning-shell"><button className="learning-back" onClick={goHome}>← Dashboard</button><header className="learning-heading"><span className="learning-kicker">YOUR SECURITY JOURNEY</span><h1>Progress worth protecting.</h1><p>Earn recognition by building practical security habits and completing learning activities.</p></header><div className="learning-overview"><div><strong>{completedLessons}</strong><span>Lessons completed</span></div><div><strong>{completedPaths}/3</strong><span>Learning paths completed</span></div><div><strong>{awards.filter(a=>a.earned).length}/{awards.length}</strong><span>Achievements unlocked</span></div></div><div className="achievement-grid">{awards.map(a=><article className={`achievement-card ${a.earned?'earned':''}`} key={a.title}><span className="achievement-icon">{a.earned?a.icon:'🔒'}</span><div><b>{a.title}</b><p>{a.detail}</p><small>{a.earned?'UNLOCKED':'NOT YET EARNED'}</small></div></article>)}</div><button className="learning-primary" onClick={()=>setPage('academy')}>Continue learning →</button></main><CyberTabDock activePage="achievements" onSelect={navigateCoreTab} /></div>
   }
 
   if (page === 'home') {
@@ -1035,7 +1044,7 @@ function App() {
           </button>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <div className="nav-status"><span className="status-dot"></span>{studentSession.user?.email || 'Signed in'}</div>
+            <div className="nav-status nav-status--positive"><span className="status-dot"></span>{studentSession.user?.email || 'Signed in'}</div>
             <button type="button" className="mission-back-button" onClick={handleStudentLogout}>Sign out</button>
           </div>
         </nav>
@@ -1045,6 +1054,7 @@ function App() {
             <div className="badge">
               AI-POWERED SECURITY AWARENESS
             </div>
+            <ShieldGlobe />
 
             <h1>
               Think before
@@ -1174,6 +1184,7 @@ Your decisions are evaluated against practical phishing-awareness criteria.
           </section>
         </main>
 
+        <CyberTabDock activePage="" onSelect={navigateCoreTab} />
         <footer className="footer">
           CYBERSHIELD · Security Awareness
           Assessment
@@ -1200,9 +1211,10 @@ Your decisions are evaluated against practical phishing-awareness criteria.
             <div className="logo-mark">C</div>
             CYBERSHIELD
           </button>
-          <div className="nav-status"><span className="status-dot"></span> Isolated training environment</div>
+          <div className="nav-status nav-status--positive"><span className="status-dot"></span> Isolated training environment</div>
         </nav>
         <PhoneSimulator onBack={goHome} />
+        <CyberTabDock activePage="phone-lab" onSelect={navigateCoreTab} />
       </div>
     )
   }
@@ -1215,9 +1227,10 @@ Your decisions are evaluated against practical phishing-awareness criteria.
             <div className="logo-mark">C</div>
             CYBERSHIELD
           </button>
-          <div className="nav-status"><span className="status-dot"></span> Isolated training environment</div>
+          <div className="nav-status nav-status--positive"><span className="status-dot"></span> Isolated training environment</div>
         </nav>
         <DesktopSimulator onBack={goHome} />
+        <CyberTabDock activePage="desktop-lab" onSelect={navigateCoreTab} />
       </div>
     )
   }

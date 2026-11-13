@@ -4,7 +4,7 @@
 
 :root {
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+  --font-mono: 'Inter', 'SFMono-Regular', Consolas, monospace;
   font-family: var(--font-sans);
 
   color: #f5f7ff;
@@ -2695,3 +2695,168 @@ button {
 .nickname-card .nickname-error { margin:14px 0 0; padding:11px 13px; border:1px solid rgba(255,105,105,.25); border-radius:10px; color:#ffaaaa; background:rgba(120,25,35,.16); font-size:13px; }
 .nickname-card .continue-button { width:100%; min-height:54px; margin-top:26px; border-radius:13px; font-size:14px; font-weight:750; }
 @media(max-width:600px) { .nickname-screen .navbar { height:72px; } .nickname-shell { min-height:calc(100vh - 72px); padding-top:54px; } .nickname-card { padding:30px 22px; border-radius:20px; } .nickname-card h1 { letter-spacing:-1.3px; } .nickname-card .auth-copy { font-size:14px; margin-bottom:26px; } }
+
+
+/* =========================================================
+   CYBERSHIELD BLUE / GREEN DESIGN SYSTEM
+   Inspired by technical deployment dashboards and SOC tools.
+========================================================= */
+:root {
+  --cs-bg: #070a12;
+  --cs-surface: #0d1422;
+  --cs-surface-2: #111c2e;
+  --cs-line: rgba(142, 166, 211, .20);
+  --cs-blue: #82a8ff;
+  --cs-blue-strong: #5d8fff;
+  --cs-blue-soft: rgba(104, 145, 255, .14);
+  --cs-green: #73dca8;
+  --cs-green-strong: #39c987;
+  --cs-green-soft: rgba(83, 213, 151, .13);
+  --cs-amber: #ffd166;
+  --cs-red: #ff7777;
+  --cs-text: #edf3ff;
+  --cs-muted: #9aa9c2;
+  --font-sans: 'Inter', 'Segoe UI', Arial, sans-serif;
+  --font-mono: 'SFMono-Regular', 'Inter', 'SFMono-Regular', Consolas, monospace;
+  color-scheme: dark;
+}
+html, body { background-color: var(--cs-bg); }
+body, button, input, textarea, select { font-family: var(--font-sans); }
+code, pre, kbd, samp, .terminal, .ds-terminal, .ps-terminal,
+.nav-status, .eyebrow, .badge, .section-label, .counter { font-family: var(--font-mono); }
+::selection { background: rgba(115, 220, 168, .28); color: #fff; }
+:focus-visible { outline: 2px solid var(--cs-green) !important; outline-offset: 3px; }
+
+/* Shared accent treatment across the full product */
+.phishaware {
+  background:
+    radial-gradient(ellipse at 12% 0%, rgba(91, 139, 255, .12), transparent 38%),
+    radial-gradient(ellipse at 88% 24%, rgba(68, 205, 143, .075), transparent 34%),
+    #070a12;
+  color: var(--cs-text);
+}
+.phishaware h1, .phishaware h2, .phishaware h3 { color: var(--cs-text); }
+.phishaware h1 span, .gradient-text, .accent-blue { color: var(--cs-blue) !important; }
+.accent-green, .status-success { color: var(--cs-green) !important; }
+.logo-mark { background: linear-gradient(145deg, var(--cs-blue), #4775e8) !important; box-shadow: 0 0 24px rgba(93,143,255,.22); }
+.status-dot, .nav-status .status-dot { background: var(--cs-green) !important; box-shadow: 0 0 12px rgba(115,220,168,.7); }
+.navbar { border-color: var(--cs-line) !important; background: rgba(7,10,18,.84) !important; }
+.nav-status { color: var(--cs-green) !important; letter-spacing: .025em; }
+button:not(.ps-app-tile):not(.ps-dock button):not(.ds-desktop-icon) { transition: border-color .18s ease, background .18s ease, transform .18s ease, box-shadow .18s ease; }
+.start-button, .home-assessment-button, .ps-continue, .ds-next {
+  background: linear-gradient(110deg, #477ff0, #2b9d83) !important;
+  border: 1px solid rgba(130,168,255,.42) !important;
+  color: #fff !important;
+  box-shadow: 0 10px 30px rgba(61,132,190,.18);
+}
+.start-button:hover, .home-assessment-button:hover, .ps-continue:not(:disabled):hover, .ds-next:not(:disabled):hover {
+  box-shadow: 0 12px 34px rgba(77,164,153,.24); transform: translateY(-1px);
+}
+button:disabled { filter: saturate(.45); }
+.feature-card, .assessment-card, .history-card, .dashboard-card, .scam-centre-launch {
+  border-color: var(--cs-line) !important;
+}
+.feature-icon { color: var(--cs-green) !important; }
+.scam-centre-launch:hover, .feature-card:hover { border-color: rgba(115,220,168,.48) !important; }
+
+/* Technical labels and status language */
+.ps-eyebrow, .ps-panel-kicker, .ps-objective-card > span, .ds-kicker,
+.ds-mission-heading > span, .ds-progress-label b, .ps-progress-label b {
+  color: var(--cs-blue) !important; font-family: var(--font-mono) !important;
+  letter-spacing: .12em !important;
+}
+.ps-mission-state.complete, .ds-state-pill.complete {
+  color: var(--cs-green) !important; border-color: rgba(115,220,168,.42) !important;
+  background: var(--cs-green-soft) !important;
+}
+.ps-progress-track span, .ds-progress i {
+  background: linear-gradient(90deg, var(--cs-blue), var(--cs-green)) !important;
+}
+.ps-objective-card, .ps-panel-details, .ds-panel-details, .ds-objective-list {
+  border-color: var(--cs-line) !important;
+}
+.ps-live-dot { background: var(--cs-green) !important; box-shadow: 0 0 10px var(--cs-green); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
+
+/* =========================================================
+   CYBERSHIELD · BLUE / GREEN DEPLOYMENT IDENTITY
+   Based on the user's Deeponaut-style technical references.
+========================================================= */
+:root {
+  --cs-bg: #05070c;
+  --cs-surface: #0a0e17;
+  --cs-surface-2: #101621;
+  --cs-line: rgba(131,151,198,.22);
+  --cs-blue: #8fa9f5;
+  --cs-blue-strong: #6f8fe6;
+  --cs-blue-panel: #101b34;
+  --cs-blue-line: #829be5;
+  --cs-green: #77d3a3;
+  --cs-green-strong: #4ebd83;
+  --cs-green-panel: #09271d;
+  --cs-green-line: #69c995;
+  --cs-amber: #f5d36e;
+  --cs-red: #ed7771;
+  --cs-text: #eef2fb;
+  --cs-muted: #9ba7bc;
+  --font-sans: 'Inter', 'Segoe UI', 'SFMono-Regular', Consolas, monospace;
+  --font-mono: 'Inter', 'Segoe UI', 'SFMono-Regular', Consolas, monospace;
+  color-scheme: dark;
+}
+html, body { background: var(--cs-bg); }
+body, button, input, textarea, select, h1, h2, h3, h4, .phishaware, .phishaware * {
+  font-family: 'Inter', 'Segoe UI', 'SFMono-Regular', Consolas, monospace !important;
+}
+.phishaware {
+  color: var(--cs-text);
+  background: var(--cs-bg);
+}
+.phishaware h1,.phishaware h2,.phishaware h3 { color: var(--cs-text); }
+.gradient-text,.accent-blue,.phishaware h1 span { color: var(--cs-blue) !important; background: none !important; -webkit-text-fill-color: currentColor !important; }
+.accent-green,.status-success { color: var(--cs-green) !important; }
+.learning-kicker,.eyebrow,.section-label,.badge { color: var(--cs-blue); font-family: 'Inter',monospace !important; letter-spacing: .12em; }
+.logo-mark { background: var(--cs-blue-strong) !important; box-shadow: 0 0 24px rgba(120,145,223,.22) !important; }
+.status-dot,.nav-status .status-dot { background: var(--cs-green) !important; box-shadow: 0 0 11px rgba(139,216,182,.7) !important; }
+.navbar { border-color: var(--cs-line) !important; background: rgba(8,11,19,.92) !important; }
+.nav-status { color: var(--cs-green) !important; }
+.scam-centre-launch,.feature-card,.achievement-card,.home-learning-strip,.nickname-card { background: rgba(20,26,40,.84) !important; border-color: var(--cs-line) !important; }
+.home-launch-grid .scam-centre-launch:nth-child(odd) { border: 1px solid var(--cs-blue-line) !important; border-left: 3px solid var(--cs-blue-line) !important; background: var(--cs-blue-panel) !important; }
+.home-launch-grid .scam-centre-launch:nth-child(even) { border: 1px solid var(--cs-green-line) !important; border-left: 3px solid var(--cs-green-line) !important; background: var(--cs-green-panel) !important; }
+.scam-centre-launch-copy strong { color: #edf2fb !important; }
+.scam-centre-launch-copy small { color: #aab6cc !important; }
+.scam-centre-launch-icon { color: var(--cs-blue) !important; background: rgba(55,77,139,.35) !important; border: 1px solid rgba(145,164,233,.22); }
+.home-learning-strip { background: #101722 !important; border: 1px solid var(--cs-blue-line) !important; border-left: 3px solid var(--cs-green-line) !important; }
+.home-learning-actions button { background: rgba(10,15,25,.65) !important; border-color: rgba(129,147,197,.3) !important; color: #eaf0fb !important; }
+.home-learning-actions button:hover { border-color: var(--cs-green) !important; }
+.home-learning-actions span { color: var(--cs-green) !important; }
+.home-primary-actions .start-button,.start-button,.home-assessment-button {
+  background: var(--cs-blue-strong) !important; border: 1px solid var(--cs-blue-line) !important; color: #05070c !important; box-shadow: none !important;
+}
+.home-primary-actions .continue-button { background: #141a28 !important; border-color: var(--cs-line) !important; color: #e7edf8 !important; }
+.feature-card:nth-child(odd) .feature-icon { color: var(--cs-blue) !important; }
+.feature-card:nth-child(even) .feature-icon { color: var(--cs-green) !important; }
+.achievement-card.earned { background: linear-gradient(120deg,rgba(12,43,33,.76),rgba(20,26,40,.84)) !important; border-color: rgba(139,216,182,.36) !important; }
+.feature-card:hover,.scam-centre-launch:hover { border-color: rgba(139,216,182,.5) !important; }
+:focus-visible { outline: 2px solid var(--cs-green) !important; outline-offset: 3px; }
+::selection { background: rgba(139,216,182,.28); color: #fff; }
+@media (prefers-reduced-motion: reduce) { *,*::before,*::after { animation-duration:.01ms !important; transition-duration:.01ms !important; scroll-behavior:auto !important; } }
+
+/* Lab stages need more horizontal room than the learning dashboard. */
+#root:has(.ps-lab-page), #root:has(.ds-page) { width: 100%; max-width: 1640px; }
+
+
+/* Deep Blue / Forest Green environment styling (no pastel gradients). */
+.home-launch-grid .scam-centre-launch:nth-child(odd) .scam-centre-launch-icon,
+.feature-card:nth-child(odd) .feature-icon { color: var(--cs-blue) !important; background: rgba(41,65,125,.34) !important; border: 1px solid rgba(130,155,229,.35); }
+.home-launch-grid .scam-centre-launch:nth-child(even) .scam-centre-launch-icon,
+.feature-card:nth-child(even) .feature-icon { color: var(--cs-green) !important; background: rgba(22,83,57,.28) !important; border: 1px solid rgba(105,201,149,.34); }
+.feature-card:nth-child(odd) { background: var(--cs-blue-panel) !important; border-color: rgba(130,155,229,.42) !important; }
+.feature-card:nth-child(even) { background: var(--cs-green-panel) !important; border-color: rgba(105,201,149,.42) !important; }
+.feature-card h3 { color: #f2f5fb !important; }
+.feature-card p { color: #aab5c9 !important; }
+.home-primary-actions .start-button:hover,.start-button:hover { background: #9bb2ff !important; }
+.status-warning,.warning-text { color: var(--cs-amber) !important; }
+.status-danger,.danger-text { color: var(--cs-red) !important; }

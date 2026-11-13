@@ -13,7 +13,7 @@
 
   --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --heading: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+  --mono: 'SFMono-Regular', Consolas, monospace;
 
   font: 18px/145% var(--sans);
   letter-spacing: 0.18px;
@@ -114,3 +114,17 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+
+/* CyberShield technical palette */
+:root { --cs-blue:#82a8ff; --cs-green:#73dca8; --cs-amber:#ffd166; --cs-bg:#070a12; --cs-surface:#0d1422; --cs-line:rgba(142,166,211,.20); }
+::selection { background:rgba(115,220,168,.28); color:#fff; }
+
+/* Original CyberShield typography: Inter with platform sans-serif fallbacks. */
+:root {
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'SFMono-Regular', Consolas, monospace;
+  font-family: var(--font-sans);
+}
+body, button, input, textarea, select { font-family: var(--font-sans); }
+h1, h2, h3, h4 { font-family: var(--font-sans); }

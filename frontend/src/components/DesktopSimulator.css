@@ -17,3 +17,383 @@
 @keyframes dsWindowIn{from{opacity:0;transform:translateY(8px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
 @media(max-width:900px){.ds-layout{grid-template-columns:1fr}.ds-panel{max-width:620px;width:100%;margin:auto}.ds-screen{min-height:520px}}
 @media(max-width:520px){.ds-page{padding:24px 12px}.ds-screen{min-height:500px;border-width:6px;border-radius:13px}.ds-desktop-icons{grid-template-columns:repeat(3,minmax(65px,1fr));padding:18px 10px;gap:12px}.ds-app-window{width:96%;min-height:400px}.ds-window-body{padding:10px}}
+
+/* Windows 11 training shell: modern Fluent-inspired desktop and glass taskbar */
+.ds-page{background:radial-gradient(ellipse at 48% 8%,#173b6b 0,transparent 46%),#080e19;padding-top:32px}
+.ds-monitor-frame{padding:7px 7px 12px;border-radius:22px;background:linear-gradient(145deg,#424d60,#171e2a 45%,#3b4657);box-shadow:0 28px 90px #000a;border:1px solid #74809566}
+.ds-screen{min-height:640px;border:1px solid #ffffff38;border-radius:14px;background:radial-gradient(ellipse at 50% 20%,#4677a5 0,#244b75 42%,#102a49 100%);box-shadow:inset 0 0 0 1px #ffffff1c;overflow:hidden}
+.ds-topbar{background:#0c1727bb;height:34px;font-size:9px;letter-spacing:.5px;backdrop-filter:blur(18px)}
+.ds-desktop-content{min-height:558px;padding:26px 25px 58px;position:relative;background:radial-gradient(circle at 68% 72%,#6a9fd122,transparent 28%),linear-gradient(135deg,#214d79aa,#17375dbb)}
+.ds-desktop-welcome{display:flex;flex-direction:column;gap:5px;color:#fff;text-shadow:0 2px 12px #0007;margin:10px 0 26px 5px}.ds-desktop-welcome b{font-size:26px;letter-spacing:-.8px}.ds-desktop-welcome span{font-size:11px;color:#d0e3f6}
+.ds-desktop-icons{padding:0;display:grid;grid-template-columns:repeat(3,minmax(82px,104px));gap:13px 12px;align-content:start}
+.ds-desktop-icons button{min-height:85px;padding:10px 7px;border:1px solid transparent;border-radius:9px;background:#ffffff05;font-size:10px;text-shadow:0 1px 6px #0009;gap:7px}
+.ds-desktop-icons button span{font-size:29px}.ds-desktop-icons button:hover,.ds-desktop-icons button:focus-visible{background:#ffffff20;border-color:#ffffff35;outline:0}
+.ds-desktop-hint{position:absolute;bottom:62px;left:24px;color:#d6e7f6a8;font-size:9px}
+.ds-monitor-stand{width:25%;height:17px;margin:0 auto;background:linear-gradient(90deg,#1d2634,#596475,#1c2532);clip-path:polygon(18% 0,82% 0,100% 100%,0 100%)}
+.ds-app-window{min-height:540px;margin:12px auto 62px;width:min(95%,820px);border:1px solid #ffffff77;border-radius:13px;background:#f4f7fc;box-shadow:0 25px 65px #06101f88;overflow:hidden}
+.ds-window-title{height:43px;padding:0 0 0 15px;background:#f5f7fbdc;backdrop-filter:blur(20px);font-size:11px;color:#22354d}
+.ds-window-title>div:first-child{display:flex;align-items:center;gap:9px}.ds-window-title>div:first-child span{font-size:18px}.ds-window-controls{display:flex;height:100%}.ds-window-controls button{height:100%;width:42px;border:0;background:transparent;color:#30435c;font-size:18px;cursor:pointer}.ds-window-controls button:hover{background:#e1e8f1}.ds-window-controls button:last-child:hover{background:#d94848;color:#fff}
+.ds-app-content{padding:16px 18px 20px;min-height:490px;background:linear-gradient(180deg,#f7f9fc,#eef2f8);color:#24354a;font-size:11px}
+.ds-app-toolbar{display:flex;justify-content:space-between;padding:3px 4px 13px;color:#32465f}.ds-app-toolbar strong{font-size:15px}.ds-app-toolbar span{color:#71839b}
+.ds-mail-list{display:grid;gap:8px}.ds-mail-item{padding:13px 14px;border-radius:9px;background:#fff;border:1px solid #e0e6ef;box-shadow:0 2px 8px #1b355008}.ds-mail-item b,.ds-mail-item span,.ds-mail-item small{display:block}.ds-mail-item b{font-size:12px}.ds-mail-item span{margin-top:5px;font-weight:600}.ds-mail-item small{margin-top:5px;color:#71839a;font-size:10px}.ds-mail-item p{font-size:11px;line-height:1.5;color:#5e7087}.ds-mail-item.flagged{border-left:4px solid #e4a044}.ds-mail-item em{font-style:normal;margin-left:7px;background:#fff1d7;color:#9a681c;border-radius:5px;padding:3px 6px;font-size:9px}
+.ds-button-row{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}.ds-button-row button,.ds-primary-action{padding:8px 11px;border:1px solid #cbd7e6;border-radius:7px;background:#eaf1fa;color:#28517e;font-size:10px;font-weight:700;cursor:pointer}.ds-button-row button:hover,.ds-primary-action:hover{filter:brightness(.97)}.ds-button-row button:disabled,.ds-primary-action:disabled{opacity:.42;cursor:not-allowed}.ds-button-row button.is-done{background:#e0f5ea;border-color:#a8ddbf;color:#217c4b}.ds-button-row .danger-action{background:#246cce;border-color:#246cce;color:#fff}.ds-button-row .danger-action:disabled{background:#aab8ca;border-color:#aab8ca;color:#fff}
+.ds-status-note{padding:10px 12px;margin:13px 0 0;background:#e9f0f8;border-radius:7px;color:#60738d;font-size:10px;line-height:1.5}
+.ds-browser-address{display:flex;align-items:center;gap:8px;padding:9px 11px;background:#fff;border:1px solid #dce4ee;border-radius:8px}.ds-browser-address code{font-size:10px;color:#3f566f;flex:1;overflow-wrap:anywhere}.ds-browser-address button{border:0;border-radius:6px;padding:7px 9px;background:#246cce;color:#fff;font-size:10px;cursor:pointer}.ds-browser-page{max-width:550px;margin:15px auto;padding:24px 28px;border:1px solid #e0e6ef;border-radius:11px;background:#fff;box-shadow:0 6px 24px #203c5d0c}.ds-browser-brand{font-size:14px;font-weight:900;color:#263d5b;letter-spacing:1px}.ds-browser-brand small{display:block;font-size:8px;font-weight:600;color:#7c8da1;letter-spacing:2px}.ds-browser-alert{margin-top:20px;color:#a36a20;font-size:8px;letter-spacing:1.2px;font-weight:800}.ds-browser-page h2{font-size:21px;margin:8px 0;color:#243850}.ds-browser-page p{font-size:11px;color:#66788d;line-height:1.6}.ds-disabled-form{display:grid;gap:6px;margin:15px 0}.ds-disabled-form label{font-size:9px;font-weight:700;color:#52657d}.ds-disabled-form input{border:1px solid #dce4ee;border-radius:6px;padding:9px;background:#f4f6f8}.ds-disabled-form button{padding:9px;background:#b7c1cf;color:white;border:0;border-radius:6px}.ds-risk-box{padding:10px 12px;background:#fff5e5;border:1px solid #f0d9b2;border-radius:7px;color:#78531e}.ds-risk-box b{font-size:10px}.ds-risk-box ul{margin:6px 0 0;padding-left:17px;line-height:1.7;font-size:10px}.ds-primary-action{margin-top:12px;background:#246cce;border-color:#246cce;color:#fff;padding:9px 14px}
+.ds-pathbar{padding:10px 12px;background:#fff;border:1px solid #e0e6ef;border-radius:7px;color:#71839a}.ds-file-row{display:flex;align-items:center;gap:12px;padding:13px 12px;background:#fff;border:1px solid #e1e7ef;border-radius:8px;margin-top:8px}.ds-file-row>span:first-child{font-size:23px}.ds-file-row>div{display:grid;gap:4px;flex:1}.ds-file-row b{font-size:11px}.ds-file-row small{color:#7b8ba0;font-size:9px}.ds-file-warning{font-size:9px;font-weight:800;color:#b47722}.ds-file-row.quarantined{background:#e8f6ed;border-color:#b8e1c8}.ds-file-row.quarantined .ds-file-warning{color:#23804c}.ds-file-actions{margin-top:15px}
+.ds-protection-banner,.ds-settings-heading{display:flex;align-items:center;gap:13px;padding:14px;border-radius:10px;background:#e4f3eb;border:1px solid #c7e6d4}.ds-protection-banner>span,.ds-settings-heading>span{font-size:31px}.ds-protection-banner div,.ds-settings-heading div{display:grid;gap:4px}.ds-protection-banner b,.ds-settings-heading b{font-size:13px}.ds-protection-banner small,.ds-settings-heading small{font-size:10px;color:#678273}.ds-protection-card,.ds-network-card{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#fff;border:1px solid #e0e6ef;border-radius:8px;padding:13px;margin-top:9px}.ds-protection-card>div,.ds-network-card>div{display:grid;gap:5px}.ds-protection-card b,.ds-network-card b{font-size:11px}.ds-protection-card small,.ds-network-card small{font-size:9px;color:#72849a}.ds-status-pill{border-radius:99px;background:#fff0d9;color:#98651b;padding:5px 8px;font-size:9px}.ds-green{color:#20834d;font-size:10px;font-weight:800}.ds-amber{color:#a36b1d;font-weight:800;font-size:9px}
+.ds-terminal-window{min-height:490px;background:#071322;padding:19px;color:#b4e5c7;font:10px/1.8 Consolas,monospace}.ds-terminal-title{padding-bottom:12px;border-bottom:1px solid #24405b;color:#7ab8ff;font-weight:800;letter-spacing:.7px}.ds-terminal-feed{padding:16px 0;color:#a8d8bb}.ds-terminal-feed p{margin:2px 0}.ds-terminal-feed p:nth-child(3n){color:#f1c36e}.ds-terminal-controls{display:flex;gap:7px;flex-wrap:wrap}.ds-terminal-controls button{border:1px solid #2e5879;border-radius:6px;padding:8px 10px;background:#12344e;color:#bfe2ff;font:10px system-ui;font-weight:700;cursor:pointer}.ds-terminal-controls button:disabled{opacity:.4;cursor:not-allowed}.ds-terminal-controls .ds-submit-incident{background:#176b4b;border-color:#2b9a70}.ds-terminal-note{color:#6d90a9;font-size:9px;margin-top:15px}
+.ds-welcome{gap:12px;background:radial-gradient(circle at 50% 40%,#fff 0,#f4f7fc 65%);color:#30435b}.ds-welcome h2{font-size:20px}.ds-welcome p{color:#6e8098}.ds-welcome button{border:0;background:#286fd2;color:#fff;padding:10px 14px;border-radius:7px;cursor:pointer}
+.ds-start-menu,.ds-quick-panel,.ds-notice-panel{position:absolute;z-index:8;bottom:53px;background:#edf3fbeF;backdrop-filter:blur(26px);border:1px solid #ffffffa8;border-radius:13px;box-shadow:0 16px 50px #07152699;color:#253950}.ds-start-menu{left:50%;transform:translateX(-50%);width:min(420px,92%);padding:17px}.ds-start-menu>input{width:100%;padding:10px 12px;border:1px solid #c8d7e8;border-radius:7px;background:#fff;color:#253950;font-size:11px}.ds-start-heading{margin:16px 0 9px;font-size:10px;font-weight:800}.ds-start-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.ds-start-grid button{display:grid;justify-items:center;gap:5px;padding:10px 4px;background:transparent;border:0;border-radius:8px;color:#30445c;font-size:9px;cursor:pointer}.ds-start-grid button:hover{background:#dce8f6}.ds-start-grid span{font-size:23px}.ds-start-footer{border-top:1px solid #cdd9e7;margin-top:13px;padding-top:12px;display:flex;justify-content:space-between;align-items:center;font-size:9px}.ds-start-footer button{border:0;background:transparent;color:#286ac2;cursor:pointer;font-size:9px}.ds-quick-panel{right:10px;width:260px;padding:15px}.ds-quick-panel>b,.ds-notice-panel>b{font-size:12px}.ds-quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:12px 0}.ds-quick-grid button{border:0;border-radius:8px;padding:12px 7px;background:#dce8f5;color:#304963;text-align:left;font-size:10px;cursor:pointer}.ds-quick-grid small{display:block;margin:4px 0 0 20px;color:#71839a;font-size:8px}.ds-quick-footer{border-top:1px solid #d0dce9;padding-top:10px;font-size:9px;color:#70829a}.ds-notice-panel{right:10px;width:245px;padding:15px}.ds-notice-panel p{padding:9px;margin:8px 0;background:#fff;border-radius:7px;font-size:10px}.ds-notice-panel small{color:#71839a;font-size:9px}
+.ds-taskbar{height:49px;background:#111d2ce8;backdrop-filter:blur(25px);border-top:1px solid #ffffff20;gap:5px;justify-content:center}.ds-taskbar-start,.ds-taskbar-search,.ds-taskbar-pins button,.ds-tray button{border:0;background:transparent;color:#edf5ff;cursor:pointer;border-radius:6px}.ds-taskbar-start{font-size:23px;width:37px;height:36px}.ds-taskbar-start:hover,.ds-taskbar-pins button:hover,.ds-tray button:hover{background:#ffffff1c}.ds-taskbar-search{padding:8px 13px;background:#ffffff19;font-size:10px;color:#d6e4f3}.ds-taskbar-pins{display:flex;gap:4px}.ds-taskbar-pins button{width:34px;height:34px;font-size:17px}.ds-tray{display:flex;gap:3px;margin-left:auto;align-items:center}.ds-tray button{font-size:9px;padding:5px 7px;text-align:center;line-height:1.3}
+.ds-layout{grid-template-columns:minmax(0,1fr) 370px;gap:24px}.ds-panel{position:sticky;top:20px}.ds-current-level{margin-top:18px}.ds-objective-list{display:grid;gap:7px;padding:12px;margin-top:12px;background:#111d2b;border:1px solid #273a54;border-radius:9px}.ds-objective-list>div{display:flex;align-items:center;gap:8px;font-size:10px;color:#aebed3}.ds-objective-list>div span{color:#71849e;font-size:14px}.ds-objective-list>div.done{color:#9fdfbb}.ds-objective-list>div.done span{color:#5cd28c}.ds-panel h3{margin-top:18px}
+.ds-next:not(:disabled){background:linear-gradient(135deg,#2f80f4,#3156d7)}
+.ds-toast{background:#edf5ff;border:1px solid #c7dcf6;color:#193759;bottom:25px}
+@media(max-width:1000px){.ds-layout{grid-template-columns:1fr}.ds-panel{position:static;max-width:none;width:100%}.ds-screen{min-height:600px}}
+@media(max-width:600px){.ds-page{padding:22px 10px 45px}.ds-header h1{font-size:28px}.ds-monitor-frame{padding:5px 5px 9px;border-radius:14px}.ds-screen{min-height:565px;border-radius:9px}.ds-desktop-content{min-height:483px;padding:15px 8px 55px}.ds-desktop-icons{grid-template-columns:repeat(3,minmax(66px,1fr));gap:7px}.ds-desktop-icons button{font-size:8px;min-height:75px}.ds-desktop-icons button span{font-size:24px}.ds-app-window{margin:8px auto 60px;width:97%;min-height:480px}.ds-app-content{padding:10px;min-height:430px}.ds-window-title{padding-left:8px}.ds-window-controls button{width:32px}.ds-browser-page{padding:17px 14px}.ds-mail-item{padding:10px}.ds-taskbar{gap:1px}.ds-taskbar-search{padding:8px 6px;font-size:8px}.ds-taskbar-pins button{width:29px}.ds-tray button{font-size:8px;padding:4px}.ds-start-menu{width:96%;padding:12px}.ds-quick-panel,.ds-notice-panel{right:5px;width:min(250px,90%)}.ds-objective-list{padding:10px}}
+
+/* ------------------------------------------------------------
+   CyberShield Windows 11-class laptop shell — visual redesign
+   Familiar Windows 11 composition and Bloom-inspired wallpaper;
+   all apps and system controls remain fictional and isolated.
+------------------------------------------------------------- */
+.ds-page{background:radial-gradient(ellipse at 50% 0%,#172b4a 0%,#080d16 58%,#060910 100%);}
+.ds-header{max-width:1440px;margin-bottom:30px;}
+.ds-header h1{font-size:clamp(30px,4vw,44px);letter-spacing:-1.7px;}
+.ds-layout{max-width:1440px;grid-template-columns:minmax(0,1fr) 370px;gap:28px;}
+.ds-computer{padding:8px 0 0;}
+.ds-monitor-frame{position:relative;padding:9px 9px 13px;border-radius:24px 24px 18px 18px;background:linear-gradient(145deg,#69717e 0%,#252b34 18%,#11151b 55%,#4a515b 100%);border:1px solid #aab3c144;box-shadow:0 35px 100px #000c,0 2px 0 #aeb6c244 inset;}
+.ds-screen{min-height:690px;border:0;border-radius:14px 14px 7px 7px;background:#162b4e;box-shadow:inset 0 0 0 1px #ffffff35,0 2px 15px #0008;}
+.ds-topbar{height:0;position:relative;z-index:2;overflow:visible;background:transparent;border:0;padding:0;}
+.ds-topbar b{display:none;}
+.ds-topbar span{display:none;}
+.ds-desktop-content{position:relative;isolation:isolate;min-height:640px;padding:24px 18px 70px;background:radial-gradient(ellipse at 50% 42%,#8fb8ed 0%,transparent 40%),radial-gradient(ellipse at 75% 58%,#7d9dd0 0%,transparent 35%),linear-gradient(145deg,#153e75 0%,#2866a5 48%,#102d5c 100%);}
+.ds-desktop-content:before{content:"";position:absolute;z-index:-1;inset:-10%;background:radial-gradient(ellipse at 50% 53%,#e4f0ff4d 0%,transparent 31%),conic-gradient(from 220deg at 55% 55%,transparent 0deg,#b6d7ff33 45deg,transparent 105deg,#071b4b55 180deg,transparent 270deg);filter:blur(24px);}
+.ds-desktop-welcome{margin:0 0 18px 4px;opacity:.0;height:0;overflow:hidden;}
+.ds-desktop-icons{position:relative;z-index:1;grid-template-columns:repeat(1,84px);gap:9px;padding:0 8px;}
+.ds-desktop-icons button{min-height:76px;padding:7px 5px;border-radius:4px;gap:5px;font-size:10px;text-shadow:0 1px 3px #000b;}
+.ds-desktop-icons button:hover,.ds-desktop-icons button.selected{background:#ffffff24;border:1px solid #ffffff44;}
+.ds-desktop-icons button span{font-size:29px;}
+.ds-desktop-hint{position:absolute;bottom:64px;left:50%;transform:translateX(-50%);padding:8px 13px;border-radius:8px;background:#091a2d55;color:#e5f0ffb8;font-size:9px;white-space:nowrap;}
+.ds-taskbar{height:56px;justify-content:center;gap:7px;padding:0 14px;background:#dce7f3d9;border-top:1px solid #ffffff85;backdrop-filter:blur(34px) saturate(1.5);}
+.ds-taskbar-start,.ds-taskbar-search,.ds-taskbar-pins button,.ds-tray button{color:#24384f;}
+.ds-taskbar-start{width:39px;height:39px;font-size:25px;}
+.ds-taskbar-start:hover,.ds-taskbar-pins button:hover,.ds-tray button:hover{background:#ffffffa6;}
+.ds-taskbar-search{background:#ffffffbd;color:#344b65;border:1px solid #c4d2e2;border-radius:7px;padding:9px 18px;font-size:11px;min-width:150px;text-align:left;}
+.ds-taskbar-pins{gap:5px;}
+.ds-taskbar-pins button{width:38px;height:38px;font-size:19px;}
+.ds-tray{margin-left:10px;}
+.ds-tray button{font-size:9px;}
+.ds-start-menu,.ds-quick-panel,.ds-notice-panel{background:#e9f0f8ed;border:1px solid #ffffffb8;border-radius:15px;backdrop-filter:blur(38px) saturate(1.4);box-shadow:0 20px 60px #0715268c;}
+.ds-start-menu{width:min(480px,94%);padding:22px;}
+.ds-start-menu>input{border-radius:8px;padding:12px 14px;font-size:12px;}
+.ds-start-heading{font-size:11px;}
+.ds-start-grid button{font-size:10px;border-radius:9px;}
+.ds-start-grid span{font-size:25px;}
+.ds-quick-panel{width:290px;padding:17px;}
+.ds-quick-grid button{border-radius:10px;padding:14px 10px;font-size:11px;}
+.ds-app-window{position:relative;z-index:3;margin:24px auto 70px;width:min(94%,900px);min-height:520px;border:1px solid #ffffffaa;border-radius:12px;background:#f5f7fb;box-shadow:0 28px 90px #06132988,0 1px 0 #fff inset;overflow:hidden;}
+.ds-window-title{height:48px;background:#f5f7fbdc;border-bottom:1px solid #dce3ed;backdrop-filter:blur(28px);padding-left:18px;font-size:12px;}
+.ds-window-controls button{width:46px;font-size:17px;}
+.ds-app-content{min-height:510px;padding:22px 24px 26px;background:#f4f6fa;color:#1c293a;font-size:12px;}
+.ds-app-toolbar{font-size:13px;margin-bottom:14px;}
+.ds-mail-item,.ds-file-row,.ds-protection-card,.ds-network-card{border-radius:10px;box-shadow:0 2px 8px #172e4c0a;}
+.ds-browser-address{border-radius:10px;padding:11px 13px;}
+.ds-browser-page{border-radius:13px;box-shadow:0 8px 30px #203c5d12;}
+.ds-terminal-window{border-radius:0 0 10px 10px;}
+.ds-monitor-stand{height:24px;width:35%;margin:0 auto;background:linear-gradient(90deg,#20252d,#737b85 50%,#20252d);border-radius:0 0 8px 8px;box-shadow:0 10px 20px #0007;}
+.ds-caption{margin-top:18px;}
+.ds-panel{border-radius:20px;padding:25px;background:linear-gradient(155deg,#152239f2,#0a111ef2);border:1px solid #ffffff18;box-shadow:0 24px 70px #0005;}
+.ds-panel h2{font-size:22px;letter-spacing:-.5px;}
+.ds-objective-list{border-radius:12px;}
+.ds-next{border-radius:10px;padding:13px;}
+@media(max-width:1000px){.ds-screen{min-height:620px;}.ds-desktop-content{min-height:565px;}}
+@media(max-width:600px){.ds-monitor-frame{padding:5px 5px 9px;border-radius:14px 14px 10px 10px;}.ds-screen{min-height:570px;border-radius:8px 8px 4px 4px;}.ds-desktop-content{min-height:515px;padding:15px 7px 65px;}.ds-taskbar{height:49px;gap:1px;padding:0 5px;}.ds-taskbar-search{min-width:0;padding:8px 7px;font-size:9px;}.ds-taskbar-pins button{width:29px;height:31px;font-size:16px;}.ds-tray{margin-left:auto;}.ds-app-window{margin:12px auto 62px;width:97%;min-height:475px;}.ds-app-content{padding:12px;min-height:430px;}.ds-monitor-stand{height:15px;}}
+
+/* ==========================================================
+   Windows 11 laptop presentation — large desktop-first layout
+   Inspired by the Fluent design language; fictional sandbox.
+========================================================== */
+.ds-page{min-height:calc(100svh - 64px);padding:28px clamp(18px,3vw,48px) 52px;background:radial-gradient(ellipse at 48% -10%,#183864 0%,#0a1220 48%,#060a12 100%);color:#eef4ff}
+.ds-header{max-width:1600px;margin:0 auto 22px;align-items:center}
+.ds-header h1{font-size:clamp(28px,3vw,42px);letter-spacing:-1.6px;margin:5px 0 3px}
+.ds-header p{font-size:13px;color:#aab8cb}
+.ds-header-actions{display:flex;gap:9px;align-items:center;flex-shrink:0}
+.ds-header-actions button,.ds-focus-toolbar button{border:1px solid #5c7598;background:#1b2c47;color:#e9f2ff;border-radius:9px;padding:11px 14px;font-size:12px;font-weight:700;cursor:pointer;transition:background .18s,border-color .18s,transform .18s}
+.ds-header-actions button:first-child{background:#1c5db7;border-color:#3f89ea}
+.ds-header-actions button:hover,.ds-focus-toolbar button:hover{background:#2e5e9c;border-color:#82b6ff;transform:translateY(-1px)}
+.ds-layout{max-width:1600px;grid-template-columns:minmax(0,1fr) minmax(290px,330px);gap:clamp(20px,2.2vw,34px);align-items:center}
+.ds-computer{min-width:0;width:100%;}
+.ds-monitor-frame{width:100%;padding:8px 8px 0;border-radius:17px 17px 8px 8px;background:linear-gradient(145deg,#68717e 0%,#222934 18%,#111722 62%,#515a67 100%);border:1px solid #9ca9bc55;box-shadow:0 35px 100px #000b,0 1px 0 #ffffff46 inset;position:relative}
+.ds-monitor-frame:before{content:"";position:absolute;z-index:5;top:3px;left:50%;width:5px;height:5px;border-radius:50%;transform:translateX(-50%);background:#070d16;box-shadow:0 0 0 1px #8e9ba955}
+.ds-screen{position:relative;height:clamp(520px,67vh,760px);min-height:520px;border:1px solid #ffffff25;border-radius:10px 10px 4px 4px;background:#061b43;overflow:hidden;box-shadow:inset 0 0 0 1px #ffffff10}
+.ds-bloom-wallpaper{position:absolute;inset:0;z-index:0;overflow:hidden;background:#061b43}
+.ds-bloom-wallpaper svg{display:block;width:100%;height:100%}
+.ds-topbar{display:none}
+.ds-desktop-content{position:absolute;z-index:1;inset:0 0 56px;min-height:0;height:auto;padding:22px 19px;background:transparent}
+.ds-desktop-welcome{display:flex;flex-direction:column;gap:4px;margin:2px 0 17px;color:#fff;text-shadow:0 1px 8px #071a42}
+.ds-desktop-welcome b{font-size:19px;font-weight:600}
+.ds-desktop-welcome span{font-size:11px;color:#e6f2ff}
+.ds-desktop-icons{grid-template-columns:repeat(1,92px);grid-auto-rows:84px;gap:5px;padding:0}
+.ds-desktop-icons button{width:88px;min-height:77px;padding:7px 4px;border:1px solid transparent;border-radius:5px;gap:4px;color:#f4f8ff;text-shadow:0 1px 4px #03152c;font-size:10px;font-weight:500}
+.ds-desktop-icons button span{height:40px;display:grid;place-items:center;font-size:0;filter:drop-shadow(0 3px 4px #00102b55)}
+.ds-app-icon{display:block;filter:drop-shadow(0 2px 3px #00142c44)}
+.ds-desktop-icons button:hover,.ds-desktop-icons button.selected{background:#b5d7ff26;border:1px solid #d4e9ff3b}
+.ds-desktop-hint{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);padding:7px 12px;border:1px solid #ffffff26;border-radius:7px;background:#071a3d55;color:#e5f2ffb8;font-size:10px;white-space:nowrap;backdrop-filter:blur(14px)}
+.ds-app-window{position:absolute;z-index:4;top:4%;left:4%;width:92%;height:87%;min-height:0;margin:0;display:flex;flex-direction:column;border:1px solid #ffffffb3;border-radius:11px;background:#f4f6fa;box-shadow:0 28px 75px #0009,0 1px 0 #fff inset;overflow:hidden}
+.ds-window-title{flex:0 0 43px;height:43px;padding:0 13px;background:#f5f7fbeF;border-bottom:1px solid #dce3eb;backdrop-filter:blur(26px);font-size:12px}
+.ds-window-title>div:first-child{display:flex;gap:9px;align-items:center}
+.ds-window-title>div:first-child span{display:grid;place-items:center}
+.ds-window-title b{font-weight:650;color:#243447}
+.ds-window-controls{display:flex;align-items:stretch;height:100%;margin-right:-13px}
+.ds-window-controls button{width:43px;height:100%;font-size:17px;color:#44536a;border:0;background:transparent}
+.ds-window-controls button:hover{background:#e1e8f1}
+.ds-window-controls button:last-child:hover{background:#d94a50;color:white}
+.ds-app-content{flex:1;min-height:0;overflow:auto;padding:20px 22px 24px;background:#f4f6fa;color:#1d2b3e;font-size:12px}
+.ds-app-content::-webkit-scrollbar{width:8px}.ds-app-content::-webkit-scrollbar-thumb{background:#c3cedb;border:2px solid #f4f6fa;border-radius:8px}
+.ds-taskbar{z-index:10;height:54px;justify-content:center;gap:7px;padding:0 16px;background:rgba(235,242,250,.84);border-top:1px solid #ffffffaa;backdrop-filter:blur(34px) saturate(1.45);color:#22364f}
+.ds-taskbar-start,.ds-taskbar-search,.ds-taskbar-pins button,.ds-tray button{display:flex;align-items:center;justify-content:center;border:0;color:#24384f;background:transparent;border-radius:7px;cursor:pointer}
+.ds-taskbar-start{width:39px;height:39px;font-size:0}
+.ds-taskbar-start:hover,.ds-taskbar-pins button:hover,.ds-tray button:hover{background:#ffffffb5}
+.ds-taskbar-search{min-width:148px;justify-content:flex-start;padding:0 13px;height:34px;background:#ffffffbe;border:1px solid #cfdae7;color:#617187;font-size:11px}
+.ds-taskbar-pins{display:flex;gap:4px;align-items:center}
+.ds-taskbar-pins button{width:36px;height:36px;padding:5px}
+.ds-taskbar-pins button svg{width:24px;height:24px}
+.ds-tray{display:flex;align-items:center;gap:3px;margin-left:10px}
+.ds-tray button{min-width:39px;min-height:37px;padding:4px 7px;color:#263b55;font-size:9px;line-height:1.25}
+.ds-start-menu,.ds-quick-panel,.ds-notice-panel{z-index:15;background:rgba(239,245,252,.94);border:1px solid #ffffffc9;border-radius:14px;backdrop-filter:blur(36px) saturate(1.5);box-shadow:0 22px 65px #00122f70;color:#24354b}
+.ds-start-menu{bottom:61px;width:min(450px,94%);padding:20px}
+.ds-start-menu>input{height:38px;border-radius:8px;border:1px solid #c8d4e2;background:#fff;color:#26384f;font-size:12px}
+.ds-start-heading{margin:16px 0 9px;font-size:11px;color:#455870}
+.ds-start-grid{grid-template-columns:repeat(3,1fr);gap:5px}
+.ds-start-grid button{min-height:78px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:7px;border-radius:8px;color:#2e4058;font-size:10px}
+.ds-start-grid button:hover{background:#d9e8f8}
+.ds-start-grid span{display:grid;place-items:center;height:31px}
+.ds-start-footer{font-size:10px}
+.ds-quick-panel{bottom:62px;right:10px;width:280px;padding:17px}
+.ds-notice-panel{bottom:62px;right:10px;width:270px;padding:17px}
+.ds-laptop-base{position:relative;width:107%;height:24px;margin:0 -3.5%;background:linear-gradient(180deg,#87909e 0%,#c2c8d1 14%,#56606d 30%,#252c37 78%,#171c24 100%);clip-path:polygon(2.5% 0,97.5% 0,100% 87%,94% 100%,6% 100%,0 87%);box-shadow:0 12px 24px #0008}
+.ds-trackpad{position:absolute;top:2px;left:50%;width:19%;height:12px;transform:translateX(-50%);border:1px solid #ffffff35;border-radius:0 0 5px 5px;background:linear-gradient(180deg,#687280,#3b444f)}
+.ds-caption{margin:13px 0 0;font-size:9px;letter-spacing:1.4px;color:#7588a5}
+.ds-panel{position:relative;width:100%;max-height:calc(100svh - 170px);overflow:auto;padding:19px 18px 16px;border-radius:16px;background:linear-gradient(155deg,#14223a,#0b1423);border:1px solid #ffffff18;box-shadow:0 18px 54px #0005}
+.ds-panel-topline{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.ds-kicker{font-size:9px;letter-spacing:1.6px;color:#8cb5ff}
+.ds-state-pill,.ps-mission-state{padding:5px 8px;border:1px solid #4e6380;border-radius:999px;color:#a9bdd9;font-size:9px;font-weight:700;white-space:nowrap}
+.ds-state-pill.complete,.ps-mission-state.complete{background:#113a2e;border-color:#276d50;color:#8be0b7}
+.ds-mission-heading{display:flex;flex-direction:column;gap:8px;margin:15px 0 8px}
+.ds-mission-heading>span{font-size:9px;color:#79a7f5;letter-spacing:1px;font-weight:800}
+.ds-mission-heading>b{font-size:19px;line-height:1.22;letter-spacing:-.4px;color:#edf4ff}
+.ds-mission-description{margin:0;color:#a9b7ca;font-size:11px;line-height:1.5}
+.ds-progress-label{margin:17px 0 7px;font-size:9px;color:#aebdd2}
+.ds-progress{height:6px;background:#26374f}
+.ds-objective-list{display:grid;gap:9px;margin-top:15px;padding:12px 13px;background:#101d30;border:1px solid #2a3e5b;border-radius:10px}
+.ds-objective-list>div{font-size:10px;line-height:1.3;color:#b6c4d7}
+.ds-objective-list>div span{font-size:14px}
+.ds-panel-details{margin-top:11px;border:1px solid #2b405e;border-radius:9px;background:#122039;color:#d0dced;overflow:hidden}
+.ds-panel-details summary{padding:10px 12px;cursor:pointer;list-style:none;font-size:10px;font-weight:750;color:#a9c7f5}
+.ds-panel-details summary::-webkit-details-marker{display:none}
+.ds-panel-details summary:after{content:'＋';float:right;color:#8fa7c7}
+.ds-panel-details[open] summary:after{content:'−'}
+.ds-panel-details p{margin:0;padding:0 12px 12px;color:#afbed2;font-size:10px;line-height:1.5}
+.ds-activity-details summary span{float:right;color:#8194ae;font-weight:500}
+.ds-activity-details p{padding:0 12px 7px}
+.ds-next{margin-top:14px;display:flex;justify-content:center;align-items:center;gap:12px;padding:12px;border-radius:9px;background:linear-gradient(120deg,#2778e8,#345dd7);font-size:12px}
+.ds-next:disabled{background:#25354d;color:#7a8ba4}
+.ds-hint{margin-top:7px;font-size:9px;color:#8091aa;line-height:1.35}
+.ds-reset{width:100%;margin-top:10px;padding:8px;background:transparent;border:1px solid #2c405c;color:#8ea3c0;font-size:10px}
+.ds-reset:hover{background:#172943;color:#eaf3ff}
+.ds-toast{z-index:10020}
+.ds-focus-toolbar,.ps-focus-toolbar{position:fixed;z-index:10030;top:13px;left:18px;right:18px;display:flex;justify-content:space-between;align-items:center;pointer-events:none}
+.ds-focus-toolbar>span,.ps-focus-toolbar>span{display:flex;align-items:center;gap:9px;padding:8px 12px;border:1px solid #ffffff2b;border-radius:999px;background:#0a1629c9;color:#eaf4ff;font-size:11px;backdrop-filter:blur(20px)}
+.ds-focus-toolbar>div,.ps-focus-toolbar>div{display:flex;gap:8px;pointer-events:auto}
+.ds-focus-toolbar button,.ps-focus-toolbar button{padding:9px 12px;border-color:#ffffff4a;background:#10213cdd;color:#fff;font-size:11px}
+.ds-device-focus{position:fixed;z-index:10000;inset:0;width:100vw;height:100svh;overflow:auto;padding:52px 28px 28px;background:radial-gradient(ellipse at 50% 0%,#12376c,#050912 68%)}
+.ds-device-focus .ds-header{display:none}
+.ds-device-focus .ds-layout{width:100%;height:calc(100svh - 86px);max-width:none;margin:0;display:flex;align-items:center;justify-content:center;padding:0}
+.ds-device-focus .ds-computer{width:min(96vw,1680px);margin:auto}
+.ds-device-focus .ds-screen{height:min(73svh,880px);min-height:440px}
+.ds-device-focus .ds-laptop-base{height:22px}
+.ds-device-focus .ds-caption{color:#8fa4c1}
+.ds-device-focus .ds-panel{display:none}
+.ds-device-focus.ds-show-mission .ds-panel{display:block;position:fixed;z-index:10025;top:64px;right:18px;bottom:18px;width:min(350px,calc(100vw - 36px));max-height:none}
+@media(max-width:1100px){.ds-layout{grid-template-columns:minmax(0,1fr) 300px;gap:18px}.ds-panel{padding:16px}.ds-screen{height:clamp(500px,64vh,700px)}}
+@media(max-width:850px){.ds-layout{grid-template-columns:1fr}.ds-panel{position:static;width:100%;max-width:720px;margin:14px auto 0;max-height:none}.ds-screen{height:clamp(480px,68vh,680px)}.ds-header{align-items:flex-start}.ds-device-focus .ds-layout{height:calc(100svh - 75px)}.ds-device-focus .ds-screen{height:72svh}}
+@media(max-width:560px){.ds-page{padding:20px 10px 38px}.ds-header{gap:13px;flex-direction:column}.ds-header-actions{width:100%;flex-wrap:wrap}.ds-header-actions button{flex:1}.ds-screen{height:64svh;min-height:440px}.ds-desktop-content{padding:14px 10px}.ds-desktop-icons{grid-template-columns:repeat(1,80px);grid-auto-rows:74px}.ds-desktop-icons button{width:76px}.ds-taskbar{height:48px;padding:0 6px;gap:2px}.ds-taskbar-search{min-width:70px;width:82px;font-size:9px;padding:0 7px}.ds-taskbar-pins button{width:29px;height:31px;padding:3px}.ds-taskbar-pins button svg{width:20px;height:20px}.ds-tray{margin-left:auto}.ds-tray button{min-width:30px;padding:2px 3px;font-size:8px}.ds-app-window{top:3%;left:2%;width:96%;height:89%}.ds-app-content{padding:12px}.ds-laptop-base{height:15px}.ds-device-focus{padding:55px 5px 12px}.ds-device-focus .ds-screen{height:71svh;min-height:380px}.ds-focus-toolbar{left:7px;right:7px}.ds-focus-toolbar>span{font-size:0;padding:8px}.ds-focus-toolbar>span svg{width:20px;height:20px}.ds-focus-toolbar button{padding:8px;font-size:10px}}
+/* Ratio and hardware detail refinements */
+.ds-screen{width:100%;height:auto;aspect-ratio:16 / 10;min-height:480px;max-height:calc(100svh - 260px)}
+.ds-laptop-base{height:32px;background:linear-gradient(180deg,#aab2bd 0%,#77818f 12%,#333d4c 32%,#202936 76%,#111822 100%)}
+.ds-laptop-base:before{content:"";position:absolute;top:3px;left:11%;right:11%;height:9px;border-radius:4px;background:repeating-linear-gradient(90deg,#151d29 0 2px,#485361 2px 3px);opacity:.9}
+.ds-trackpad{top:13px;width:22%;height:14px;border-radius:2px 2px 6px 6px;background:linear-gradient(180deg,#5d6877,#303a48)}
+.ds-layout{grid-template-columns:minmax(0,1fr) minmax(270px,300px)}
+.ds-device-focus .ds-screen{width:100%;height:min(70svh,calc(96vw * .625));aspect-ratio:auto;min-height:420px}
+.ds-device-focus .ds-laptop-base{height:30px}
+@media(max-width:1100px){.ds-layout{grid-template-columns:minmax(0,1fr) 280px}.ds-screen{min-height:460px}}
+@media(max-width:850px){.ds-screen{aspect-ratio:16 / 10;height:auto;max-height:none;min-height:450px}.ds-device-focus .ds-screen{height:70svh;aspect-ratio:auto}}
+@media(max-width:560px){.ds-screen{aspect-ratio:4 / 3;min-height:420px}.ds-device-focus .ds-screen{height:66svh;min-height:360px;aspect-ratio:auto}.ds-laptop-base{height:19px}.ds-laptop-base:before{height:5px}.ds-trackpad{top:9px;height:8px}}
+.ds-taskbar{justify-content:space-between}
+.ds-taskbar-center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;align-items:center;gap:7px}
+.ds-tray{margin-left:auto}
+.ds-desktop-icons{padding:3px 0;grid-auto-rows:82px}
+.ds-desktop-icons button{min-height:74px}
+.ds-desktop-welcome,.ds-desktop-hint{display:none}
+@media(max-width:560px){.ds-taskbar-center{gap:2px}.ds-taskbar-search{min-width:58px;width:72px}.ds-taskbar-pins button{width:27px}}
+
+/* Laptop-first hardware and native desktop presentation */
+.ds-laptop-lid{position:relative;width:100%;padding:10px 10px 9px;border-radius:20px 20px 7px 7px;background:linear-gradient(145deg,#75808f 0%,#343d49 13%,#141a23 52%,#647080 100%);border:1px solid #aeb9c766;box-shadow:0 32px 90px #000b,0 1px 0 #eaf3ff55 inset}
+.ds-laptop-lid:before{content:"";position:absolute;top:3px;left:50%;width:5px;height:5px;border-radius:50%;background:#0b111a;box-shadow:0 0 0 1px #ffffff18;transform:translateX(-50%);z-index:20}
+.ds-laptop-lid .ds-screen{border:0;border-radius:10px 10px 3px 3px;min-height:480px;box-shadow:inset 0 0 0 1px #ffffff18}
+.ds-laptop-base{height:42px;width:110%;margin:0 -5%;border-radius:0 0 22px 22px;clip-path:polygon(1.5% 0,98.5% 0,100% 73%,96% 100%,4% 100%,0 73%);background:linear-gradient(180deg,#bec6d0 0%,#8993a0 10%,#4d5662 28%,#232b36 76%,#111720 100%);box-shadow:0 18px 30px #0009;overflow:hidden}
+.ds-keyboard-deck{position:absolute;left:10%;right:10%;top:4px;height:15px;border-radius:3px;background:repeating-linear-gradient(90deg,transparent 0 5px,#252d39 5px 6px),repeating-linear-gradient(0deg,#6e7886 0 3px,#313b49 3px 4px);opacity:.9}
+.ds-trackpad{top:21px;width:20%;height:13px;border-color:#ffffff42;background:linear-gradient(180deg,#737e8b,#424b58)}
+.ds-desktop-icons button{width:82px;min-height:76px;padding:7px 4px;border:1px solid transparent;border-radius:5px;text-shadow:0 1px 4px #000b;gap:5px}
+.ds-desktop-icons button.selected{background:#4c91dc55;border-color:#b9dcff80}
+.ds-desktop-icons button:focus-visible{outline:1px solid #fff;background:#4c91dc55}
+.ds-screen>.ds-bloom-wallpaper{inset:0}
+.ds-screen>.ds-desktop-content{position:absolute;z-index:2;inset:0;padding:18px 13px 55px}
+.ds-taskbar{z-index:15}
+.ds-start-menu,.ds-quick-panel,.ds-notice-panel{z-index:18}
+.ds-device-focus .ds-laptop-lid{width:min(97vw,1760px);margin:auto}
+.ds-device-focus .ds-laptop-base{height:34px}
+.ds-device-focus .ds-keyboard-deck{height:12px}
+.ds-device-focus .ds-trackpad{top:18px;height:11px}
+@media(max-width:850px){.ds-laptop-lid{padding:7px 7px 7px;border-radius:15px 15px 5px 5px}.ds-laptop-lid .ds-screen{min-height:450px}.ds-laptop-base{height:28px}.ds-keyboard-deck{top:3px;height:9px}.ds-trackpad{top:14px;height:9px}}
+@media(max-width:560px){.ds-laptop-lid{padding:5px 5px 6px;border-radius:12px 12px 4px 4px}.ds-laptop-lid .ds-screen{min-height:420px;border-radius:7px 7px 2px 2px}.ds-laptop-base{height:22px}.ds-keyboard-deck{top:2px;height:7px}.ds-trackpad{top:11px;height:7px}}
+@media(min-width:851px){.ds-device-focus .ds-laptop-lid{width:min(94vw,calc((100svh - 170px)*1.6),1760px)}.ds-device-focus .ds-screen{height:auto;aspect-ratio:16 / 10;min-height:0;max-height:calc(100svh - 210px)}}
+
+/* =========================================================
+   Windows 11 desktop refinement · accurate user reference
+========================================================= */
+.ds-page {
+  --ds-blue: #8fa9f5;
+  --ds-blue-line: #829be5;
+  --ds-blue-panel: #101b34;
+  --ds-green: #77d3a3;
+  --ds-green-line: #69c995;
+  --ds-green-panel: #09271d;
+  --ds-amber: #f4d36c;
+  background: #05070c;
+  font-family: 'Inter', 'Segoe UI', monospace;
+}
+.ds-header>div>span, .ds-kicker, .ds-mission-heading>span, .ds-progress-label b { color: var(--ds-blue) !important; font-family: 'Inter', monospace; }
+.ds-header h1 { font-family: 'Inter', monospace; font-weight: 800; letter-spacing: -.065em; }
+.ds-header p { font-family: 'Inter', monospace; }
+.ds-layout { grid-template-columns: minmax(0,1fr) minmax(305px,340px); gap: clamp(18px,2vw,34px); }
+.ds-laptop-lid { background: linear-gradient(145deg,#8a929e 0%,#3e4652 8%,#111820 44%,#7b8491 100%); border-color: #aab4c277; box-shadow: 0 36px 110px #000c, inset 0 1px 0 #fff8; }
+.ds-laptop-lid .ds-screen { width: 100%; height: auto; aspect-ratio: 16 / 9; min-height: 0; max-height: none; border-radius: 9px 9px 3px 3px; background: #09152b; }
+.ds-bloom-wallpaper { position: absolute; z-index: 0; inset: 0; overflow: hidden; background: #102548; }
+.ds-bloom-wallpaper img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center center; user-select: none; pointer-events: none; }
+.ds-desktop-content { position: absolute; z-index: 2; inset: 0 0 54px; padding: 11px 9px 54px; background: transparent; }
+.ds-desktop-icons { display: grid; grid-template-columns: 82px; grid-auto-rows: 76px; justify-content: start; align-content: start; gap: 2px; padding: 0; }
+.ds-desktop-icons button { width: 78px; min-height: 72px; padding: 4px 3px; color: #f7fbff; text-shadow: 0 1px 4px #00102b; font-family: 'Inter', monospace; font-size: 9px; }
+.ds-desktop-icons button span { height: 36px; }
+.ds-taskbar {
+  z-index: 20; height: 50px; color: #19263b;
+  background: rgba(219,228,240,.78); border-top: 1px solid rgba(255,255,255,.62);
+  backdrop-filter: blur(28px) saturate(1.5); -webkit-backdrop-filter: blur(28px) saturate(1.5);
+}
+.ds-taskbar-start,.ds-taskbar-search,.ds-taskbar-pins button,.ds-tray button { color: #23344e; }
+.ds-taskbar-search { height: 31px; min-width: 124px; background: rgba(249,251,255,.7); border: 1px solid rgba(87,105,130,.2); color: #465875; }
+.ds-taskbar-pins button { width: 33px; height: 33px; }
+.ds-taskbar-pins button:hover,.ds-taskbar-start:hover,.ds-tray button:hover { background: rgba(255,255,255,.7); }
+.ds-start-menu,.ds-quick-panel,.ds-notice-panel {
+  color: #edf3ff; background: rgba(17,28,52,.93); border: 1px solid rgba(184,203,239,.27);
+  backdrop-filter: blur(34px) saturate(1.5); -webkit-backdrop-filter: blur(34px) saturate(1.5);
+  box-shadow: 0 30px 90px rgba(0,0,0,.48), inset 0 1px rgba(255,255,255,.08);
+}
+.ds-start-menu { left: 50%; bottom: 59px; transform: translateX(-50%); width: min(570px,94%); padding: 22px 25px 14px; border-radius: 13px; }
+.ds-start-menu>input { height: 36px; padding: 0 14px; border: 1px solid rgba(193,210,244,.22); background: rgba(8,14,27,.68); color: #f1f5ff; border-radius: 8px; font: 11px 'Inter',monospace; }
+.ds-start-menu>input::placeholder { color: #9aa8c2; }
+.ds-start-section-head { display: flex; align-items: center; justify-content: space-between; margin: 18px 3px 9px; color: #f0f4ff; font-size: 10px; }
+.ds-start-section-head button,.ds-start-section-head>span { border: 1px solid rgba(183,201,237,.18); background: rgba(255,255,255,.06); color: #bac8e4; border-radius: 5px; padding: 5px 8px; font: 9px 'Inter',monospace; }
+.ds-start-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 4px; }
+.ds-start-grid button { display: flex; min-height: 72px; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: #e8efff; border: 1px solid transparent; background: transparent; border-radius: 8px; font: 9px 'Inter',monospace; }
+.ds-start-grid button:hover { background: rgba(255,255,255,.09); border-color: rgba(179,202,246,.15); }
+.ds-start-grid span { display: grid; place-items: center; height: 33px; }
+.ds-recommended-head { margin-top: 16px; }
+.ds-recommended-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.ds-recommended-grid button { display: grid; grid-template-columns: 28px 1fr; align-items: center; column-gap: 8px; text-align: left; padding: 9px; color: #e5ecfa; background: rgba(255,255,255,.045); border: 1px solid rgba(182,201,234,.13); border-radius: 8px; font: 9px 'Inter',monospace; }
+.ds-recommended-grid button>span { grid-row: span 2; color: var(--ds-blue); font-size: 18px; }
+.ds-recommended-grid button>small { color: #91a1bd; font-size: 8px; }
+.ds-start-footer { border-color: rgba(183,201,237,.18); margin-top: 13px; padding-top: 11px; color: #c6d2e8; font: 9px 'Inter',monospace; }
+.ds-start-footer button { color: var(--ds-green); font: 9px 'Inter',monospace; }
+.ds-quick-panel,.ds-notice-panel { right: 12px; bottom: 58px; width: 290px; padding: 17px; border-radius: 13px; }
+.ds-quick-grid button { background: rgba(255,255,255,.08); border: 1px solid rgba(184,203,239,.14); color: #e8efff; border-radius: 9px; }
+.ds-quick-grid button:hover { background: rgba(137,158,226,.2); }
+.ds-quick-grid small,.ds-quick-footer,.ds-notice-panel small { color: #9baac5; }
+.ds-notice-panel p { background: rgba(255,255,255,.07); color: #e5edfb; border: 1px solid rgba(184,203,239,.12); }
+.ds-app-window { border: 1px solid rgba(215,226,247,.56); box-shadow: 0 28px 90px #000a,0 1px 0 #fff8 inset; }
+.ds-window-title { font-family: 'Inter',monospace; }
+.ds-window-title b { font-family: 'Inter',monospace; }
+.ds-app-content { font-family: 'Inter',monospace; }
+.ds-utility-window { background: #f3f5f8; }
+.ds-utility-card { min-height: 330px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 12px; color: #24354e; }
+.ds-utility-card h2 { margin: 4px 0; font: 700 19px 'Inter',monospace; }
+.ds-utility-card p { max-width: 440px; color: #697890; line-height: 1.65; }
+.ds-utility-card button { border: 1px solid #7790dd; border-radius: 7px; background: #8298e4; color: #091020; padding: 10px 15px; font: 600 10px 'Inter',monospace; }
+.ds-panel { border: 1px solid rgba(132,151,221,.36); background: linear-gradient(155deg,rgba(18,29,52,.98),rgba(8,14,25,.99)); font-family: 'Inter',monospace; }
+.ds-mission-heading>b { font: 700 17px/1.35 'Inter',monospace; letter-spacing: -.05em; }
+.ds-mission-description,.ds-hint,.ds-objective-list>div,.ds-panel-details p { font-family: 'Inter',monospace; }
+.ds-objective-list { background: rgba(17,29,52,.86); border-color: rgba(132,151,221,.26); }
+.ds-objective-list>div.done { color: var(--ds-green); }
+.ds-objective-list>div.done span { color: var(--ds-green); }
+.ds-panel-details { background: rgba(15,26,45,.92); border-color: rgba(132,151,221,.24); }
+.ds-panel-details summary { color: var(--ds-blue); font-family: 'Inter',monospace; }
+.ds-progress { background: #1b2438; }
+.ds-progress i { background: linear-gradient(90deg,#8fa9f5,#77d3a3); }
+.ds-next { background: #6f8fe6; border: 1px solid #829be5; color: #05070c; box-shadow: none; font: 700 11px 'Inter',monospace; }
+.ds-next:disabled { background: #202a40; border-color: #33415d; color: #7786a4; }
+.ds-state-pill.complete { color: var(--ds-green); border-color: rgba(139,217,184,.45); background: rgba(12,44,33,.65); }
+.ds-reset { font: 10px 'Inter',monospace; border-color: rgba(132,151,221,.3); }
+.ds-device-focus { background: #05070c; }
+.ds-device-focus .ds-laptop-lid { width: min(96vw, calc((100svh - 150px) * 1.78)); }
+.ds-device-focus .ds-laptop-lid .ds-screen { width: 100%; height: auto; aspect-ratio: 16 / 9; min-height: 0; max-height: calc(100svh - 195px); }
+@media (max-width: 1100px) { .ds-layout { grid-template-columns: minmax(0,1fr) 300px; } }
+@media (max-width: 850px) { .ds-layout { grid-template-columns: 1fr; } .ds-laptop-lid .ds-screen { aspect-ratio: 16 / 9; } }
+@media (max-width: 560px) {
+  .ds-page { padding: 18px 10px 35px; }
+  .ds-laptop-lid { padding: 5px; border-radius: 13px 13px 4px 4px; }
+  .ds-laptop-lid .ds-screen { aspect-ratio: 16 / 10; }
+  .ds-desktop-content { padding: 8px 5px 48px; }
+  .ds-desktop-icons { grid-template-columns: 64px; grid-auto-rows: 64px; }
+  .ds-desktop-icons button { width: 60px; min-height: 61px; font-size: 7px; }
+  .ds-taskbar { height: 43px; padding: 0 3px; }
+  .ds-taskbar-search { min-width: 60px; width: 70px; font-size: 8px; }
+  .ds-taskbar-pins button { width: 26px; height: 28px; padding: 3px; }
+  .ds-start-menu { width: 96%; padding: 12px; }
+  .ds-start-grid { grid-template-columns: repeat(3,minmax(0,1fr)); }
+  .ds-start-grid button { min-height: 60px; font-size: 8px; }
+  .ds-recommended-grid { grid-template-columns: 1fr; }
+  .ds-device-focus { padding: 50px 4px 10px; }
+  .ds-device-focus .ds-laptop-lid { width: 98vw; }
+  .ds-device-focus .ds-laptop-lid .ds-screen { aspect-ratio: 16 / 9; height: auto; max-height: 68svh; }
+  .ds-device-focus .ds-laptop-base { height: 22px; }
+}
+
+
+/* Windows 11 desktop reference match: dense shortcut columns and native-style Start grid. */
+.ds-desktop-icons {
+  grid-template-columns: repeat(4, 76px);
+  grid-auto-rows: 76px;
+  gap: 1px 2px;
+}
+.ds-desktop-icons button { width: 72px; min-height: 72px; font-size: 8px; }
+.ds-start-menu {
+  width: min(650px, 94%);
+  padding: 22px 27px 14px;
+  background: rgba(24, 36, 67, .95);
+  border-color: rgba(197, 213, 246, .23);
+  box-shadow: 0 28px 80px rgba(0,0,0,.5), inset 0 1px rgba(255,255,255,.09);
+}
+.ds-start-grid { grid-template-columns: repeat(8, minmax(0,1fr)); gap: 3px; }
+.ds-start-grid button { min-height: 74px; font-size: 8px; }
+.ds-start-grid button span { height: 34px; }
+.ds-taskbar-pins { display: flex; align-items: center; gap: 3px; }
+.ds-taskbar-pins button { width: 31px; height: 33px; padding: 4px; }
+@media (max-width: 850px) {
+  .ds-desktop-icons { grid-template-columns: repeat(3, 70px); grid-auto-rows: 68px; }
+  .ds-start-menu { width: min(620px, 96%); }
+  .ds-start-grid { grid-template-columns: repeat(4, minmax(0,1fr)); }
+}
+@media (max-width: 560px) {
+  .ds-desktop-icons { grid-template-columns: repeat(2, 62px); grid-auto-rows: 62px; }
+  .ds-start-grid { grid-template-columns: repeat(4, minmax(0,1fr)); }
+}

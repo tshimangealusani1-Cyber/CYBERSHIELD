@@ -1,0 +1,2 @@
+import './ShieldGlobe.css'
+export default function ShieldGlobe(){return <div className="shield-globe" role="img" aria-label="Animated cybersecurity globe with protected network nodes"><div className="globe-orbit orbit-a"/><div className="globe-orbit orbit-b"/><div className="globe-sphere"><i/><i/><i/><i/><i/><i/><i/><i/></div><div className="globe-shield">◇<b>✓</b></div><span className="globe-node node-a"/><span className="globe-node node-b"/><span className="globe-node node-c"/><span className="globe-node node-d"/></div>}
